@@ -26,8 +26,6 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
-    "less": "^2.7.3",
-    "less-loader": "^4.0.5",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
@@ -92,5 +90,9 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage": "."
+  "homepage": ".",
+  "devDependencies": {
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5"
+  }
 }
