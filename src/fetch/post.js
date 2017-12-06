@@ -31,11 +31,11 @@ function obj2params(obj) {
 export function post(url,param) {
     var result = fetch(url, {
         method: 'POST',
-        /*credentials: 'include',
+        mode: "cors",
+        credentials: 'include',
         headers: {
-            'Accept': 'application/json, text/plain, *!/!*',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },*/
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
         body: obj2params(param)
     });
 
