@@ -9,6 +9,7 @@ export default class Home extends Component {
     }
 
     componentDidMount(){
+        //fetch请求测试
         const result=testData('494a4b33584f3652355a686e7957344a4e48535578413d3d0a')
         result.then((res)=>{
             return res.json()

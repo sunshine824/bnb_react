@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {
     Router,
     Route
-} from 'react-router-dom'
+} from 'dva/router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import Home from '../containers/Home'
 
