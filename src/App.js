@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import RouteMap from './router/routeMap'
+import './App.css'
+
 
 class App extends Component {
     constructor() {
