@@ -29,6 +29,19 @@ export default class Home extends Component {
     }
 
     componentDidMount(){
+        const data=[]
+        //前三天日期
+        for(let i=3;i>=1;i--){
+            data.push(moment().subtract(i, 'days').format('MM-DD dddd'))
+        }
+        //今日日期
+        data.push(moment().format('MM-DD dddd'))
+        //后46天日期
+        for(let i=1;i<=46;i++){
+            data.push(moment().add('days',i).format('MM-DD dddd'))
+        }
+        console.log(data)
+        //console.log(data)
         //fetch请求测试
         const result=testData('494a4b33584f3652355a686e7957344a4e48535578413d3d0a')
         result.then((res)=>{
