@@ -1,21 +1,23 @@
 import React, {Component} from 'react'
 import {
-    Router,
+    BrowserRouter,
+    Switch,
     Route
-} from 'dva/router'
-import createBrowserHistory from 'history/createBrowserHistory'
-import Home from '../containers/Home'
+} from 'react-router-dom'
+import {asyncComponent} from '@/config/fnMixin'
 
-const history = createBrowserHistory()
+const Home=asyncComponent(()=>import('@/containers/Home'))
+const Test=asyncComponent(()=>import('@/containers/Test'))
 
 class RouteMap extends Component {
-    render(){
-        return(
-            <Router history={history}>
-                <div>
+    render() {
+        return (
+            <BrowserRouter>
+                <Switch>
                     <Route exact path="/" component={Home}/>
-                </div>
-            </Router>
+                    <Route path="/test" component={Test}/>
+                </Switch>
+            </BrowserRouter>
         )
     }
 }
