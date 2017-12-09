@@ -17,7 +17,7 @@ class ChooseDate extends Component {
     }
 
     render() {
-        const dateFormat = 'YYYY/MM/DD'
+        const dateFormat = 'YYYY-MM-DD'
 
         return (
             <div>
