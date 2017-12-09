@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import ChooseDate from '../../components/ChooseDate'
+import DateList from './DateList'
 
 export default class Test extends Component {
     constructor(props) {
@@ -11,7 +13,10 @@ export default class Test extends Component {
 
     render(){
         return(
-            <div>测试页面</div>
+            <div>
+                <ChooseDate/>
+                <DateList/>
+            </div>
         )
     }
 }
