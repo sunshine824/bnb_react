@@ -10,10 +10,40 @@ class ChooseDate extends Component {
 
     }
 
+    componentDidMount(){
+        this.HandleDate(1)
+    }
+
     onChange(date, dateString) {
+        this.HandleDate(0,dateString)
+    }
+
+    HandleDate(isDefault,date){
         const {dispatch} = this.props
-        //修改date
-        dispatch(update_date(dateString))
+        const dataLists=[]
+
+        if(isDefault){
+            //前三天日期
+            for(let i=3;i>=1;i--){
+                dataLists.push(moment().subtract(i, 'days').format('MM-DD dddd'))
+            }
+            //今日日期
+            dataLists.push(moment().format('MM-DD dddd'))
+            //往后49天
+            for (let i = 1; i <= 46; i++) {
+                dataLists.push(moment().add(i, 'days').format('MM-DD dddd'))
+            }
+        }else {
+            //今日日期
+            dataLists.push(moment(date).format('MM-DD dddd'))
+            //往后49天
+            for (let i = 1; i <= 49; i++) {
+                dataLists.push(moment(date).add(i, 'days').format('MM-DD dddd'))
+            }
+        }
+
+        //修改dateLists
+        dispatch(update_date(dataLists))
     }
 
     render() {

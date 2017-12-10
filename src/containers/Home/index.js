@@ -36,6 +36,7 @@ export default class Home extends Component {
         }
         //今日日期
         data.push(moment("2012-09-01").format('MM-DD dddd'))
+
         //后46天日期
         for(let i=1;i<=46;i++){
             data.push(moment("2012-09-01").add(i,'days').format('MM-DD dddd'))

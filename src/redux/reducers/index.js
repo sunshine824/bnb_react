@@ -7,7 +7,7 @@ export default function update_date(state = initialState, action) {
         case actionTypes.UPDATE_DATE:
             return [
                 {
-                    date:action.date
+                    dateLists:action.date
                 }
             ]
         default:
