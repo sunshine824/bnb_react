@@ -9,6 +9,9 @@ class HouseItem extends Component{
                 <div className="room-cell-left">
                     <p className="room-cell-type">观景台</p>
                 </div>
+                <div className="room-cell-right">
+                    <p className="room-num-section">1022</p>
+                </div>
             </li>
         )
     }
