@@ -6,5 +6,26 @@
   ul{
     width: 100%;
     box-sizing: border-box;
+    li{
+      width: 100%;
+      .room-cell-left{
+        display: table-cell;
+        width: 50%;
+         padding: 4px;
+        vertical-align: middle;
+        border-bottom: solid 1px #d9d9d9;
+        box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        word-break: break-all;
+        cursor: pointer;
+        .room-cell-type{
+          text-align: center;
+          max-height: 39px;
+          overflow: hidden;
+        }
+      }
+    }
   }
 }
