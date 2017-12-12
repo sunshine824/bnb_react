@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import DateLis from '../../components/DateLis'
+import DateLis from '../../components/test/DateLiss'
 
 moment.locale('zh-cn');
 

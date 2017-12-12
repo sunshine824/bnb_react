@@ -1,6 +1,8 @@
+@import "../../static/css/public";
 .room-list ul{
   li{
     width: 100%;
+    overflow: hidden;
     .room-cell-left{
       width: 59px;
       height: 30px;
@@ -30,6 +32,9 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+    }
+    &:nth-child(Odd) .room-cell-right{
+      background-color: @roomGray;
     }
   }
 }
