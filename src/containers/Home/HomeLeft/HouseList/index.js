@@ -37,7 +37,6 @@ class HouseList extends Component {
                     {
                         roomList ?
                             roomList.map((item, index) => {
-                            console.log(item)
                                 return (
                                     <HouseItem key={index} {...item}/>
                                 )

@@ -11,3 +11,15 @@ export function update_date(date) {
         date
     }
 }
+
+/**
+ * 保存房型id
+ * @param type_id
+ * @returns {{type, type_id: *}}
+ */
+export function save_house_type(type_id) {
+    return{
+        type:actionTypes.Save_House_TYPE,
+        type_id
+    }
+}

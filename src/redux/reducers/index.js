@@ -1,16 +1,11 @@
-import * as actionTypes from '../../config/actionType'
+import {combineReducers} from 'redux'
+import house_type from './House_Type'
+import update_date from './Update_Date'
 
-const initialState = []
+export default combineReducers({
+    house_type,
+    update_date
+})
 
-export default function update_date(state = initialState, action) {
-    switch (action.type) {
-        case actionTypes.UPDATE_DATE:
-            return [
-                {
-                    dateLists:action.date
-                }
-            ]
-        default:
-            return state
-    }
-}
+
+
