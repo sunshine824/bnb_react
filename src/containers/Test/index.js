@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import ChooseDate from '../../components/test/ChooseDate'
 import DateList from './DateList'
-import {getHouseListData} from '@/fetch/HouseList/HouseList'
+import {getHouseListData} from '@/fetch/HouseList'
 
 export default class Test extends Component {
     constructor(props) {
