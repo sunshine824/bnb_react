@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {DatePicker, Select} from 'antd';
 import moment from 'moment';
 import {update_date} from '@/redux/actions'
+import {getHouseListData} from '@/fetch/HouseList'
 import 'moment/locale/zh-cn';
 
 import './style.less'
@@ -14,10 +15,30 @@ const Option = Select.Option;
 class ScreenBox extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            house_list: []
+        }
     }
 
     componentDidMount() {
         this.HandleDate(1)
+        this.getHouseList()
+    }
+
+    /**
+     * 获取房型列表
+     */
+    getHouseList() {
+        const result = getHouseListData()
+        result.then((res) => {
+            return res.json()
+        }).then(json => {
+            this.setState({
+                house_list: json.data
+            })
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     onChange(date, dateString) {
@@ -54,12 +75,13 @@ class ScreenBox extends Component {
     }
 
     handleChange(value) {
-        console.log(`selected ${value}`);
+        console.log(value)
     }
 
     render() {
         const dateFormat = 'YYYY-MM-DD'
-        const allowClear=false
+        const allowClear = false
+        const {house_list} = this.state
         return (
             <div className="screen-box">
                 <div className="box-date">
@@ -76,9 +98,17 @@ class ScreenBox extends Component {
                         onChange={this.handleChange.bind(this)}
                         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
-                        <Option value="jack">全选</Option>
-                        <Option value="lucy">观景台</Option>
-                        <Option value="tom">套二户型</Option>
+                        {
+                            house_list ?
+                                house_list.map((item, index) => {
+                                    return (
+                                        <Option key={index} value={item.id}>
+                                            {item.abbre}
+                                        </Option>
+                                    )
+                                })
+                                : ''
+                        }
                     </Select>
                 </div>
             </div>
