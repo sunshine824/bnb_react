@@ -27,7 +27,7 @@ class DateList extends Component {
 
 function mapStateToProps(state) {
     return {
-        dateLists: state[0] ? state[0].dateLists : ''
+        dateLists: state.update_date[0] ? state.update_date[0].dateLists : ''
     }
 }
 

@@ -1,10 +1,19 @@
 @import "../../../static/css/public";
 
+
 .home-right{
   position: absolute;
   left: 120px;
-  border-bottom: solid 2px #ccc;
   cursor: e-resize;
   width: calc(~"100% - 120px");
-  overflow: hidden;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background: #f0f0f0;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #bbb;
+  }
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {DatePicker, Select} from 'antd';
+import {DatePicker, Select } from 'antd';
 import moment from 'moment';
 import {update_date,save_house_type} from '@/redux/actions'
 import {getHouseListData} from '@/fetch/HouseList'
@@ -43,6 +43,7 @@ class ScreenBox extends Component {
      */
     getHouseList() {
         const result = getHouseListData()
+        const children=[]
         result.then((res) => {
             return res.json()
         }).then(json => {
@@ -89,6 +90,7 @@ class ScreenBox extends Component {
         result.then((res) => {
             return res.json()
         }).then(json => {
+
             dispatch(save_house_type(json.data))
         }).catch(err => {
             console.log(err)
