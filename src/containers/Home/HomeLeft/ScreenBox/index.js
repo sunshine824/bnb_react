@@ -5,6 +5,7 @@ import moment from 'moment';
 import {update_date,save_house_type} from '@/redux/actions'
 import {getHouseListData} from '@/fetch/HouseList'
 import {getRoomListData} from '@/fetch/RoomList'
+import {getCalendarData} from '@/fetch/CalendarList'
 import 'moment/locale/zh-cn';
 
 import './style.less'
@@ -32,6 +33,7 @@ class ScreenBox extends Component {
 
     onChange(date, dateString) {
         this.HandleDate(0, dateString)
+
     }
 
     handleChange(value) {
@@ -43,7 +45,6 @@ class ScreenBox extends Component {
      */
     getHouseList() {
         const result = getHouseListData()
-        const children=[]
         result.then((res) => {
             return res.json()
         }).then(json => {

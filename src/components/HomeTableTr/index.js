@@ -19,11 +19,9 @@ class HomeTableTr extends Component {
 
     getCalendarData() {
         const result = getCalendarData()
-
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             this.setState({
                 calendars: json.data
             })
@@ -32,22 +30,42 @@ class HomeTableTr extends Component {
         })
     }
 
-    render() {
-        var tdsList = ''
-        const {roomList, start_date} = this.props
+    renderRow() {
+        const {calendars} = this.state
+        const {start_date} = this.props
+        if (calendars) {
+            for (let k in calendars) {
+                const bookItem = calendars[k]
+                for (let key in bookItem) {
+                    const num = moment(moment.unix(bookItem[key].sta_time)
+                        .format('YYYY-MM-DD'))
+                        .diff(moment(start_date), 'days')
 
-        const arr = []
-        for (var key in this.state.calendars) {
-            arr.push(key)
+                    const rowID = '.row' + k
+                    const tds = document.querySelector(rowID).getElementsByTagName('td')[num]
+                    tds.className = 'active'
+                    const booked = tds.getElementsByClassName('booked')[0]
+                    bookItem[key].dates > 1 ?
+                        booked.style.width = 94.5 * bookItem[key].dates + 'px'
+                        :
+                        booked.style.width = 93 + 'px'
+
+                    booked.getElementsByClassName('book-name')[0].innerHTML = bookItem[key].name
+                }
+            }
         }
+    }
 
-        const tds = (length, num = '', data='') => {
+    render() {
+        const {roomList} = this.props
+
+        const tds = (length) => {
             let res = []
             for (let i = 0; i < length; i++) {
                 res.push(
-                    <td key={i} className={i === num ? "active" : ''}>
-                        <div className="booked" style={{width: 94.5 * data.dates + 'px'}}>
-                            <p className="book-name">{data.name}</p>
+                    <td key={i}>
+                        <div className="booked">
+                            <p className="book-name"></p>
                         </div>
                     </td>
                 )
@@ -55,26 +73,38 @@ class HomeTableTr extends Component {
             return res
         }
 
+        this.renderRow()
+
         return (
             <tbody>
-            {
+            {/*{
                 roomList ?
                     roomList.map((item, index) => {
-                        if (arr.includes(item.id.toString())) {
-                            const bookItem = this.state.calendars[item.id]
+                        if (arr.includes('1')) {
+                            const bookItem = this.state.calendars['1']
+                            console.log(bookItem)
                             for (let key in bookItem) {
                                 const num = moment(moment.unix(bookItem[key].sta_time)
                                     .format('YYYY-MM-DD'))
                                     .diff(moment(start_date), 'days')
                                 tdsList = tds(50, num, bookItem[key])
                             }
-                        } else {
-                            tdsList = tds(50)
                         }
 
                         return (
                             <tr key={index} pos-y={item.id}>
                                 {tdsList}
+                            </tr>
+                        )
+                    })
+                    : ''
+            }*/}
+            {
+                roomList ?
+                    roomList.map((item, index) => {
+                        return (
+                            <tr key={index} pos-y={item.id} ref={"row" + item.id} className={"row" + item.id}>
+                                {tds(50)}
                             </tr>
                         )
                     })
