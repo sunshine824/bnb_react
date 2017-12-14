@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import HouseItem from '@/components/HouseItem'
-import {getRoomListData} from '@/fetch/RoomList'
 
 import './style.less'
 
@@ -13,24 +13,11 @@ class HouseList extends Component {
     }
 
     componentDidMount() {
-        this.getRoomList()
     }
 
-    getRoomList() {
-        const result = getRoomListData()
-        result.then((res) => {
-            return res.json()
-        }).then(json => {
-            this.setState({
-                roomList: json.data
-            })
-        }).catch(err => {
-            console.log(err)
-        })
-    }
 
     render() {
-        const {roomList} = this.state
+        const {roomList} = this.props
         return (
             <div className="room-list">
                 <ul>
@@ -49,4 +36,10 @@ class HouseList extends Component {
     }
 }
 
-export default HouseList
+function mapStateToProps(state) {
+    return{
+        roomList:state.house_type[0] ? state.house_type[0].roomList : ''
+    }
+}
+
+export default connect(mapStateToProps)(HouseList)

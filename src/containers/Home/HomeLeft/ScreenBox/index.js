@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {DatePicker, Select} from 'antd';
 import moment from 'moment';
-import {update_date} from '@/redux/actions'
+import {update_date,save_house_type} from '@/redux/actions'
 import {getHouseListData} from '@/fetch/HouseList'
+import {getRoomListData} from '@/fetch/RoomList'
 import 'moment/locale/zh-cn';
 
 import './style.less'
@@ -21,8 +22,20 @@ class ScreenBox extends Component {
     }
 
     componentDidMount() {
+        //获取日期横轴数据
         this.HandleDate(1)
+        //获取房型数据
         this.getHouseList()
+        //获取房间数据
+        this.getRoomListData()
+    }
+
+    onChange(date, dateString) {
+        this.HandleDate(0, dateString)
+    }
+
+    handleChange(value) {
+        this.getRoomListData(value)
     }
 
     /**
@@ -39,10 +52,6 @@ class ScreenBox extends Component {
         }).catch(err => {
             console.log(err)
         })
-    }
-
-    onChange(date, dateString) {
-        this.HandleDate(0, dateString)
     }
 
     HandleDate(isDefault, date) {
@@ -74,8 +83,16 @@ class ScreenBox extends Component {
         dispatch(update_date(dataLists))
     }
 
-    handleChange(value) {
-        console.log(value)
+    getRoomListData(value){
+        const {dispatch} = this.props
+        const result = getRoomListData(value)
+        result.then((res) => {
+            return res.json()
+        }).then(json => {
+            dispatch(save_house_type(json.data))
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     render() {
@@ -97,7 +114,9 @@ class ScreenBox extends Component {
                         optionFilterProp="children"
                         onChange={this.handleChange.bind(this)}
                         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        defaultValue=""
                     >
+                        <Option value="">全选</Option>
                         {
                             house_list ?
                                 house_list.map((item, index) => {
@@ -115,5 +134,6 @@ class ScreenBox extends Component {
         )
     }
 }
+
 
 export default connect()(ScreenBox)

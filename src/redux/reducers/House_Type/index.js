@@ -7,7 +7,7 @@ export default function save_house_type(state = initialState, action) {
         case actionTypes.Save_House_TYPE:
             return[
                 {
-                    type_id:action.type_id
+                    roomList:action.roomList
                 }
             ]
         default:

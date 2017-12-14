@@ -17,9 +17,9 @@ export function update_date(date) {
  * @param type_id
  * @returns {{type, type_id: *}}
  */
-export function save_house_type(type_id) {
+export function save_house_type(roomList) {
     return{
         type:actionTypes.Save_House_TYPE,
-        type_id
+        roomList
     }
 }

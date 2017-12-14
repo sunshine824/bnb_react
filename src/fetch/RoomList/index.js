@@ -6,7 +6,7 @@ import {post} from '../post'
  * @param id   房型筛选id
  * @returns {*}
  */
-export function getRoomListData(key='123456',id='') {
+export function getRoomListData(id='',key='123456') {
     const result=post('/api/housess',{
         key:key,
         id:id
