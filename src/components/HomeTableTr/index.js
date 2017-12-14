@@ -41,13 +41,13 @@ class HomeTableTr extends Component {
             arr.push(key)
         }
 
-        const tds = (length, num = '') => {
+        const tds = (length, num = '', data='') => {
             let res = []
             for (let i = 0; i < length; i++) {
                 res.push(
                     <td key={i} className={i === num ? "active" : ''}>
-                        <div className="booked">
-                            <p className="book-name"></p>
+                        <div className="booked" style={{width: 94 * data.dates + 'px'}}>
+                            <p className="book-name">{data.name}</p>
                         </div>
                     </td>
                 )
@@ -66,7 +66,7 @@ class HomeTableTr extends Component {
                                 const num = moment(moment.unix(bookItem[key].sta_time)
                                     .format('YYYY-MM-DD'))
                                     .diff(moment(start_date), 'days')
-                                tdsList = tds(50, num)
+                                tdsList = tds(50, num, bookItem[key])
                             }
                         } else {
                             tdsList = tds(50)
