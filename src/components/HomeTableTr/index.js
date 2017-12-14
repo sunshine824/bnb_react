@@ -46,7 +46,7 @@ class HomeTableTr extends Component {
             for (let i = 0; i < length; i++) {
                 res.push(
                     <td key={i} className={i === num ? "active" : ''}>
-                        <div className="booked" style={{width: 94 * data.dates + 'px'}}>
+                        <div className="booked" style={{width: 94.5 * data.dates + 'px'}}>
                             <p className="book-name">{data.name}</p>
                         </div>
                     </td>
