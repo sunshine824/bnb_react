@@ -1,19 +1,25 @@
 import React, {Component} from 'react'
-import { DatePicker } from 'antd';
+import {DatePicker, Radio} from 'antd';
 
 import './style.less'
 
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
+const RadioGroup = Radio.Group;
 
 class PopupsRight extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
+        this.state={
+            value: 1
+        }
     }
-    onChange(value,dateString){
+
+    onChange(value, dateString) {
         console.log('Formatted Selected Time: ', dateString);
     }
-    render(){
-        return(
+
+    render() {
+        return (
             <div className="content-slide">
                 <p className="title">编辑订单</p>
                 <div className="slide-body">
@@ -28,6 +34,17 @@ class PopupsRight extends Component {
                                 placeholder={['入住日期', '退房日期']}
                                 onChange={this.onChange.bind(this)}
                             />
+                        </div>
+                    </div>
+                    <div className="item">
+                        <p className="item-title">
+                            订单状态
+                        </p>
+                        <div className="check_input">
+                            <RadioGroup onChange={this.onChange.bind(this)} value={this.state.value}>
+                                <Radio value={1}>预订</Radio>
+                                <Radio value={2}>屏蔽</Radio>
+                            </RadioGroup>
                         </div>
                     </div>
                 </div>
