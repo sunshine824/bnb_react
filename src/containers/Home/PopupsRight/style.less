@@ -1,0 +1,47 @@
+.content-slide{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 340px;
+  background-color: #fff;
+  border-left: 1px solid #abadb3;
+  z-index: 100;
+  height: calc(100vh);
+  .title{
+    padding-left: 18px;
+    line-height: 40px;
+    background-color: #e0e2e7;
+    font-size: 15px;
+  }
+  .slide-body{
+    position: absolute;
+    width: 100%;
+    top:40px;
+    bottom: 70px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .item{
+      position: relative;
+      font-size: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #cdced1;
+      .item-title{
+        padding: 0 18px;
+        line-height: 45px;
+        height: 45px;
+        span{
+          padding-left: 30px;
+        }
+      }
+      .check_input{
+        padding: 0 18px;
+        .ant-calendar-picker{
+          width: 100%;
+          .ant-calendar-range-picker-input{
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}

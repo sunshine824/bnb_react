@@ -5,9 +5,11 @@ const initialState = []
 export default function update_date(state = initialState, action) {
     switch (action.type) {
         case actionTypes.UPDATE_DATE:
+            //console.log(action)
             return [
                 {
-                    dateLists: action.date
+                    calendars: action.data.calendars,
+                    dateLists: action.data.dateLists
                 }
             ]
         default:

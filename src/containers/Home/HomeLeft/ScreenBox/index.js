@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {DatePicker, Select } from 'antd';
+import {bindActionCreators} from 'redux'
+import {DatePicker, Select} from 'antd';
 import moment from 'moment';
-import {update_date,save_house_type} from '@/redux/actions'
+import {update_date, save_house_type} from '@/redux/actions'
 import {getHouseListData} from '@/fetch/HouseList'
 import {getRoomListData} from '@/fetch/RoomList'
 import {getCalendarData} from '@/fetch/CalendarList'
@@ -13,18 +14,23 @@ import './style.less'
 moment.locale('zh-cn');
 
 const Option = Select.Option;
+const calendar = {}
 
 class ScreenBox extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            house_list: []
+            house_list: [],
+            house_id: '',
+            sta_time: '',
+            calendar: {}
         }
     }
 
     componentDidMount() {
-        //获取日期横轴数据
         this.HandleDate(1)
+        //获取日历数据
+        this.getCalendarData(this.state.house_id)
         //获取房型数据
         this.getHouseList()
         //获取房间数据
@@ -32,12 +38,44 @@ class ScreenBox extends Component {
     }
 
     onChange(date, dateString) {
+        this.setState({
+            sta_time: moment(dateString).format("X")
+        })
         this.HandleDate(0, dateString)
-
+        this.getCalendarData(this.state.house_id, moment(dateString).format("X"))
     }
 
+    /**
+     * 获取日历数据
+     * @param date 开始时间
+     * @param id  房型id
+     */
+    getCalendarData(id, date) {
+        const {actions} = this.props
+        const result = getCalendarData(id, date)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            calendar.calendars = json.data
+            this.setState({
+                calendar: calendar
+            })
+            actions.update_date(this.state.calendar)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    /**
+     * 筛选类型
+     * @param value
+     */
     handleChange(value) {
+        this.setState({
+            house_id: value
+        })
         this.getRoomListData(value)
+        this.getCalendarData(value, this.state.sta_time)
     }
 
     /**
@@ -56,43 +94,50 @@ class ScreenBox extends Component {
         })
     }
 
+    /**
+     * 处理日期
+     * @param isDefault
+     * @param date
+     * @constructor
+     */
     HandleDate(isDefault, date) {
-        const {dispatch} = this.props
-        const dataLists = []
+        const dateLists = []
 
         if (isDefault) {
             //前三天日期
             for (let i = 3; i >= 1; i--) {
-                dataLists.push(moment().subtract(i, 'days').format('YYYY-MM-DD dd'))
+                dateLists.push(moment().subtract(i, 'days').format('YYYY-MM-DD dd'))
             }
             //今日日期
-            dataLists.push(moment().format('YYYY-MM-DD dd'))
+            dateLists.push(moment().format('YYYY-MM-DD dd'))
             //往后49天
             for (let i = 1; i <= 46; i++) {
-                dataLists.push(moment().add(i, 'days').format('YYYY-MM-DD dd'))
+                dateLists.push(moment().add(i, 'days').format('YYYY-MM-DD dd'))
             }
         } else {
             if (!date) return
             //今日日期
-            dataLists.push(moment(date).format('YYYY-MM-DD dd'))
+            dateLists.push(moment(date).format('YYYY-MM-DD dd'))
             //往后49天
             for (let i = 1; i <= 49; i++) {
-                dataLists.push(moment(date).add(i, 'days').format('YYYY-MM-DD dd'))
+                dateLists.push(moment(date).add(i, 'days').format('YYYY-MM-DD dd'))
             }
         }
 
-        //修改dateLists
-        dispatch(update_date(dataLists))
+        calendar.dateLists = dateLists
     }
 
-    getRoomListData(value){
-        const {dispatch} = this.props
+    /**
+     * 获取房间列表
+     * @param value
+     */
+    getRoomListData(value) {
+        const {actions} = this.props
         const result = getRoomListData(value)
         result.then((res) => {
             return res.json()
         }).then(json => {
-
-            dispatch(save_house_type(json.data))
+            actions.save_house_type(json.data)
         }).catch(err => {
             console.log(err)
         })
@@ -138,5 +183,19 @@ class ScreenBox extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        states: state
+    }
+}
 
-export default connect()(ScreenBox)
+function mapActionsToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            update_date,
+            save_house_type
+        }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(ScreenBox)

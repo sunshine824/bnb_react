@@ -5,10 +5,10 @@ import * as actionTypes from '../../config/actionType'
  * @param date
  * @returns {{type, date: *}}
  */
-export function update_date(date) {
+export function update_date(data) {
     return {
         type:actionTypes.UPDATE_DATE,
-        date
+        data
     }
 }
 
