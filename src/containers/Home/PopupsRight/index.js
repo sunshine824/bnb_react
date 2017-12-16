@@ -14,39 +14,11 @@ class PopupsRight extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            order_value: 1,
-            color_value: 1,
             slide_open: false
         }
     }
 
-    onChangeDate(value, dateString) {
-        console.log('Formatted Selected Time: ', dateString);
-    }
 
-    onChangeRadio(mold, e) {
-        console.log(mold)
-        console.log('radio checked', e.target.value);
-        if (mold === 'order') {
-            this.setState({
-                order_value: e.target.value,
-            });
-        } else if (mold === 'color') {
-            this.setState({
-                color_value: e.target.value,
-            });
-        }
-
-    }
-
-    handleChange(value) {
-        console.log(`selected ${value}`);
-    }
-
-    onBlurInput(mold, e) {
-        console.log(mold)
-        console.log(e.target.value)
-    }
 
     slideOpen() {
         this.setState({
@@ -54,9 +26,6 @@ class PopupsRight extends Component {
         })
     }
 
-    onSubmit() {
-        console.log(1)
-    }
 
     handleSubmit(e) {
         e.preventDefault();
@@ -64,7 +33,8 @@ class PopupsRight extends Component {
             if (!err) {
                 const rangeValue = fieldsValue['checkIn'];
                 const values = {
-                    'checkIn': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')],
+                    ...fieldsValue,
+                    'checkIn': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')]
                 };
                 console.log('Received values of form: ', values);
             }
@@ -105,11 +75,10 @@ class PopupsRight extends Component {
                             </p>
                             <div className="check_input">
                                 <FormItem>
-                                    {getFieldDecorator('status',{
-                                        rules:[{required:true, message:'请选择状态'}]
+                                    {getFieldDecorator('status', {
+                                        rules: [{required: true, message: '请选择状态'}]
                                     })(
-                                        <RadioGroup onChange={this.onChangeRadio.bind(this, 'order')}
-                                                    value={this.state.order_value}>
+                                        <RadioGroup>
                                             <Radio value={1}>预订</Radio>
                                             <Radio value={2}>屏蔽</Radio>
                                         </RadioGroup>
@@ -122,18 +91,23 @@ class PopupsRight extends Component {
                                 渠道来源
                             </p>
                             <div className="check_input">
-                                <Select
-                                    showSearch
-                                    style={{width: '100%'}}
-                                    placeholder="选择渠道来源"
-                                    optionFilterProp="children"
-                                    onChange={this.handleChange.bind(this)}
-                                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                                >
-                                    <Option value="jack">58同城</Option>
-                                    <Option value="lucy">优客逸家</Option>
-                                    <Option value="tom">居房源</Option>
-                                </Select>
+                                <FormItem>
+                                    {getFieldDecorator('source_id',{
+                                        rules: [{required: true, message: '请选择渠道来源'}]
+                                    })(
+                                        <Select
+                                            showSearch
+                                            style={{width: '100%'}}
+                                            placeholder="选择渠道来源"
+                                            optionFilterProp="children"
+                                            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                        >
+                                            <Option value="jack">58同城</Option>
+                                            <Option value="lucy">优客逸家</Option>
+                                            <Option value="tom">居房源</Option>
+                                        </Select>
+                                    )}
+                                </FormItem>
                             </div>
                         </div>
                         <div className="item">
@@ -141,7 +115,13 @@ class PopupsRight extends Component {
                                 订单收入
                             </p>
                             <div className="check_input">
-                                <Input addonBefore="￥" placeholder="0" onBlur={this.onBlurInput.bind(this, 'mold')}/>
+                                <FormItem>
+                                    {getFieldDecorator('revenue',{
+                                        rules: [{required: true, message: '请输入订单收入'}]
+                                    })(
+                                        <Input addonBefore="￥" placeholder="0"/>
+                                    )}
+                                </FormItem>
                             </div>
                         </div>
 
@@ -152,7 +132,13 @@ class PopupsRight extends Component {
                                 姓名
                             </p>
                             <div className="check_input">
-                                <Input placeholder="入住人姓名" onBlur={this.onBlurInput.bind(this, 'name')}/>
+                                <FormItem>
+                                    {getFieldDecorator('name',{
+                                        rules: [{required: true, message: '请输入入住人姓名'}]
+                                    })(
+                                        <Input placeholder="入住人姓名"/>
+                                    )}
+                                </FormItem>
                             </div>
                         </div>
                         <div className="item">
@@ -160,7 +146,13 @@ class PopupsRight extends Component {
                                 电话
                             </p>
                             <div className="check_input">
-                                <Input placeholder="入住人电话" onBlur={this.onBlurInput.bind(this, 'phone')}/>
+                                <FormItem>
+                                    {getFieldDecorator('phone',{
+                                        rules: [{required: true, message: '请输入入住人电话'}]
+                                    })(
+                                        <Input placeholder="入住人电话"/>
+                                    )}
+                                </FormItem>
                             </div>
                         </div>
                         <div className="item">
@@ -168,7 +160,13 @@ class PopupsRight extends Component {
                                 微信号
                             </p>
                             <div className="check_input">
-                                <Input placeholder="入住人微信号" onBlur={this.onBlurInput.bind(this, 'weChat')}/>
+                                <FormItem>
+                                    {getFieldDecorator('wx',{
+                                        rules: [{required: true, message: '请输入入住人微信号'}]
+                                    })(
+                                        <Input placeholder="入住人微信号"/>
+                                    )}
+                                </FormItem>
                             </div>
                         </div>
 
@@ -176,20 +174,32 @@ class PopupsRight extends Component {
                         <p className="group-title">订单备注</p>
                         <div className="item">
                             <div className="check_input">
-                                <TextArea placeholder="备注信息" rows={4} onBlur={this.onBlurInput.bind(this, 'remark')}/>
+                                <FormItem>
+                                    {getFieldDecorator('remark',{
+                                        rules: [{required: true, message: '请填写备注信息'}]
+                                    })(
+                                        <TextArea placeholder="请填写备注信息" rows={4}/>
+                                    )}
+                                </FormItem>
                             </div>
                         </div>
+
 
                         <p className="group-title">颜色选择</p>
                         <div className="item">
                             <div className="check_input">
-                                <RadioGroup onChange={this.onChangeRadio.bind(this, 'color')}
-                                            value={this.state.color_value}>
-                                    <Radio value={1}></Radio>
-                                    <Radio value={2}></Radio>
-                                    <Radio value={3}></Radio>
-                                    <Radio value={4}></Radio>
-                                </RadioGroup>
+                                <FormItem>
+                                    {getFieldDecorator('color_id',{
+                                        rules: [{required: true, message: '请选择提示颜色'}]
+                                    })(
+                                        <RadioGroup>
+                                            <Radio value={1}></Radio>
+                                            <Radio value={2}></Radio>
+                                            <Radio value={3}></Radio>
+                                            <Radio value={4}></Radio>
+                                        </RadioGroup>
+                                    )}
+                                </FormItem>
                             </div>
                         </div>
 
