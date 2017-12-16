@@ -1,40 +1,59 @@
 .content-slide{
   position: absolute;
-  right: 0;
+  right: -339px;
   bottom: 0;
   width: 340px;
   background-color: #fff;
   border-left: 1px solid #abadb3;
   z-index: 100;
   height: calc(100vh);
+  transition: right 1s;
+  -moz-transition: right 1s;
+  -webkit-transition: right 1s;
+  -o-transition: right 1s;
+  &.active{
+    right:0;
+  }
   .title{
     padding-left: 18px;
     line-height: 40px;
     background-color: #e0e2e7;
-    font-size: 15px;
+    font-size: 16px;
+    border-bottom: 1px solid #c3c2c2;
   }
   .slide-body{
     position: absolute;
     width: 100%;
-    top:40px;
-    bottom: 70px;
+    top: 46px;
+    bottom: 130px;
     overflow-x: hidden;
     overflow-y: auto;
+    .group-title{
+      font-size: 15px;
+      border-bottom: 1px solid #cdced1;
+      line-height: 40px;
+      color: #666;
+      padding-left: 18px;
+      margin-top: 20px;
+      &:first-child{
+        margin-top: 0;
+      }
+    }
     .item{
       position: relative;
       font-size: 14px;
       padding-bottom: 10px;
-      border-bottom: 1px solid #cdced1;
+      border-bottom: 1px dashed #cdced1;
       .item-title{
         padding: 0 18px;
-        line-height: 45px;
-        height: 45px;
+        margin-top: 15px;
         span{
           padding-left: 30px;
         }
       }
       .check_input{
         padding: 0 18px;
+        margin-top: 15px;
         .ant-calendar-picker{
           width: 100%;
           .ant-calendar-range-picker-input{
@@ -43,5 +62,37 @@
         }
       }
     }
+  }
+  .btn-footer{
+    position: absolute;
+    width: 100%;
+    bottom: 49px;
+    left: 0;
+    padding: 14px 30px;
+    border-top: 1px solid #c3c2c2;
+    background-color: #e0e2e7;
+    overflow-y: hidden;
+    box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+  }
+  .slide-btn{
+    position: absolute;
+    left: -19px;
+    top: 50%;
+    width: 18px;
+    height: 88px;
+    padding-left: 1px;
+    margin-top: -45px;
+    background-color: #f1f2f5;
+    border: 1px solid #c0c4ca;
+    border-right: 0;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
   }
 }
