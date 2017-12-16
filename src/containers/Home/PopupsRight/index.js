@@ -60,8 +60,12 @@ class PopupsRight extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
+                const rangeValue = fieldsValue['checkIn'];
+                const values = {
+                    'checkIn': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')],
+                };
                 console.log('Received values of form: ', values);
             }
         });
@@ -90,7 +94,6 @@ class PopupsRight extends Component {
                                         <RangePicker
                                             format="YYYY-MM-DD"
                                             placeholder={['入住日期', '退房日期']}
-                                            onChange={this.onChangeDate.bind(this)}
                                         />
                                     )}
                                 </FormItem>
