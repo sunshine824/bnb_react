@@ -22,11 +22,11 @@ class HeadNav extends Component {
                 <li className={path()==='/room-manage' ? 'active' : ''}>
                     <Link to="/room-manage">房源管理</Link>
                 </li>
-                <li>
-                    <Link to="">订单管理</Link>
+                <li className={path()==='/order-manage' ? 'active' : ''}>
+                    <Link to="/order-manage">订单管理</Link>
                 </li>
-                <li>
-                    <Link to="">合作收益</Link>
+                <li className={path()==='/income' ? 'active' : ''}>
+                    <Link to="/income">合作收益</Link>
                 </li>
             </ul>
         )
