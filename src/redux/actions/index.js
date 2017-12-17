@@ -7,7 +7,7 @@ import * as actionTypes from '../../config/actionType'
  */
 export function update_date(data) {
     return {
-        type:actionTypes.UPDATE_DATE,
+        type: actionTypes.UPDATE_DATE,
         data
     }
 }
@@ -18,8 +18,20 @@ export function update_date(data) {
  * @returns {{type, type_id: *}}
  */
 export function save_house_type(roomList) {
-    return{
-        type:actionTypes.Save_House_TYPE,
+    return {
+        type: actionTypes.Save_House_TYPE,
         roomList
+    }
+}
+
+/**
+ * 保存当前路由
+ * @param path
+ * @returns {{type, path: *}}
+ */
+export function save_path(path) {
+    return {
+        type: actionTypes.Save_Path,
+        path
     }
 }

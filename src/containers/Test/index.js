@@ -4,9 +4,6 @@ import DateList from './DateList'
 import {getHouseListData} from '@/fetch/HouseList'
 
 export default class Test extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         this.getHouseList()

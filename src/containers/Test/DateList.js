@@ -21,7 +21,7 @@ class DateList extends Component {
     }
 
     render() {
-        const {dateLists,dispatch} = this.props
+        const {dateLists} = this.props
         return (
             <ul>
                 {
