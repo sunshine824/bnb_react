@@ -9,6 +9,46 @@ class RoomList extends Component{
                 <div className="callout-head">
                     <h1>房间管理</h1>
                 </div>
+                <div className="rooms-list">
+                    <ul>
+                        <li>
+                            <div className="room-head">
+                                <p>荣华</p>
+                                <em></em>
+                            </div>
+                            <div className="room-name">
+                                <p>观景台</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div className="room-head">
+                                <p>荣华</p>
+                                <em></em>
+                            </div>
+                            <div className="room-name">
+                                <p>观景台</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div className="room-head">
+                                <p>荣华</p>
+                                <em></em>
+                            </div>
+                            <div className="room-name">
+                                <p>观景台</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div className="room-head">
+                                <p>荣华</p>
+                                <em></em>
+                            </div>
+                            <div className="room-name">
+                                <p>观景台</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         )
     }

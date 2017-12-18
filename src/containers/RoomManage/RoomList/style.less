@@ -1,3 +1,55 @@
 .room-manage{
   margin-top: 40px;
+  .rooms-list{
+    margin-top: 20px;
+    ul{
+      li{
+        border: solid 1px #CCC;
+        text-align: center;
+        width: 140px;
+        float: left;
+        margin-right: 26px;
+        margin-bottom: 16px;
+        color: #333;
+        font-size: 16px;
+        cursor: pointer;
+        .room-head{
+          background-color: #F4F4F4;
+          height: 57px;
+          border-bottom: solid 1px #ccc;
+          p{
+            position: relative;
+            top: 20px;
+          }
+          em:before{
+            content: ' ';
+            border: solid transparent;
+            border-bottom-color: #CCC;
+            position: relative;
+            top: 6px;
+            left: 7px;
+            border-width: 8px;
+          }
+          em:after{
+            content: ' ';
+            border: solid transparent;
+            border-bottom-color: #fff;
+            position: relative;
+            top: 8px;
+            left: -8px;
+            border-width: 7px;
+          }
+        }
+        .room-name{
+          height: 36px;
+          background-color: #fff;
+          p{
+            position: relative;
+            top: 10px;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
 }

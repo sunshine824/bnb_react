@@ -25,7 +25,6 @@ class HomeTableTr extends Component {
     }
 
 
-
     render() {
         const {roomList, start_date, calendars} = this.props
 
@@ -45,16 +44,17 @@ class HomeTableTr extends Component {
         }
 
         const renderRow = () => {
-
+            if (calendars==='') {
+                return
+            }
             for (let k in calendars) {
                 const bookItem = calendars[k]
                 for (let key in bookItem) {
                     const num = moment(moment.unix(bookItem[key].sta_time)
                         .format('YYYY-MM-DD'))
                         .diff(moment(start_date), 'days')
-
                     const rowID = '.row' + k
-                    if(document.querySelector(rowID)){
+                    if (document.querySelector(rowID)) {
                         const tds = document.querySelector(rowID).getElementsByTagName('td')[num]
                         tds.className = 'active'
                         const booked = tds.getElementsByClassName('booked')[0]
@@ -90,6 +90,7 @@ class HomeTableTr extends Component {
 }
 
 function mapStateToProps(state) {
+    //console.log(state.update_date[0] ? state.update_date[0].calendars : '')
     return {
         roomList: state.house_type[0] ? state.house_type[0].roomList : '',
         start_date: state.update_date[0] ? state.update_date[0].dateLists[0].slice(0, -2) : '',

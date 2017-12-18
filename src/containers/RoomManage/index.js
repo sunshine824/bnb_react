@@ -4,21 +4,25 @@ import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
 import HouseList from './HouseList'
 import RoomList from './RoomList'
+import ModelHouse from './Model/ModelHouse'
+import ModelRoom from './Model/ModelRoom'
 
 import './style.less'
 
-class RoomManage extends Component{
+class RoomManage extends Component {
 
     componentDidMount() {
         const {match, actions} = this.props
         actions.save_path(match.path)
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div className="manage">
                 <HouseList/>
                 <RoomList/>
+                <ModelHouse/>
+                <ModelRoom/>
             </div>
         )
     }

@@ -31,10 +31,10 @@ class PopupsRight extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
-                const rangeValue = fieldsValue['checkIn'];
+                const rangeValue = fieldsValue['time'];
                 const values = {
                     ...fieldsValue,
-                    'checkIn': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')]
+                    'time': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')]
                 };
                 console.log('Received values of form: ', values);
             }
@@ -58,7 +58,7 @@ class PopupsRight extends Component {
                             </p>
                             <div className="check_input">
                                 <FormItem>
-                                    {getFieldDecorator('checkIn', {
+                                    {getFieldDecorator('time', {
                                         rules: [{required: true, message: '请选择入住日期'}]
                                     })(
                                         <RangePicker
