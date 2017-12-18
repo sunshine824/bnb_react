@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
 
+import './style.less'
+
 class OrderManage extends Component{
 
     componentDidMount() {
@@ -12,7 +14,9 @@ class OrderManage extends Component{
 
     render(){
         return(
-            <div>订单管理</div>
+            <div className="order-manage">
+
+            </div>
         )
     }
 }

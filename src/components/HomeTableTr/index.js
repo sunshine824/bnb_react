@@ -54,7 +54,7 @@ class HomeTableTr extends Component {
                         .diff(moment(start_date), 'days')
 
                     const rowID = '.row' + k
-                    setTimeout(() => {
+                    if(document.querySelector(rowID)){
                         const tds = document.querySelector(rowID).getElementsByTagName('td')[num]
                         tds.className = 'active'
                         const booked = tds.getElementsByClassName('booked')[0]
@@ -64,7 +64,7 @@ class HomeTableTr extends Component {
                             booked.style.width = 93 + 'px'
 
                         booked.getElementsByClassName('book-name')[0].innerHTML = bookItem[key].name
-                    }, 300)
+                    }
                 }
             }
         }

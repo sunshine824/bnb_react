@@ -2,6 +2,10 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
+import HouseList from './HouseList'
+import RoomList from './RoomList'
+
+import './style.less'
 
 class RoomManage extends Component{
 
@@ -12,7 +16,10 @@ class RoomManage extends Component{
 
     render(){
         return(
-            <div>房源管理</div>
+            <div className="manage">
+                <HouseList/>
+                <RoomList/>
+            </div>
         )
     }
 }
