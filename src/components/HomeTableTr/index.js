@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import moment from 'moment';
 
 import './style.less'
@@ -7,13 +8,13 @@ import './style.less'
 class HomeTableTr extends Component {
     constructor(props) {
         super(props)
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             calendars: []
         }
     }
 
     componentDidMount() {
-
     }
 
     handleMouseOver(e) {
@@ -27,7 +28,7 @@ class HomeTableTr extends Component {
 
     render() {
         const {roomList, start_date, calendars} = this.props
-
+        //console.log(calendars)
         const tds = (length) => {
             let res = []
             for (let i = 0; i < length; i++) {
@@ -44,9 +45,7 @@ class HomeTableTr extends Component {
         }
 
         const renderRow = () => {
-            if (calendars==='') {
-                return
-            }
+
             for (let k in calendars) {
                 const bookItem = calendars[k]
                 for (let key in bookItem) {
@@ -68,8 +67,8 @@ class HomeTableTr extends Component {
                 }
             }
         }
+         renderRow()
 
-        renderRow()
 
         return (
             <tbody>

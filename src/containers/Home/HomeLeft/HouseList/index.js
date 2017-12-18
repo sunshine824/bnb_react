@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import HouseItem from '@/components/HouseItem'
 
 import './style.less'
@@ -7,6 +8,7 @@ import './style.less'
 class HouseList extends Component {
     constructor(props) {
         super(props)
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             roomList: []
         }

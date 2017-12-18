@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {DatePicker, Form, Radio, Select, Input, Button} from 'antd';
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import './style.less'
 
@@ -13,6 +14,7 @@ const {TextArea} = Input;
 class PopupsRight extends Component {
     constructor(props) {
         super(props)
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             slide_open: false
         }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {bindActionCreators} from 'redux'
 import {DatePicker, Select} from 'antd';
 import moment from 'moment';
@@ -19,6 +20,7 @@ const calendar = {}
 class ScreenBox extends Component {
     constructor(props) {
         super(props)
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             house_list: [],
             house_id: '',

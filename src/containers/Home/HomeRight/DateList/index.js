@@ -1,10 +1,15 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import DateLis from '@/components/DateLis'
 
 import './style.less'
 
 class DateList extends Component {
+    constructor(props) {
+        super(props)
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+    }
     render() {
         const {dateLists} = this.props
 

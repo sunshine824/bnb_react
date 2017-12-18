@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import HomeTableTr from '@/components/HomeTableTr'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import HoverBox from '@/components/HoverBox'
 
 import './style.less'
@@ -7,6 +8,7 @@ import './style.less'
 class TableList extends Component {
     constructor(props) {
         super(props)
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             left: 0,
             top: -900,
