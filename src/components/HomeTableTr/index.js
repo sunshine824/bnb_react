@@ -45,7 +45,6 @@ class HomeTableTr extends Component {
         }
 
         const renderRow = () => {
-
             for (let k in calendars) {
                 const bookItem = calendars[k]
                 for (let key in bookItem) {
@@ -67,7 +66,7 @@ class HomeTableTr extends Component {
                 }
             }
         }
-         renderRow()
+        renderRow()
 
 
         return (
