@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {Modal, Form, Input, Icon, Button} from 'antd';
 
 import './style.less'
@@ -10,6 +11,7 @@ let uuid = 0;
 class ModelHouse extends Component {
     constructor(props) {
         super(props)
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             visible: false
         }
