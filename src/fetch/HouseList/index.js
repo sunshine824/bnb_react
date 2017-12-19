@@ -12,3 +12,18 @@ export function getHouseListData(key='123456') {
 
     return result
 }
+
+/**
+ * 删除房型
+ * @param id  房型id
+ * @param key
+ * @returns {*}
+ */
+export function deleteHouse(id,key='123456') {
+    const result=post('/api/detype',{
+        id:id,
+        key:key
+    })
+
+    return result
+}

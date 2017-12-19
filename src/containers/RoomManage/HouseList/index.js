@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Button} from 'antd';
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {getHouseListData} from '@/fetch/HouseList'
+import {getHouseListData, deleteHouse} from '@/fetch/HouseList'
 import Loading from '@/components/Loading'
 
 import './style.less'
@@ -32,6 +32,22 @@ class HouseManage extends Component {
         })
     }
 
+    _deleteHouse(id) {
+        const result = deleteHouse(id)
+        const {houseList} = this.state
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            houseList.data.map((item, index) => {
+                if (item.id === id) {
+
+                }
+            })
+        }).catch(err => {
+            console.log(err.response)
+        })
+    }
+
     render() {
         const {houseList} = this.state
         return (
@@ -56,15 +72,17 @@ class HouseManage extends Component {
                             houseList ?
                                 !houseList.status ?
                                     houseList.data.map((item, index) => {
-                                        return(
+                                        return (
                                             <tr key={index}>
                                                 <td>{item.name}</td>
                                                 <td>{item.abbre}</td>
                                                 <td>{item.num}</td>
                                                 <td>{item.houses}</td>
                                                 <td>
-                                                    <Button type="primary" size="small" style={{marginRight: '10px'}}>编辑</Button>
-                                                    <Button size="small">删除</Button>
+                                                    <Button type="primary" size="small"
+                                                            style={{marginRight: '10px'}}>编辑</Button>
+                                                    <Button size="small"
+                                                            onClick={this._deleteHouse.bind(this, item.id)}>删除</Button>
                                                 </td>
                                             </tr>
                                         )
