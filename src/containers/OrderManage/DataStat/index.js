@@ -24,7 +24,7 @@ class DataStat extends Component {
             return res.json()
         }).then(json => {
             this.setState({
-                stat_data: json.data
+                stat_data: json
             })
         }).catch(err => {
             console.log(err)
@@ -34,14 +34,33 @@ class DataStat extends Component {
     render() {
         const {stat_data} = this.state
 
+        const renderLi = () => {
+            const res=[]
+            for(let k in stat_data.data){
+                res.push(
+                    <li>
+                        <div className="box">
+                            <p className="data-title">{stat_data.data[k].title}</p>
+                            <strong>{stat_data.data[k].content}人</strong>
+                            <Button href="#" type="primary"
+                                    className={stat_data.data[k].status === 1 ? '' : 'hide'}>查看/办理</Button>
+                        </div>
+                    </li>
+                )
+            }
+            return res
+        }
+
         return (
             <div className="data-stat">
                 <ul>
-                    <li>
-                        <p className="data-title">今日入住</p>
-                        <strong>8人</strong>
-                        <Button href="#" type="primary">查看/办理</Button>
-                    </li>
+                    {
+                        stat_data ?
+                            !stat_data.status ?
+                                renderLi()
+                                : '暂无统计'
+                            : ''
+                    }
                 </ul>
             </div>
         )

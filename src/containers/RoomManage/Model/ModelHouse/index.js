@@ -18,6 +18,10 @@ class ModelHouse extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        //console.log(nextProps)
+    }
+
     handleCancel = (e) => {
         this.props.onChangeHouse(false)
     }
@@ -77,7 +81,9 @@ class ModelHouse extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
+            if (!json.status) {
+                this.props.onChangeHouse(false)
+            }
         }).catch(err => {
             console.log(err)
         })
@@ -118,11 +124,19 @@ class ModelHouse extends Component {
         getFieldDecorator('keys', {initialValue: arr});
         let keys = getFieldValue('keys');
 
+        const decorator = (index) => {
+            if(mold==='edit'){
+                return `houses[${index}].${houseInfo.data.houses[index] ? houseInfo.data.houses[index].id : 0}`
+            }else {
+                return `houses[${index}]`
+            }
+        }
+
         const formItems = keys.map((k, index) => {
             return (
                 <FormItem key={k}>
                     <div className="room-item">
-                        {getFieldDecorator(`houses[${index}].${houseInfo.data.houses[index] ? houseInfo.data.houses[index].id : 0}`, {
+                        {getFieldDecorator(decorator(index), {
                             initialValue: mold === 'edit' ? houseInfo.data.houses[index] ? houseInfo.data.houses[index].num : '' : '',
                             rules: [{
                                 required: true,
