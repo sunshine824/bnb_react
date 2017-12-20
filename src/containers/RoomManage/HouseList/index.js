@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button} from 'antd';
+import {Button, message} from 'antd';
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {getHouseListData, deleteHouse} from '@/fetch/HouseList'
 import Loading from '@/components/Loading'
@@ -38,29 +38,33 @@ class HouseManage extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            houseList.data.map((item, index) => {
-                if (item.id === id) {
-                    houseList.data.splice(index, 1)
-                    this.setState({
-                        houseList: {
-                            data: houseList.data,
-                            interpret: houseList.interpret,
-                            status: houseList.status
-                        }
-                    })
-                }
-            })
+            if (!json.status) {
+                houseList.data.map((item, index) => {
+                    if (item.id === id) {
+                        houseList.data.splice(index, 1)
+                        this.setState({
+                            houseList: {
+                                data: houseList.data,
+                                interpret: houseList.interpret,
+                                status: houseList.status
+                            }
+                        })
+                    }
+                })
+            } else {
+                message.warning(json.interpret);
+            }
         }).catch(err => {
             console.log(err.response)
         })
     }
 
     addHouse(mold) {
-        this.props.onChangeHouse(true,mold)
+        this.props.onChangeHouse(true, mold)
     }
 
-    editHouse(mold,id){
-        this.props.onChangeHouse(true,mold,id)
+    editHouse(mold, id) {
+        this.props.onChangeHouse(true, mold, id)
     }
 
     render() {
@@ -70,7 +74,7 @@ class HouseManage extends Component {
                 <div className="callout-head">
                     <h1>房型管理</h1>
                     <Button icon='plus' type="primary" className='add-btn'
-                            onClick={this.addHouse.bind(this,'add')}>添加房型</Button>
+                            onClick={this.addHouse.bind(this, 'add')}>添加房型</Button>
                 </div>
                 <div className="house-type">
                     <table>
@@ -96,7 +100,8 @@ class HouseManage extends Component {
                                                 <td>{item.houses}</td>
                                                 <td>
                                                     <Button type="primary" size="small"
-                                                            style={{marginRight: '10px'}} onClick={this.editHouse.bind(this,'edit',item.id)}>编辑</Button>
+                                                            style={{marginRight: '10px'}}
+                                                            onClick={this.editHouse.bind(this, 'edit', item.id)}>编辑</Button>
                                                     <Button size="small"
                                                             onClick={this._deleteHouse.bind(this, item.id)}>删除</Button>
                                                 </td>

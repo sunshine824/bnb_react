@@ -12,6 +12,7 @@ function obj2params(obj) {
     var item;
     for (item in obj) {
         result += '&' + item + '=' + encodeURIComponent(obj[item]);
+        console.log(encodeURIComponent(obj[item]))
     }
 
     if (result) {

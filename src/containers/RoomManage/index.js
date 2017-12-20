@@ -7,6 +7,7 @@ import HouseList from './HouseList'
 import RoomList from './RoomList'
 import ModelHouse from './Model/ModelHouse'
 import ModelRoom from './Model/ModelRoom'
+import {editHouseInfo} from '@/fetch/HouseList'
 
 import './style.less'
 
@@ -16,8 +17,9 @@ class RoomManage extends Component {
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             houseVisible: false,
-            mold:'add',
-            id:'',
+            mold: 'add',
+            id: '',
+            houseInfo: ''
         }
     }
 
@@ -26,11 +28,28 @@ class RoomManage extends Component {
         actions.save_path(match.path)
     }
 
-    onChangeHouse(visible,mold,id) {
+    onChangeHouse(visible, mold, id) {
         this.setState({
             houseVisible: visible,
-            mold:mold,
-            id:id
+            mold: mold,
+            id: id
+        }, () => {
+            if (this.state.id) {
+                this.getHouseInfo()
+            }
+        })
+    }
+
+    getHouseInfo() {
+        const result = editHouseInfo(this.state.id)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            this.setState({
+                houseInfo: json
+            })
+        }).catch(err => {
+            console.log(err)
         })
     }
 
