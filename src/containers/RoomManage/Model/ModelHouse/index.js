@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {Modal, Form, Input, Icon, Button} from 'antd';
+import {addHouse, editHouseInfo} from '@/fetch/HouseList'
 
 import './style.less'
 
@@ -17,26 +18,47 @@ class ModelHouse extends Component {
         }
     }
 
-    handleOk = (e) => {
-        this.setState({
-            visible: false,
-        });
+    componentDidUpdate() {
+        if (this.props.mold === 'edit') {
+            this.getHouseInfo()
+        }
     }
 
     handleCancel = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
+        this.props.onChangeHouse(false)
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                if (this.props.mold === 'add') {
+                    const result = addHouse(values)
+                    result.then(res => {
+                        return res.json()
+                    }).then(json => {
+                        if (!json.status) {
+                            this.props.onChangeHouse(false)
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                } else {
+
+                }
             }
         });
+    }
+
+    getHouseInfo() {
+        const result = editHouseInfo(this.props.id)
+        result.then(res=>{
+            return res.json()
+        }).then(json=>{
+            console.log(json)
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 
     remove(k) {
@@ -58,6 +80,7 @@ class ModelHouse extends Component {
     }
 
     render() {
+        const {houseVisible, mold} = this.props
         const {getFieldDecorator, getFieldValue} = this.props.form;
 
         getFieldDecorator('keys', {initialValue: []});
@@ -67,19 +90,19 @@ class ModelHouse extends Component {
             return (
                 <FormItem key={k}>
                     <div className="room-item">
-                        {getFieldDecorator(`names[${k}]`,{
-                            rules:[{
+                        {getFieldDecorator(`num[${k}]`, {
+                            rules: [{
                                 required: true,
-                                message:'请输入房间号'
+                                message: '请输入房间号'
                             }]
                         })(
-                            <Input size="large" maxLength={4} placeholder="房间号"/>
+                            <Input size="large" placeholder="房间号"/>
                         )}
                         <p className="icon">
                             <Icon
                                 className="delete"
                                 type="minus-circle"
-                                onClick={this.remove.bind(this,k)}
+                                onClick={this.remove.bind(this, k)}
                             />
                         </p>
                     </div>
@@ -90,9 +113,8 @@ class ModelHouse extends Component {
 
         return (
             <Modal
-                title="编辑房型"
-                visible={this.state.visible}
-                onOk={this.handleOk.bind(this)}
+                title={mold === 'add' ? '添加房型' : '编辑房型'}
+                visible={houseVisible}
                 onCancel={this.handleCancel.bind(this)}
                 footer={null}
             >
@@ -103,10 +125,10 @@ class ModelHouse extends Component {
                         </p>
                         <div className="check-input">
                             <FormItem>
-                                {getFieldDecorator('name',{
-                                    rules:[{
+                                {getFieldDecorator('name', {
+                                    rules: [{
                                         required: true,
-                                        message:'请输入房间名称'
+                                        message: '请输入房间名称'
                                     }]
                                 })(
                                     <Input size="large" placeholder="请输入房间名称"/>
@@ -120,20 +142,20 @@ class ModelHouse extends Component {
                         </p>
                         <div className="check-input">
                             <FormItem>
-                                {getFieldDecorator('abbre',{
-                                    rules:[{
+                                {getFieldDecorator('abbre', {
+                                    rules: [{
                                         required: true,
-                                        message:'请输入简称'
+                                        message: '请输入简称'
                                     }]
                                 })(
-                                    <Input size="large" placeholder="请输入简称"/>
+                                    <Input maxLength="4" size="large" placeholder="请输入简称"/>
                                 )}
                             </FormItem>
                         </div>
                     </div>
                     <div className="rooms">
                         {formItems}
-                        <Button icon='plus' size="large" className='add-btn' onClick={this.add.bind(this)}>添加房型</Button>
+                        <Button icon='plus' size="large" className='add-btn' onClick={this.add.bind(this)}>添加房间</Button>
                     </div>
 
                     <div className="sure-btn">
