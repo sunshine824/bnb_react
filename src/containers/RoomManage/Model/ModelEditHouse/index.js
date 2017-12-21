@@ -92,7 +92,7 @@ class ModelHouse extends Component {
     add() {
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
-        uuid = keys[keys.length - 1] + 1
+        uuid = keys[keys.length - 1] ? keys[keys.length - 1] + 1 : 1
         const nextKeys = keys.concat(uuid);
         uuid++;
         form.setFieldsValue({
