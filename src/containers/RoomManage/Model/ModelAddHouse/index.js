@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {Modal, Form, Input, Icon, Button} from 'antd';
+import {Modal, Form, Input, Icon, Button, message} from 'antd';
 import {addHouse, editHouse, deteleRoom} from '@/fetch/HouseList'
 
 import './style.less'
@@ -23,11 +23,7 @@ class ModelHouse extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                if (this.props.mold === 'add') {
-                    this._addHouse(values)
-                } else {
-                    this._editHouse(values)
-                }
+                this._addHouse(values)
             }
         });
     }
@@ -45,75 +41,24 @@ class ModelHouse extends Component {
             if (!json.status) {
                 this.props.onChangeHouse(false)
                 this.props._getHouseList()
+                message.success('添加成功！');
             }
         }).catch(err => {
             console.log(err)
         })
     }
 
-    /**
-     * 编辑房型
-     * @param values
-     * @private
-     */
-    _editHouse(values) {
-        const obj = {}
-        const houses = []
-        for (let key in values.houses) {
-            for (let k in values.houses[key]) {
-                const obj1 = {id: k, num: values.houses[key][k]}
-                houses.push(obj1)
-            }
-        }
-        for (let key in values) {
-            obj.abbre = values.abbre
-            obj.name = values.name
-            obj.id = this.props.id
-            obj.houses = JSON.stringify(houses)
-        }
-        const result = editHouse(obj)
-        result.then(res => {
-            return res.json()
-        }).then(json => {
-            if (!json.status) {
-                this.props.onChangeHouse(false)
-                this.props._getHouseList()
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-    }
-
-    remove(k, index, id) {
+    remove(k) {
         const {form} = this.props
         const keys = form.getFieldValue('keys')
         form.setFieldsValue({
             keys: keys.filter(key => key !== k),
         });
-        this.props.deleteHouseInfo(index)
-        this._deteleRoom(id)
-    }
-
-    /**
-     * 删除房间
-     * @param id
-     * @private
-     */
-    _deteleRoom(id) {
-        const result = deteleRoom(id)
-        result.then(res => {
-            return res.json()
-        }).then(json => {
-            console.log(json)
-        }).catch(err => {
-            console.log(err)
-        })
     }
 
     add() {
-        const {form, mold} = this.props;
+        const {form} = this.props;
         const keys = form.getFieldValue('keys');
-        uuid = mold === 'edit' ? keys[keys.length - 1] + 1 : 0
         const nextKeys = keys.concat(uuid);
         uuid++;
         form.setFieldsValue({
@@ -122,35 +67,23 @@ class ModelHouse extends Component {
     }
 
     render() {
-        const {houseVisible, mold, houseInfo} = this.props
+        const {houseAddVisible} = this.props
+        console.log(houseAddVisible)
         const {getFieldDecorator, getFieldValue} = this.props.form;
-        let arr = []
 
-        if (this.props.mold === 'edit') {
-            arr = []
-            let houses = houseInfo ? houseInfo.data.houses : ''
-            for (let i = 0; i < houses.length; i++) {
-                arr.push(i)
-            }
-        }
-
-        getFieldDecorator('keys', {initialValue: arr});
+        getFieldDecorator('keys', {initialValue: []});
         let keys = getFieldValue('keys');
 
-        const decorator = (k,index) => {
-            if (mold === 'edit') {
-                return `houses[${k}].${houseInfo.data.houses[index] ? houseInfo.data.houses[index].id : 0}`
-            } else {
-                return `houses[${k}]`
-            }
+        const decorator = (k) => {
+            return `houses[${k}]`
         }
 
         const formItems = keys.map((k, index) => {
             return (
                 <FormItem key={k}>
                     <div className="room-item">
-                        {getFieldDecorator(decorator(k,index), {
-                            initialValue: mold === 'edit' ? houseInfo.data.houses[index] ? houseInfo.data.houses[index].num : '' : '',
+                        {getFieldDecorator(decorator(k, index), {
+                            initialValue:'',
                             rules: [{
                                 required: true,
                                 message: '请输入房间号'
@@ -162,7 +95,7 @@ class ModelHouse extends Component {
                             <Icon
                                 className="delete"
                                 type="minus-circle"
-                                onClick={this.remove.bind(this, k, index, houseInfo.data.houses[index] ? houseInfo.data.houses[index].id : 0)}
+                                onClick={this.remove.bind(this, k)}
                             />
                         </p>
                     </div>
@@ -173,8 +106,8 @@ class ModelHouse extends Component {
 
         return (
             <Modal
-                title={mold === 'add' ? '添加房型' : '编辑房型'}
-                visible={houseVisible}
+                title='添加房型'
+                visible={houseAddVisible}
                 onCancel={this.handleCancel.bind(this)}
                 footer={null}
             >
@@ -186,7 +119,7 @@ class ModelHouse extends Component {
                         <div className="check-input">
                             <FormItem>
                                 {getFieldDecorator('name', {
-                                    initialValue: mold === 'edit' ? houseInfo.data ? houseInfo.data.name : '' : '',
+                                    initialValue: '',
                                     rules: [{
                                         required: true,
                                         message: '请输入房间名称'
@@ -204,7 +137,7 @@ class ModelHouse extends Component {
                         <div className="check-input">
                             <FormItem>
                                 {getFieldDecorator('abbre', {
-                                    initialValue: mold === 'edit' ? houseInfo.data ? houseInfo.data.abbre : '' : '',
+                                    initialValue: '',
                                     rules: [{
                                         required: true,
                                         message: '请输入简称'
