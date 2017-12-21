@@ -14,3 +14,33 @@ export function getRoomListData(id='',key='123456') {
 
     return result
 }
+
+/**
+ * 编辑房间获取信息
+ * @param id
+ * @param key
+ * @returns {*}
+ */
+export function editRoomInfo(id='',key='123456') {
+    const result=post('/api/houses',{
+        key:key,
+        id:id
+    })
+
+    return result
+}
+
+/**
+ * 编辑房间
+ * @param data
+ * @param key
+ * @returns {*}
+ */
+export function editRoom(data,key='123456') {
+    const result=post('/api/edhouses',{
+        key:key,
+        ...data
+    })
+
+    return result
+}

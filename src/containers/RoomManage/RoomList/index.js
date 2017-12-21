@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {getRoomListData} from '@/fetch/RoomList'
+import {getRoomListData, editRoomInfo} from '@/fetch/RoomList'
 import Loading from '@/components/Loading'
+import ModelRoom from '../Model/ModelRoom'
 
 import './style.less'
 
@@ -10,7 +11,10 @@ class RoomList extends Component {
         super(props)
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
-            roomList: ''
+            roomList: '',
+            id: '',
+            roomEditVisible: false,
+            roomInfo: ''
         }
     }
 
@@ -31,6 +35,49 @@ class RoomList extends Component {
         })
     }
 
+    onChangeEditRoom(visible) {
+        this.setState({
+            roomEditVisible: visible
+        })
+    }
+
+    editRoom(id) {
+        const result = editRoomInfo(id)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (!json.status) {
+                this.setState({
+                    roomEditVisible: true,
+                    id:id,
+                    roomInfo: json
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    deteleRoomInfo(k) {
+        const {roomInfo} = this.state
+        roomInfo.data.channels.splice(k, 1)
+        this.setState({
+            roomInfo: {
+                interpret: roomInfo.interpret,
+                status: roomInfo.status,
+                data: {
+                    address: roomInfo.data.address,
+                    channels: roomInfo.data.channels,
+                    id: roomInfo.data.id,
+                    name: roomInfo.data.name,
+                    status: roomInfo.data.status,
+                    type_id: roomInfo.data.type_id,
+                    user_id: roomInfo.data.user_id
+                }
+            }
+        })
+    }
+
     render() {
         const {roomList} = this.state
         return (
@@ -45,13 +92,14 @@ class RoomList extends Component {
                                 !roomList.status ?
                                     roomList.data.map((item, index) => {
                                         return (
-                                            <li key={index} className="item">
+                                            <li key={index} className="item"
+                                                onClick={this.editRoom.bind(this, item.id)}>
                                                 <div className="room-head">
-                                                    <p>{item.name}</p>
+                                                    <p>{item.num}</p>
                                                     <em></em>
                                                 </div>
                                                 <div className="room-name">
-                                                    <p>{item.abbre}</p>
+                                                    <p>{item.tname}</p>
                                                 </div>
                                             </li>
                                         )
@@ -65,6 +113,8 @@ class RoomList extends Component {
                         }
                     </ul>
                 </div>
+                <ModelRoom {...this.state} onChangeRoom={this.onChangeEditRoom.bind(this)}
+                           deteleRoomInfo={this.deteleRoomInfo.bind(this)}/>
             </div>
         )
     }

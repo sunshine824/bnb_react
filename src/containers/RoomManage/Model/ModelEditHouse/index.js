@@ -24,33 +24,8 @@ class ModelHouse extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this._editHouse(values)
-                /*if (this.props.mold === 'add') {
-                    this._addHouse(values)
-                } else {
-                    this._editHouse(values)
-                }*/
             }
         });
-    }
-
-    /**
-     * 添加房型
-     * @param values
-     * @private
-     */
-    _addHouse(values) {
-        const result = addHouse(values)
-        result.then(res => {
-            return res.json()
-        }).then(json => {
-            if (!json.status) {
-                this.props.onChangeHouse(false)
-                this.props._getHouseList()
-                message.success('添加成功！');
-            }
-        }).catch(err => {
-            console.log(err)
-        })
     }
 
     /**
@@ -93,8 +68,7 @@ class ModelHouse extends Component {
         form.setFieldsValue({
             keys: keys.filter(key => key !== k),
         });
-        this.props.deleteHouseInfo(index)
-        this._deteleRoom(id)
+        this._deteleRoom(id,index)
     }
 
     /**
@@ -102,12 +76,14 @@ class ModelHouse extends Component {
      * @param id
      * @private
      */
-    _deteleRoom(id) {
+    _deteleRoom(id,index) {
         const result = deteleRoom(id)
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
+            if(!json.status){
+                this.props.deleteHouseInfo(index)
+            }
         }).catch(err => {
             console.log(err)
         })

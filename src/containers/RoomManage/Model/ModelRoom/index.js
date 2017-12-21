@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import {Modal, Form, Input, Icon, Button, Select} from 'antd';
+import {Modal, Form, Input, Icon, Button, Select, message} from 'antd';
+import {getHouseListData} from '@/fetch/HouseList'
+import {editRoom} from '@/fetch/RoomList'
 
 import './style.less'
 
@@ -13,43 +15,61 @@ class ModelRoom extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            visible: false
+            houseList: ''
         }
     }
 
-    handleOk = (e) => {
-        this.setState({
-            visible: false,
-        });
+    componentDidMount() {
+        this._getHouseList()
     }
 
     handleCancel = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
+        this.props.onChangeRoom(false)
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                let arr = []
+                for (let k in values.channels) {
+                    arr.push(values.channels[k])
+                }
+                values.id = this.props.id
+                values.channels = arr
+                values.name = this.props.roomInfo.data.name
+                this._editRoom(values)
             }
         });
     }
 
-    remove(k) {
+    _editRoom(data) {
+        const result = editRoom(data)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            console.log(json)
+            if (!json.status) {
+                message.success('修改成功！')
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    remove(k, index) {
         const {form} = this.props
         const keys = form.getFieldValue('keys')
         form.setFieldsValue({
             keys: keys.filter(key => key !== k),
         });
+        this.props.deteleRoomInfo(index)
     }
 
     add() {
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
+        uuid = keys[keys.length - 1] + 1
         const nextKeys = keys.concat(uuid);
         uuid++;
         form.setFieldsValue({
@@ -57,17 +77,41 @@ class ModelRoom extends Component {
         });
     }
 
-    render() {
-        const {getFieldDecorator, getFieldValue} = this.props.form;
+    //获取所有房型
+    _getHouseList() {
+        const result = getHouseListData()
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (!json.status) {
+                this.setState({
+                    houseList: json
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
-        getFieldDecorator('keys', {initialValue: []});
+    render() {
+        const {houseList} = this.state
+        const {roomEditVisible, roomInfo} = this.props
+        const {getFieldDecorator, getFieldValue} = this.props.form;
+        let arr = []
+        let channels = roomInfo ? roomInfo.data.channels : ''
+        for (let i = 0; i < channels.length; i++) {
+            arr.push(i)
+        }
+
+        getFieldDecorator('keys', {initialValue: arr});
         const keys = getFieldValue('keys');
 
         const formItems = keys.map((k, index) => {
             return (
                 <FormItem key={k}>
                     <div className="room-item">
-                        {getFieldDecorator(`names[${k}]`, {
+                        {getFieldDecorator(`channels[${k}]`, {
+                            initialValue: channels[index] ? channels[index].channel : '',
                             rules: [{
                                 required: true,
                                 message: '请输入渠道'
@@ -79,7 +123,7 @@ class ModelRoom extends Component {
                             <Icon
                                 className="delete"
                                 type="minus-circle"
-                                onClick={this.remove.bind(this, k)}
+                                onClick={this.remove.bind(this, k, index)}
                             />
                         </p>
                     </div>
@@ -91,19 +135,19 @@ class ModelRoom extends Component {
         return (
             <Modal
                 title="编辑房间"
-                visible={this.state.visible}
-                onOk={this.handleOk.bind(this)}
+                visible={roomEditVisible}
                 onCancel={this.handleCancel.bind(this)}
                 footer={null}
             >
                 <Form onSubmit={this.handleSubmit.bind(this)}>
                     <div className="item">
                         <p className="item-title">
-                            房间名称
+                            房间号
                         </p>
                         <div className="check-input">
                             <FormItem>
-                                {getFieldDecorator('name', {
+                                {getFieldDecorator('num', {
+                                    initialValue: roomInfo.data ? roomInfo.data.num : '',
                                     rules: [{
                                         required: true,
                                         message: '请输入房间名称'
@@ -121,6 +165,7 @@ class ModelRoom extends Component {
                         <div className="check-input">
                             <FormItem>
                                 {getFieldDecorator('type_id', {
+                                    initialValue: [roomInfo.data ? roomInfo.data.type_id : ''],
                                     rules: [{
                                         required: true,
                                         message: '请输入所属房型'
@@ -134,9 +179,19 @@ class ModelRoom extends Component {
                                         optionFilterProp="children"
                                         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                     >
-                                        <Option value="jack">58同城</Option>
-                                        <Option value="lucy">优客逸家</Option>
-                                        <Option value="tom">居房源</Option>
+                                        {
+                                            houseList ?
+                                                !houseList.status ?
+                                                    houseList.data.map((item, index) => {
+                                                        return (
+                                                            <Option key={index} value={item.id}>
+                                                                {item.abbre}
+                                                            </Option>
+                                                        )
+                                                    })
+                                                    : ''
+                                                : ''
+                                        }
                                     </Select>
                                 )}
                             </FormItem>
@@ -147,10 +202,11 @@ class ModelRoom extends Component {
                             房间详细地址
                         </p>
                         <FormItem>
-                            {getFieldDecorator('address',{
-                                rules:[{
-                                    required:true,
-                                    message:'请填写房间详细地址'
+                            {getFieldDecorator('address', {
+                                initialValue: roomInfo.data ? roomInfo.data.address : '',
+                                rules: [{
+                                    required: true,
+                                    message: '请填写房间详细地址'
                                 }]
                             })(
                                 <TextArea placeholder="请填写备注信息" rows={4}/>

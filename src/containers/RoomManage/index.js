@@ -5,7 +5,6 @@ import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
 import HouseList from './HouseList'
 import RoomList from './RoomList'
-import ModelRoom from './Model/ModelRoom'
 
 import './style.less'
 
@@ -29,7 +28,6 @@ class RoomManage extends Component {
             <div className="manage">
                 <HouseList/>
                 <RoomList/>
-                <ModelRoom/>
             </div>
         )
     }
