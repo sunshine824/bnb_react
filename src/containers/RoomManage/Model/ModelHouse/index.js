@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {Modal, Form, Input, Icon, Button} from 'antd';
-import {addHouse, editHouse} from '@/fetch/HouseList'
+import {addHouse, editHouse, deteleRoom} from '@/fetch/HouseList'
 
 import './style.less'
 
@@ -13,13 +13,6 @@ class ModelHouse extends Component {
     constructor(props) {
         super(props)
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
-        this.state = {
-            visible: false
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        //console.log(nextProps)
     }
 
     handleCancel = (e) => {
@@ -51,6 +44,7 @@ class ModelHouse extends Component {
         }).then(json => {
             if (!json.status) {
                 this.props.onChangeHouse(false)
+                this.props._getHouseList()
             }
         }).catch(err => {
             console.log(err)
@@ -83,18 +77,37 @@ class ModelHouse extends Component {
         }).then(json => {
             if (!json.status) {
                 this.props.onChangeHouse(false)
+                this.props._getHouseList()
             }
         }).catch(err => {
             console.log(err)
         })
     }
 
-    remove(k) {
+    remove(k, index, id) {
         const {form} = this.props
         const keys = form.getFieldValue('keys')
         form.setFieldsValue({
             keys: keys.filter(key => key !== k),
         });
+        this.props.deleteHouseInfo(index)
+        this._deteleRoom(id)
+    }
+
+    /**
+     * 删除房间
+     * @param id
+     * @private
+     */
+    _deteleRoom(id) {
+        const result = deteleRoom(id)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            console.log(json)
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     add() {
@@ -124,11 +137,11 @@ class ModelHouse extends Component {
         getFieldDecorator('keys', {initialValue: arr});
         let keys = getFieldValue('keys');
 
-        const decorator = (index) => {
-            if(mold==='edit'){
-                return `houses[${index}].${houseInfo.data.houses[index] ? houseInfo.data.houses[index].id : 0}`
-            }else {
-                return `houses[${index}]`
+        const decorator = (k,index) => {
+            if (mold === 'edit') {
+                return `houses[${k}].${houseInfo.data.houses[index] ? houseInfo.data.houses[index].id : 0}`
+            } else {
+                return `houses[${k}]`
             }
         }
 
@@ -136,7 +149,7 @@ class ModelHouse extends Component {
             return (
                 <FormItem key={k}>
                     <div className="room-item">
-                        {getFieldDecorator(decorator(index), {
+                        {getFieldDecorator(decorator(k,index), {
                             initialValue: mold === 'edit' ? houseInfo.data.houses[index] ? houseInfo.data.houses[index].num : '' : '',
                             rules: [{
                                 required: true,
@@ -149,7 +162,7 @@ class ModelHouse extends Component {
                             <Icon
                                 className="delete"
                                 type="minus-circle"
-                                onClick={this.remove.bind(this, k)}
+                                onClick={this.remove.bind(this, k, index, houseInfo.data.houses[index] ? houseInfo.data.houses[index].id : 0)}
                             />
                         </p>
                     </div>

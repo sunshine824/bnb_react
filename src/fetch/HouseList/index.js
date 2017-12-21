@@ -72,3 +72,18 @@ export function editHouseInfo(id,key='123456') {
 
     return result
 }
+
+/**
+ * 删除房间
+ * @param id
+ * @param key
+ * @returns {*}
+ */
+export function deteleRoom(id,key='123456') {
+    const result = post('/api/dehouses', {
+        id:id,
+        key: key
+    })
+
+    return result
+}
