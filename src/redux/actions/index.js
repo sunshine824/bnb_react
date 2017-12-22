@@ -71,3 +71,16 @@ export function save_scroll(scroll) {
         ...scroll
     }
 }
+
+/**
+ * 是否显示左侧侧边栏
+ * @param popup
+ * @returns {{type, popup: *}}
+ * @constructor
+ */
+export function show_popup(popup) {
+    return {
+        type: actionTypes.Show_Popup,
+        popup
+    }
+}

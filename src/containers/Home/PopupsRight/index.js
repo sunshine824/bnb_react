@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 import {DatePicker, Form, Radio, Select, Input, Button} from 'antd';
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {show_popup} from '@/redux/actions'
 import {editCheckIn} from '@/fetch/EditCheckin'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
@@ -23,9 +26,8 @@ class PopupsRight extends Component {
 
 
     slideOpen() {
-        this.setState({
-            slide_open: !this.state.slide_open
-        })
+        const {actions} = this.props
+        actions.show_popup(!this.props.show_popup)
     }
 
     /**
@@ -34,11 +36,11 @@ class PopupsRight extends Component {
      */
     _editCheckIn() {
         const result = editCheckIn()
-        result.then(res=>{
+        result.then(res => {
             return res.json()
-        }).then(json=>{
+        }).then(json => {
             console.log(json)
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
         })
     }
@@ -59,7 +61,7 @@ class PopupsRight extends Component {
     }
 
     render() {
-        const className = this.state.slide_open ? 'active' : ''
+        const className = this.props.show_popup ? 'active' : ''
         const {getFieldDecorator} = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit.bind(this)}>
@@ -238,7 +240,21 @@ class PopupsRight extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        show_popup: state.show_popup.popup ? state.show_popup.popup : false
+    }
+}
+
+function mapActionsToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            show_popup
+        }, dispatch)
+    }
+}
+
 
 const WrappedPopupsRight = Form.create()(PopupsRight);
 
-export default WrappedPopupsRight
+export default connect(mapStateToProps, mapActionsToProps)(WrappedPopupsRight)

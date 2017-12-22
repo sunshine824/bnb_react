@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {show_popup} from '@/redux/actions'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import moment from 'moment';
 
@@ -25,16 +27,18 @@ class HomeTableTr extends Component {
         this.props.handleOffset(0, -900, false)
     }
 
+    handlePopup() {
+
+    }
 
     render() {
         const {roomList, start_date, calendars} = this.props
-        console.log(calendars)
         //console.log(calendars)
         const tds = (length) => {
             let res = []
             for (let i = 0; i < length; i++) {
                 res.push(
-                    <td key={i} onMouseOver={this.handleMouseOver.bind(this)}
+                    <td onClick={this.handlePopup.bind(this)} key={i} onMouseOver={this.handleMouseOver.bind(this)}
                         onMouseOut={this.handleMouseOut.bind(this)}>
                         <div className="booked">
                             <p className="book-name"></p>
@@ -96,4 +100,12 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(HomeTableTr)
+function mapActionsProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            show_popup
+        }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapActionsProps)(HomeTableTr)
