@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import DateList from './DateList'
+import HouseList from './HouseList'
 import TableList from './TableList'
 
 import './style.less'
@@ -7,8 +7,8 @@ import './style.less'
 class HomeRight extends Component {
     render(){
         return(
-            <div className="home-right">
-                <DateList/>
+            <div className="home-bottom">
+                <HouseList/>
                 <TableList/>
             </div>
         )

@@ -1,12 +1,15 @@
 @import "../../../../static/css/public";
 
 .screen-box{
-  width: 100%;
-  border-bottom: solid 2px #ccc;
+  width: 120px;
+  float: left;
+  box-shadow: 2px 0 2px #CCC;
+  position: relative;
+  z-index: 50;
 }
 .box-date{
   .ant-calendar-picker-input{
-    background: #db4a38;
+    background: @dateColor;
     color: #fff;
     border-radius: 0;
     border:0;
