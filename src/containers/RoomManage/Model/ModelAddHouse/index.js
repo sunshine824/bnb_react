@@ -69,7 +69,6 @@ class ModelHouse extends Component {
 
     render() {
         const {houseAddVisible} = this.props
-        console.log(houseAddVisible)
         const {getFieldDecorator, getFieldValue} = this.props.form;
 
         getFieldDecorator('keys', {initialValue: []});

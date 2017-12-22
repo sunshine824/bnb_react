@@ -28,12 +28,12 @@ class HomeTableTr extends Component {
     }
 
     handlePopup() {
-
+        const {actions} = this.props
+        actions.show_popup(!this.props.show_popup)
     }
 
     render() {
         const {roomList, start_date, calendars} = this.props
-        //console.log(calendars)
         const tds = (length) => {
             let res = []
             for (let i = 0; i < length; i++) {
@@ -96,7 +96,8 @@ function mapStateToProps(state) {
     return {
         roomList: state.house_type[0] ? state.house_type[0].roomList : '',
         start_date: state.update_date[0] ? state.update_date[0].dateLists[0].slice(0, -2) : '',
-        calendars: state.calendar_data ? state.calendar_data.calendar : ''
+        calendars: state.calendar_data ? state.calendar_data.calendar : '',
+        show_popup: state.show_popup.popup
     }
 }
 
