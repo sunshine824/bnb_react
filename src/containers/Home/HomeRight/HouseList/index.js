@@ -19,9 +19,9 @@ class HouseList extends Component {
 
 
     render() {
-        const {roomList} = this.props
+        const {roomList, scrollTop} = this.props
         return (
-            <div className="room-list">
+            <div className="room-list" style={{top: -scrollTop + 'px'}}>
                 <ul>
                     {
                         roomList ?
@@ -39,8 +39,9 @@ class HouseList extends Component {
 }
 
 function mapStateToProps(state) {
-    return{
-        roomList:state.house_type[0] ? state.house_type[0].roomList : ''
+    return {
+        roomList: state.house_type[0] ? state.house_type[0].roomList : '',
+        scrollTop: state.save_scroll.scrollTop ? state.save_scroll.scrollTop : 0
     }
 }
 

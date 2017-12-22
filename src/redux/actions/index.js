@@ -36,10 +36,26 @@ export function save_path(path) {
     }
 }
 
-
+/**
+ * 保存订单管理状态
+ * @param status
+ * @returns {{type, status: *}}
+ */
 export function save_status(status) {
     return {
         type: actionTypes.Save_Status,
         status
+    }
+}
+
+/**
+ * 保存日历管理滚动数据
+ * @param scroll
+ * @returns {{type, scrollHeight: *}}
+ */
+export function save_scroll(scroll) {
+    return {
+        type: actionTypes.Save_Scroll,
+        ...scroll
     }
 }

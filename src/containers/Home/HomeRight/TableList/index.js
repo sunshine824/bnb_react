@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 import HomeTableTr from '@/components/HomeTableTr'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {save_scroll} from '@/redux/actions'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import HoverBox from '@/components/HoverBox'
 
@@ -24,9 +27,16 @@ class TableList extends Component {
         })
     }
 
+    handleScroll(e) {
+        const {actions} = this.props
+        let scrollTop = this.refs.tableCon.scrollTop;  //滚动条滚动高度
+        let scrollLeft = this.refs.tableCon.scrollLeft; //滚动左侧距离
+        actions.save_scroll({scrollTop,scrollLeft})
+    }
+
     render() {
         return (
-            <div className="content-box-grid">
+            <div className="content-box-grid" onScroll={this.handleScroll.bind(this)} ref="tableCon">
                 <table className="table-roomcell-grid">
                     <HomeTableTr handleOffset={this.handleOffset.bind(this)}/>
                 </table>
@@ -36,4 +46,18 @@ class TableList extends Component {
     }
 }
 
-export default TableList
+function mapStateToProps(state) {
+    return {
+        states: state
+    }
+}
+
+function mapActionsToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            save_scroll
+        }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(TableList)

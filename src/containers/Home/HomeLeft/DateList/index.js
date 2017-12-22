@@ -10,11 +10,12 @@ class DateList extends Component {
         super(props)
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     }
+
     render() {
-        const {dateLists} = this.props
+        const {dateLists, scrollLeft} = this.props
 
         return (
-            <ul className="table-date-grid">
+            <ul className="table-date-grid" style={{left: -scrollLeft + 'px'}}>
                 {
                     dateLists ?
                         dateLists.map((item, index) => {
@@ -32,7 +33,8 @@ class DateList extends Component {
 
 function mapStateToProps(state) {
     return {
-        dateLists: state.update_date[0] ? state.update_date[0].dateLists : ''
+        dateLists: state.update_date[0] ? state.update_date[0].dateLists : '',
+        scrollLeft: state.save_scroll.scrollLeft ? state.save_scroll.scrollLeft : 0
     }
 }
 

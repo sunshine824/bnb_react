@@ -58,6 +58,7 @@ class ScreenBox extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
+            console.log(json)
             calendar.calendars = json.data
             this.setState({
                 calendar: calendar
@@ -139,7 +140,9 @@ class ScreenBox extends Component {
         result.then((res) => {
             return res.json()
         }).then(json => {
-            actions.save_house_type(json.data)
+            if(!json.status){
+                actions.save_house_type(json.data)
+            }
         }).catch(err => {
             console.log(err)
         })
