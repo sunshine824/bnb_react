@@ -10,9 +10,9 @@ import {post} from '../post'
  * @param page  页码
  * @returns {*}
  */
-export function getOrderList(status = '1',
-                             start_time,
-                             end_time,
+export function getOrderList(status = '5',
+                             start_time='',
+                             end_time='',
                              content = '',
                              page = 1,
                              key = '123456') {

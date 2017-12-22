@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
-import {Button} from 'antd'
+//import {Button} from 'antd'
+//import {connect} from 'react-redux'
+import {save_status} from '@/redux/actions'
+//import {bindActionCreators} from 'redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {getStatistics} from '@/fetch/Statistics'
 
@@ -31,19 +34,25 @@ class DataStat extends Component {
         })
     }
 
+    /*onChangeStatus(e) {
+        const {actions} = this.props
+        actions.save_status(e.target.value)
+    }*/
+
     render() {
         const {stat_data} = this.state
 
         const renderLi = () => {
-            const res=[]
-            for(let k in stat_data.data){
+            const res = []
+            for (let k in stat_data.data) {
                 res.push(
-                    <li>
+                    <li key={k}>
                         <div className="box">
                             <p className="data-title">{stat_data.data[k].title}</p>
                             <strong>{stat_data.data[k].content}人</strong>
-                            <Button href="#" type="primary"
-                                    className={stat_data.data[k].status === 1 ? '' : 'hide'}>查看/办理</Button>
+                            {/*<Button value={parseInt(k) + 1} type="primary"
+                                    className={stat_data.data[k].status === 1 ? '' : 'hide'}
+                                    onClick={this.onChangeStatus.bind(this)}>查看/办理</Button>*/}
                         </div>
                     </li>
                 )
@@ -66,5 +75,19 @@ class DataStat extends Component {
         )
     }
 }
+
+/*function mapStateToProps(state) {
+    return {
+        state: state
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            save_status
+        }, dispatch)
+    }
+}*/
 
 export default DataStat

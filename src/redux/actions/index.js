@@ -35,3 +35,11 @@ export function save_path(path) {
         path
     }
 }
+
+
+export function save_status(status) {
+    return {
+        type: actionTypes.Save_Status,
+        status
+    }
+}
