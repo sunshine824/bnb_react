@@ -28,6 +28,7 @@ class HomeTableTr extends Component {
 
     render() {
         const {roomList, start_date, calendars} = this.props
+        console.log(calendars)
         //console.log(calendars)
         const tds = (length) => {
             let res = []
@@ -88,11 +89,10 @@ class HomeTableTr extends Component {
 }
 
 function mapStateToProps(state) {
-    //console.log(state.update_date[0] ? state.update_date[0].calendars : '')
     return {
         roomList: state.house_type[0] ? state.house_type[0].roomList : '',
         start_date: state.update_date[0] ? state.update_date[0].dateLists[0].slice(0, -2) : '',
-        calendars: state.update_date[0] ? state.update_date[0].calendars : ''
+        calendars: state.calendar_data ? state.calendar_data.calendar : ''
     }
 }
 

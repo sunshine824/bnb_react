@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {bindActionCreators} from 'redux'
-import {DatePicker, Select} from 'antd';
+import {DatePicker, Select, message} from 'antd';
 import moment from 'moment';
-import {update_date, save_house_type} from '@/redux/actions'
+import {update_date, save_house_type, calendar_data} from '@/redux/actions'
 import {getHouseListData} from '@/fetch/HouseList'
 import {getRoomListData} from '@/fetch/RoomList'
 import {getCalendarData} from '@/fetch/CalendarList'
@@ -58,12 +58,11 @@ class ScreenBox extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
-            calendar.calendars = json.data
-            this.setState({
-                calendar: calendar
-            })
-            actions.update_date(this.state.calendar)
+            if (!json.status) {
+                actions.calendar_data(json.data)
+            } else if (json.status === 2) {
+                message.warn('暂无入住数据！')
+            }
         }).catch(err => {
             console.log(err)
         })
@@ -105,6 +104,7 @@ class ScreenBox extends Component {
      */
     HandleDate(isDefault, date) {
         const dateLists = []
+        const {actions} = this.props
 
         if (isDefault) {
             //前三天日期
@@ -127,7 +127,7 @@ class ScreenBox extends Component {
             }
         }
 
-        calendar.dateLists = dateLists
+        actions.update_date(dateLists)
     }
 
     /**
@@ -140,7 +140,7 @@ class ScreenBox extends Component {
         result.then((res) => {
             return res.json()
         }).then(json => {
-            if(!json.status){
+            if (!json.status) {
                 actions.save_house_type(json.data)
             }
         }).catch(err => {
@@ -198,7 +198,8 @@ function mapActionsToProps(dispatch) {
     return {
         actions: bindActionCreators({
             update_date,
-            save_house_type
+            save_house_type,
+            calendar_data
         }, dispatch)
     }
 }

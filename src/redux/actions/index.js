@@ -5,10 +5,22 @@ import * as actionTypes from '../../config/actionType'
  * @param date
  * @returns {{type, date: *}}
  */
-export function update_date(data) {
+export function update_date(dateLists) {
     return {
         type: actionTypes.UPDATE_DATE,
-        data
+        dateLists
+    }
+}
+
+/**
+ * 获取日历数据
+ * @param calendar
+ * @returns {{type, calendar: *}}
+ */
+export function calendar_data(calendar) {
+    return {
+        type: actionTypes.Calendar_DATA,
+        calendar
     }
 }
 

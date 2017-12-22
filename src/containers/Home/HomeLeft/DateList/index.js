@@ -33,7 +33,7 @@ class DateList extends Component {
 
 function mapStateToProps(state) {
     return {
-        dateLists: state.update_date[0] ? state.update_date[0].dateLists : '',
+        dateLists: state.update_date.dateLists ? state.update_date.dateLists : '',
         scrollLeft: state.save_scroll.scrollLeft ? state.save_scroll.scrollLeft : 0
     }
 }
