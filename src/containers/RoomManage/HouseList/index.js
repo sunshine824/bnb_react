@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Button, message} from 'antd';
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {getHouseListData, deleteHouse} from '@/fetch/HouseList'
+import {deleteHouse} from '@/fetch/HouseList'
 import Loading from '@/components/Loading'
 import ModelEditHouse from '../Model/ModelEditHouse'
 import ModelAddHouse from '../Model/ModelAddHouse'
@@ -16,32 +16,15 @@ class HouseManage extends Component {
         this.state = {
             houseList: '',
             houseAddVisible: false,  //是否显示添加model
-            houseEditVisible:false,  //是否显示编辑model
+            houseEditVisible: false,  //是否显示编辑model
             id: '',
             houseInfo: ''
         }
     }
 
     componentDidMount() {
-        this._getHouseList()
     }
 
-    /**
-     * 获取房型列表
-     * @private
-     */
-    _getHouseList() {
-        const result = getHouseListData()
-        result.then(res => {
-            return res.json()
-        }).then(json => {
-            this.setState({
-                houseList: json
-            })
-        }).catch(err => {
-            console.log(err.response)
-        })
-    }
 
     /**
      * 删除房型
@@ -94,7 +77,7 @@ class HouseManage extends Component {
 
     deleteHouseInfo(k) {
         const {houseInfo} = this.state
-        houseInfo.data.houses.splice(k,1)
+        houseInfo.data.houses.splice(k, 1)
         this.setState({
             houseInfo: {
                 interpret: houseInfo.interpret,
@@ -102,10 +85,10 @@ class HouseManage extends Component {
                 data: {
                     abbre: houseInfo.data.abbre,
                     houses: houseInfo.data.houses,
-                    id:houseInfo.data.id,
-                    name:houseInfo.data.name,
-                    status:houseInfo.data.status,
-                    user_id:houseInfo.data.user_id
+                    id: houseInfo.data.id,
+                    name: houseInfo.data.name,
+                    status: houseInfo.data.status,
+                    user_id: houseInfo.data.user_id
                 }
             }
         })
@@ -134,7 +117,7 @@ class HouseManage extends Component {
         })
     }
 
-    onChangeAddHouse(visible){
+    onChangeAddHouse(visible) {
         this.setState({
             houseAddVisible: visible
         })
@@ -142,7 +125,7 @@ class HouseManage extends Component {
 
 
     render() {
-        const {houseList} = this.state
+        const {houseList} = this.props
         return (
             <div className="house-manage">
                 <div className="callout-head">
@@ -197,10 +180,12 @@ class HouseManage extends Component {
                     </table>
                 </div>
                 <ModelEditHouse {...this.state} onChangeHouse={this.onChangeEditHouse.bind(this)}
-                            deleteHouseInfo={this.deleteHouseInfo.bind(this)}
-                            _getHouseList={this._getHouseList.bind(this)}/>
+                                deleteHouseInfo={this.deleteHouseInfo.bind(this)}
+                                _getHouseList={this.props._getHouseList.bind(this)}
+                                _getRoomList={this.props._getRoomList.bind(this)}/>
                 <ModelAddHouse {...this.state} onChangeHouse={this.onChangeAddHouse.bind(this)}
-                               _getHouseList={this._getHouseList.bind(this)}/>
+                               _getHouseList={this.props._getHouseList.bind(this)}
+                               _getRoomList={this.props._getRoomList.bind(this)}/>
             </div>
         )
     }

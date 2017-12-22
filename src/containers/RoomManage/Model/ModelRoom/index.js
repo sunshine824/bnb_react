@@ -48,9 +48,11 @@ class ModelRoom extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             if (!json.status) {
                 message.success('修改成功！')
+                this.props.onChangeRoom(false)
+                this.props._getRoomList()
+                this.props._getHouseList()
             }
         }).catch(err => {
             console.log(err)

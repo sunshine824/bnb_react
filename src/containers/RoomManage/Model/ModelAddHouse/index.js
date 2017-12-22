@@ -41,6 +41,7 @@ class ModelHouse extends Component {
             if (!json.status) {
                 this.props.onChangeHouse(false)
                 this.props._getHouseList()
+                this.props._getRoomList()
                 message.success('添加成功！');
             }
         }).catch(err => {

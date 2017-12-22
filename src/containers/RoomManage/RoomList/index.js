@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {getRoomListData, editRoomInfo} from '@/fetch/RoomList'
+import {editRoomInfo} from '@/fetch/RoomList'
 import Loading from '@/components/Loading'
 import ModelRoom from '../Model/ModelRoom'
 
@@ -11,7 +11,6 @@ class RoomList extends Component {
         super(props)
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
-            roomList: '',
             id: '',
             roomEditVisible: false,
             roomInfo: ''
@@ -19,21 +18,8 @@ class RoomList extends Component {
     }
 
     componentDidMount() {
-        this._getRoomList()
     }
 
-    _getRoomList() {
-        const result = getRoomListData()
-        result.then(res => {
-            return res.json()
-        }).then(json => {
-            this.setState({
-                roomList: json
-            })
-        }).catch(err => {
-
-        })
-    }
 
     onChangeEditRoom(visible) {
         this.setState({
@@ -49,7 +35,7 @@ class RoomList extends Component {
             if (!json.status) {
                 this.setState({
                     roomEditVisible: true,
-                    id:id,
+                    id: id,
                     roomInfo: json
                 })
             }
@@ -79,7 +65,7 @@ class RoomList extends Component {
     }
 
     render() {
-        const {roomList} = this.state
+        const {roomList} = this.props
         return (
             <div className="room-manage">
                 <div className="callout-head">
@@ -114,7 +100,9 @@ class RoomList extends Component {
                     </ul>
                 </div>
                 <ModelRoom {...this.state} onChangeRoom={this.onChangeEditRoom.bind(this)}
-                           deteleRoomInfo={this.deteleRoomInfo.bind(this)}/>
+                           deteleRoomInfo={this.deteleRoomInfo.bind(this)}
+                           _getRoomList={this.props._getRoomList.bind(this)}
+                           _getHouseList={this.props._getHouseList.bind(this)}/>
             </div>
         )
     }
