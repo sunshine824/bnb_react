@@ -4,7 +4,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {bindActionCreators} from 'redux'
 import {DatePicker, Select, message} from 'antd';
 import moment from 'moment';
-import {update_date, save_house_type, calendar_data} from '@/redux/actions'
+import {update_date, save_rooms, calendar_data} from '@/redux/actions'
 import {getHouseListData} from '@/fetch/HouseList'
 import {getRoomListData} from '@/fetch/RoomList'
 import {getCalendarData} from '@/fetch/CalendarList'
@@ -58,11 +58,7 @@ class ScreenBox extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (!json.status) {
-                actions.calendar_data(json.data)
-            } else if (json.status === 2) {
-                message.warn('暂无入住数据！')
-            }
+            actions.calendar_data(json)
         }).catch(err => {
             console.log(err)
         })
@@ -109,13 +105,13 @@ class ScreenBox extends Component {
         if (isDefault) {
             //前三天日期
             for (let i = 3; i >= 1; i--) {
-                dateLists.push(moment().subtract(i, 'days').format('YYYY-MM-DD dd'))
+                dateLists.push(moment('2017-12-10').subtract(i, 'days').format('YYYY-MM-DD dd'))
             }
             //今日日期
-            dateLists.push(moment().format('YYYY-MM-DD dd'))
+            dateLists.push(moment('2017-12-10').format('YYYY-MM-DD dd'))
             //往后49天
             for (let i = 1; i <= 46; i++) {
-                dateLists.push(moment().add(i, 'days').format('YYYY-MM-DD dd'))
+                dateLists.push(moment('2017-12-10').add(i, 'days').format('YYYY-MM-DD dd'))
             }
         } else {
             if (!date) return
@@ -140,9 +136,7 @@ class ScreenBox extends Component {
         result.then((res) => {
             return res.json()
         }).then(json => {
-            if (!json.status) {
-                actions.save_house_type(json.data)
-            }
+            actions.save_rooms(json)
         }).catch(err => {
             console.log(err)
         })
@@ -198,7 +192,7 @@ function mapActionsToProps(dispatch) {
     return {
         actions: bindActionCreators({
             update_date,
-            save_house_type,
+            save_rooms,
             calendar_data
         }, dispatch)
     }

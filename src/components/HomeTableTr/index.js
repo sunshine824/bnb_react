@@ -12,7 +12,8 @@ class HomeTableTr extends Component {
         super(props)
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
-            calendars: []
+            calendars: [],
+            arrIndex: ''
         }
     }
 
@@ -32,13 +33,74 @@ class HomeTableTr extends Component {
         actions.show_popup(!this.props.show_popup)
     }
 
+    /*    renderTds() {
+            const {start_date, calendars, roomList} = this.props
+
+            let calendarId = []
+            for (let k in calendars) {
+                calendarId.push(parseInt(k))
+            }
+
+            for (let i in roomList.data) {
+                if (calendarId.includes(roomList.data[i].id)) {
+                    const arrIndex = []
+                    const calendarsOne = calendars[roomList.data[i].id]
+                    for (let key in calendarsOne) {
+                        const index = moment(moment.unix(calendarsOne[key].sta_time)
+                            .format('YYYY-MM-DD'))
+                            .diff(moment(start_date), 'days')
+                        arrIndex.push(index)
+                    }
+
+                    this.setState({
+                        arrIndex: arrIndex
+                    })
+                } else {
+                    /!*this.setState({
+                        arrIndex: []
+                    })*!/
+                }
+            }
+        }*/
+
     render() {
-        const {roomList, start_date, calendars} = this.props
-        const tds = (length) => {
+        const {start_date, calendars, roomList} = this.props
+
+        let arrIndex = []
+
+        const renderTds = () => {
+            let calendarId = []
+            for (let k in calendars) {
+                calendarId.push(parseInt(k))
+            }
+
+            for (let i in roomList.data) {
+                if (calendarId.includes(roomList.data[i].id)) {
+                    arrIndex = []
+                    const calendarsOne = calendars[roomList.data[i].id]
+                    for (let key in calendarsOne) {
+                        const index = moment(moment.unix(calendarsOne[key].sta_time)
+                            .format('YYYY-MM-DD'))
+                            .diff(moment(start_date), 'days')
+                        arrIndex.push(index)
+                    }
+                } else {
+                    arrIndex = []
+                }
+            }
+        }
+
+        renderTds()
+
+
+        const tds = (length, arrIndex) => {
             let res = []
+
             for (let i = 0; i < length; i++) {
                 res.push(
-                    <td onClick={this.handlePopup.bind(this)} key={i} onMouseOver={this.handleMouseOver.bind(this)}
+                    <td className={arrIndex.includes(i) ? 'active' : ''} onClick={this.handlePopup.bind(this)}
+                        key={i}
+                        onMouseOver={this.handleMouseOver.bind(this)}
                         onMouseOut={this.handleMouseOut.bind(this)}>
                         <div className="booked">
                             <p className="book-name"></p>
@@ -49,43 +111,23 @@ class HomeTableTr extends Component {
             return res
         }
 
-        const renderRow = () => {
-            for (let k in calendars) {
-                const bookItem = calendars[k]
-                for (let key in bookItem) {
-                    const num = moment(moment.unix(bookItem[key].sta_time)
-                        .format('YYYY-MM-DD'))
-                        .diff(moment(start_date), 'days')
-                    const rowID = '.row' + k
-                    if (document.querySelector(rowID)) {
-                        const tds = document.querySelector(rowID).getElementsByTagName('td')[num]
-                        tds.className = 'active'
-                        const booked = tds.getElementsByClassName('booked')[0]
-                        bookItem[key].dates > 1 ?
-                            booked.style.width = 94.5 * bookItem[key].dates + 'px'
-                            :
-                            booked.style.width = 93 + 'px'
-
-                        booked.getElementsByClassName('book-name')[0].innerHTML = bookItem[key].name
-                    }
-                }
-            }
-        }
-        renderRow()
-
 
         return (
             <tbody>
             {
                 roomList ?
-                    roomList.map((item, index) => {
-                        return (
-                            <tr key={index} pos-y={item.id} ref={"row" + item.id} className={"row" + item.id}>
-                                {tds(50)}
-                            </tr>
-                        )
-                    })
-                    : ''
+                    (
+                        !roomList.status ?
+                            roomList.data.map((item, index) => {
+                                return (
+                                    <tr key={index}>
+                                        {tds(50,arrIndex)}
+                                    </tr>
+                                )
+                            })
+                            : ''
+                    )
+                    : '加载中...'
             }
             </tbody>
         )
@@ -94,10 +136,10 @@ class HomeTableTr extends Component {
 
 function mapStateToProps(state) {
     return {
-        roomList: state.house_type[0] ? state.house_type[0].roomList : '',
-        start_date: state.update_date[0] ? state.update_date[0].dateLists[0].slice(0, -2) : '',
-        calendars: state.calendar_data ? state.calendar_data.calendar : '',
-        show_popup: state.show_popup.popup
+        start_date: state.update_date.dateLists ? state.update_date.dateLists[0].slice(0, -2) : '',
+        calendars: state.calendar_data.calendar ? state.calendar_data.calendar.data : '',
+        show_popup: state.show_popup.popup,
+        roomList: state.save_Rooms.roomList ? state.save_Rooms.roomList : '',
     }
 }
 

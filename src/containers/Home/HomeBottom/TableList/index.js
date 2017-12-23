@@ -19,6 +19,10 @@ class TableList extends Component {
         }
     }
 
+    componentDidMount() {
+
+    }
+
     handleOffset(left, top, isShow) {
         this.setState({
             left: left,
@@ -31,13 +35,30 @@ class TableList extends Component {
         const {actions} = this.props
         let scrollTop = this.refs.tableCon.scrollTop;  //滚动条滚动高度
         let scrollLeft = this.refs.tableCon.scrollLeft; //滚动左侧距离
-        actions.save_scroll({scrollTop,scrollLeft})
+        actions.save_scroll({scrollTop, scrollLeft})
     }
 
     render() {
+        const {roomList} = this.props
         return (
             <div className="content-box-grid" onScroll={this.handleScroll.bind(this)} ref="tableCon">
                 <table className="table-roomcell-grid">
+                    {/*<tbody>
+                    {
+                        roomList ?
+                            (
+                                !roomList.status ?
+                                    roomList.data.map((item, index) => {
+                                        return (
+                                            <HomeTableTr {...this.state} key={index}
+                                                         handleOffset={this.handleOffset.bind(this)}/>
+                                        )
+                                    })
+                                    : ''
+                            )
+                            : '加载中...'
+                    }
+                    </tbody>*/}
                     <HomeTableTr handleOffset={this.handleOffset.bind(this)}/>
                 </table>
                 <HoverBox {...this.state}/>
@@ -48,7 +69,8 @@ class TableList extends Component {
 
 function mapStateToProps(state) {
     return {
-        states: state
+        roomList: state.save_Rooms.roomList ? state.save_Rooms.roomList : '',
+        state: state
     }
 }
 

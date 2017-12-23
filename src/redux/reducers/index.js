@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import house_type from './House_Type'
+import save_Rooms from './Save_Rooms'
 import update_date from './Update_Date'
 import calendar_data from './Calendar_Data'
 import save_path from './Save_Path'
@@ -8,7 +8,7 @@ import save_scroll from './Save_Scroll'
 import show_popup from './Show_Popup'
 
 export default combineReducers({
-    house_type,
+    save_Rooms,
     update_date,
     calendar_data,
     save_path,

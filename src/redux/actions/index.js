@@ -25,13 +25,12 @@ export function calendar_data(calendar) {
 }
 
 /**
- * 保存房型id
- * @param type_id
+ * 获取房间列表
  * @returns {{type, type_id: *}}
  */
-export function save_house_type(roomList) {
+export function save_rooms(roomList) {
     return {
-        type: actionTypes.Save_House_TYPE,
+        type: actionTypes.Save_Rooms,
         roomList
     }
 }
