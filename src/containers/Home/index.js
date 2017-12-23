@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import HomeLeft from './HomeLeft'
-import HomeRight from './HomeRight'
+import HomeTop from './HomeTop'
+import HomeBottom from './HomeBottom'
 import PopupsRight from './PopupsRight'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -17,8 +17,8 @@ class Home extends Component {
     render() {
         return (
             <div className="home-content">
-                <HomeLeft/>
-                <HomeRight/>
+                <HomeTop/>
+                <HomeBottom/>
                 <PopupsRight/>
             </div>
         )
