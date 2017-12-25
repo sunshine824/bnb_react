@@ -25,7 +25,7 @@ class HouseList extends Component {
         return (
             <div className="room-list" style={{top: -scrollTop + 'px'}}>
                 <ul>
-                    {/*{
+                    {
                         roomList ?
                             (
                                 !roomList.status ?
@@ -36,11 +36,10 @@ class HouseList extends Component {
                                     })
                                     : '暂无房间'
                             )
-                            : '加载中...'
-                    }*/}
-                    <li>
-                        <Loading/>
-                    </li>
+                            : <li style={{textAlign: 'center', height: '30px', lineHeight: '30px'}}>
+                                <Loading/>
+                            </li>
+                    }
                 </ul>
             </div>
         )
