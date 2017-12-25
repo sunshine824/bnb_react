@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {show_popup} from '@/redux/actions'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
+import {editCheckInfo} from '@/fetch/EditCheckin'
 import moment from 'moment';
 
 import './style.less'
@@ -15,7 +16,8 @@ class HomeTableTr extends Component {
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             calendars: [],
-            arrIndex: ''
+            arrIndex: '',
+            editInfo: ''
         }
     }
 
@@ -31,10 +33,33 @@ class HomeTableTr extends Component {
     }
 
     handlePopup(id, date) {
-        const {actions} = this.props
+        this._editCheckInfo(id,date)
+    }
 
-        tranId = id
-        actions.show_popup([!this.props.show_popup, id, date])
+    /**
+     * 获取编辑入住回显信息
+     * @param id
+     * @private
+     */
+    _editCheckInfo(id,date) {
+        const {actions} = this.props
+        const result = editCheckInfo(id)
+        result.then((res) => {
+            return res.json()
+        }).then(json => {
+            this.setState({
+                editInfo: json
+            },()=>{
+                actions.show_popup([
+                    !this.props.show_popup,
+                    id,
+                    date,
+                    this.state.editInfo
+                ])
+            })
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     render() {

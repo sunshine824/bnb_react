@@ -8,7 +8,8 @@ export default function show_popup(state = initialState, action) {
             return {
                 popup: action[0],
                 id: action[1],
-                date: action[2]
+                date: action[2],
+                editInfo: action[3]
             }
         default:
             return state

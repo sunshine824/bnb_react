@@ -30,6 +30,7 @@ export function editCheckIn(data, key = '123456') {
 
 /**
  * 编辑入住返回信息
+ * @param id
  * @param key
  * @returns {*}
  */

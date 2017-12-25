@@ -60,10 +60,9 @@ class PopupsRight extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             if (!json.status) {
                 message.success('添加成功')
-            }else {
+            } else {
                 message.error('添加失败')
             }
         }).catch(err => {
@@ -103,7 +102,8 @@ class PopupsRight extends Component {
     }
 
     render() {
-        const {show_popup, id, date} = this.props
+        const {show_popup, id, date, editInfo} = this.props
+        console.log(editInfo)
         const {sources} = this.state
         const className = this.props.show_popup ? 'active' : ''
         const {getFieldDecorator} = this.props.form;
@@ -122,7 +122,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('time', {
-                                        initialValue: [moment(moment(date),'YYYY-MM-DD'), moment(moment(date).add(1, 'days'),'YYYY-MM-DD')],
+                                        initialValue: [moment(moment(date), 'YYYY-MM-DD'), moment(moment(date).add(1, 'days'), 'YYYY-MM-DD')],
                                         rules: [{required: true, message: '请选择入住日期'}]
                                     })(
                                         <RangePicker
@@ -231,7 +231,7 @@ class PopupsRight extends Component {
                                             {pattern: '^1[0-9]{10}$', message: '请输入正确手机号'}
                                         ]
                                     })(
-                                        <Input maxLength={11} placeholder="入住人电话"/>
+                                        <Input maxLength="11" placeholder="入住人电话"/>
                                     )}
                                 </FormItem>
                             </div>
@@ -306,7 +306,8 @@ function mapStateToProps(state) {
     return {
         show_popup: state.show_popup.popup ? state.show_popup.popup : false,
         id: state.show_popup.id ? state.show_popup.id : 0,
-        date: state.show_popup.date ? state.show_popup.date : ''
+        date: state.show_popup.date ? state.show_popup.date : '',
+        editInfo: state.show_popup.editInfo ? state.show_popup.editInfo : ''
     }
 }
 
