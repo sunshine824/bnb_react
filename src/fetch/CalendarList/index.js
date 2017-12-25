@@ -6,7 +6,7 @@ import {post} from '../post'
  * @returns {*}
  */
 export function getCalendarData
-(type_id = '', sta_time = /*Date.parse(new Date()) * 0.001 - 3 * 24 * 60 * 60*/'1512057600', key = '123456') {
+(type_id = '', sta_time = Date.parse(new Date()) * 0.001 - 3 * 24 * 60 * 60, key = '123456') {
     sta_time = sta_time === '' ? Date.parse(new Date()) * 0.001 - 3 * 24 * 60 * 60 : sta_time
 
     const result = post('/api/calendar', {

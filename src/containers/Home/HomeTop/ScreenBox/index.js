@@ -58,7 +58,11 @@ class ScreenBox extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            actions.calendar_data(json)
+            if (!json.status) {
+                actions.calendar_data(json)
+            } else if (json.status === 2) {
+                message.warn('暂无入住数据')
+            }
         }).catch(err => {
             console.log(err)
         })
@@ -105,13 +109,13 @@ class ScreenBox extends Component {
         if (isDefault) {
             //前三天日期
             for (let i = 3; i >= 1; i--) {
-                dateLists.push(moment('2017-12-10').subtract(i, 'days').format('YYYY-MM-DD dd'))
+                dateLists.push(moment().subtract(i, 'days').format('YYYY-MM-DD dd'))
             }
             //今日日期
-            dateLists.push(moment('2017-12-10').format('YYYY-MM-DD dd'))
+            dateLists.push(moment().format('YYYY-MM-DD dd'))
             //往后49天
             for (let i = 1; i <= 46; i++) {
-                dateLists.push(moment('2017-12-10').add(i, 'days').format('YYYY-MM-DD dd'))
+                dateLists.push(moment().add(i, 'days').format('YYYY-MM-DD dd'))
             }
         } else {
             if (!date) return

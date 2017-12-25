@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
+import Loading from '@/components/Loading'
 import HouseItem from '@/components/HouseItem'
 
 import './style.less'
@@ -24,7 +25,7 @@ class HouseList extends Component {
         return (
             <div className="room-list" style={{top: -scrollTop + 'px'}}>
                 <ul>
-                    {
+                    {/*{
                         roomList ?
                             (
                                 !roomList.status ?
@@ -36,7 +37,10 @@ class HouseList extends Component {
                                     : '暂无房间'
                             )
                             : '加载中...'
-                    }
+                    }*/}
+                    <li>
+                        <Loading/>
+                    </li>
                 </ul>
             </div>
         )

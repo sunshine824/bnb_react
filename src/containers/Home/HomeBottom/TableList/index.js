@@ -3,6 +3,7 @@ import HomeTableTr from '@/components/HomeTableTr'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {save_scroll} from '@/redux/actions'
+import Loading from '@/components/Loading'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import HoverBox from '@/components/HoverBox'
 
@@ -43,23 +44,28 @@ class TableList extends Component {
         return (
             <div className="content-box-grid" onScroll={this.handleScroll.bind(this)} ref="tableCon">
                 <table className="table-roomcell-grid">
-                    {/*<tbody>
+                    <tbody>
                     {
                         roomList ?
                             (
                                 !roomList.status ?
                                     roomList.data.map((item, index) => {
                                         return (
-                                            <HomeTableTr {...this.state} key={index}
+                                            <HomeTableTr {...this.state}
+                                                         key={index}
+                                                         id={item.id}
                                                          handleOffset={this.handleOffset.bind(this)}/>
                                         )
                                     })
                                     : ''
                             )
-                            : '加载中...'
+                            :  <tr>
+                                <td colSpan="50" style={{textAlign:'center'}}>
+                                    <Loading/>
+                                </td>
+                            </tr>
                     }
-                    </tbody>*/}
-                    <HomeTableTr handleOffset={this.handleOffset.bind(this)}/>
+                    </tbody>
                 </table>
                 <HoverBox {...this.state}/>
             </div>

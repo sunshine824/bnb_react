@@ -33,65 +33,19 @@ class HomeTableTr extends Component {
         actions.show_popup(!this.props.show_popup)
     }
 
-    /*    renderTds() {
-            const {start_date, calendars, roomList} = this.props
-
-            let calendarId = []
-            for (let k in calendars) {
-                calendarId.push(parseInt(k))
-            }
-
-            for (let i in roomList.data) {
-                if (calendarId.includes(roomList.data[i].id)) {
-                    const arrIndex = []
-                    const calendarsOne = calendars[roomList.data[i].id]
-                    for (let key in calendarsOne) {
-                        const index = moment(moment.unix(calendarsOne[key].sta_time)
-                            .format('YYYY-MM-DD'))
-                            .diff(moment(start_date), 'days')
-                        arrIndex.push(index)
-                    }
-
-                    this.setState({
-                        arrIndex: arrIndex
-                    })
-                } else {
-                    /!*this.setState({
-                        arrIndex: []
-                    })*!/
-                }
-            }
-        }*/
-
     render() {
-        const {start_date, calendars, roomList} = this.props
+        const {start_date, calendars, roomList, id} = this.props
 
         let arrIndex = []
 
-        const renderTds = () => {
-            let calendarId = []
-            for (let k in calendars) {
-                calendarId.push(parseInt(k))
-            }
-
-            for (let i in roomList.data) {
-                if (calendarId.includes(roomList.data[i].id)) {
-                    arrIndex = []
-                    const calendarsOne = calendars[roomList.data[i].id]
-                    for (let key in calendarsOne) {
-                        const index = moment(moment.unix(calendarsOne[key].sta_time)
-                            .format('YYYY-MM-DD'))
-                            .diff(moment(start_date), 'days')
-                        arrIndex.push(index)
-                    }
-                } else {
-                    arrIndex = []
-                }
+        if(calendars[id]){
+            for (let key in calendars[id]) {
+                const index = moment(moment.unix(calendars[id][key].sta_time)
+                    .format('YYYY-MM-DD'))
+                    .diff(moment(start_date), 'days')
+                arrIndex.push(index)
             }
         }
-
-        renderTds()
-
 
         const tds = (length, arrIndex) => {
             let res = []
@@ -114,21 +68,9 @@ class HomeTableTr extends Component {
 
         return (
             <tbody>
-            {
-                roomList ?
-                    (
-                        !roomList.status ?
-                            roomList.data.map((item, index) => {
-                                return (
-                                    <tr key={index}>
-                                        {tds(50,arrIndex)}
-                                    </tr>
-                                )
-                            })
-                            : ''
-                    )
-                    : '加载中...'
-            }
+                <tr>
+                    {tds(50, arrIndex)}
+                </tr>
             </tbody>
         )
     }
