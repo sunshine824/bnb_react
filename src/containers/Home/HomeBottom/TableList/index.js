@@ -16,7 +16,8 @@ class TableList extends Component {
         this.state = {
             left: 0,
             top: -900,
-            isShow: false
+            isShow: false,
+            hoverData: ''
         }
     }
 
@@ -24,11 +25,13 @@ class TableList extends Component {
 
     }
 
-    handleOffset(left, top, isShow) {
+    handleOffset(left, top, isShow, id) {
+        const {calendars} = this.props
         this.setState({
             left: left,
             top: top,
-            isShow: isShow
+            isShow: isShow,
+            hoverData:calendars[id]
         })
     }
 
@@ -59,8 +62,8 @@ class TableList extends Component {
                                     })
                                     : ''
                             )
-                            :  <tr>
-                                <td colSpan="50" style={{textAlign:'center'}}>
+                            : <tr>
+                                <td colSpan="50" style={{textAlign: 'center'}}>
                                     <Loading/>
                                 </td>
                             </tr>
@@ -75,6 +78,7 @@ class TableList extends Component {
 
 function mapStateToProps(state) {
     return {
+        calendars: state.calendar_data.calendar ? state.calendar_data.calendar.data : '',
         roomList: state.save_Rooms.roomList ? state.save_Rooms.roomList : '',
         state: state
     }

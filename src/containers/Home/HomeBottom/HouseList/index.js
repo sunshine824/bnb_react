@@ -36,7 +36,7 @@ class HouseList extends Component {
                                     })
                                     : '暂无房间'
                             )
-                            : <li style={{textAlign: 'center', height: '30px', lineHeight: '30px'}}>
+                            : <li style={{textAlign: 'center', height: '31px', lineHeight: '31px',borderBottom:'1px solid #A8A8A8'}}>
                                 <Loading/>
                             </li>
                     }

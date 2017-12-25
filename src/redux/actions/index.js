@@ -80,6 +80,6 @@ export function save_scroll(scroll) {
 export function show_popup(popup) {
     return {
         type: actionTypes.Show_Popup,
-        popup
+        ...popup
     }
 }

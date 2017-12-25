@@ -7,6 +7,8 @@ import moment from 'moment';
 
 import './style.less'
 
+let tranId = 0
+
 class HomeTableTr extends Component {
     constructor(props) {
         super(props)
@@ -20,29 +22,33 @@ class HomeTableTr extends Component {
     componentDidMount() {
     }
 
-    handleMouseOver(e) {
-        this.props.handleOffset(e.pageX, e.pageY, true)
+    handleMouseOver(id, e) {
+        this.props.handleOffset(e.pageX, e.pageY, true, id)
     }
 
     handleMouseOut() {
         this.props.handleOffset(0, -900, false)
     }
 
-    handlePopup() {
+    handlePopup(id, date) {
         const {actions} = this.props
-        actions.show_popup(!this.props.show_popup)
+
+        tranId = id
+        actions.show_popup([!this.props.show_popup, id, date])
     }
 
     render() {
-        const {start_date, calendars, roomList, id} = this.props
+        const {start_date, calendars, roomList, id, dateLists} = this.props
 
         let arrIndex = []
+        const calendarObj = {}
 
-        if(calendars[id]){
+        if (calendars[id]) {
             for (let key in calendars[id]) {
                 const index = moment(moment.unix(calendars[id][key].sta_time)
                     .format('YYYY-MM-DD'))
                     .diff(moment(start_date), 'days')
+                calendarObj[index] = calendars[id][key]
                 arrIndex.push(index)
             }
         }
@@ -52,14 +58,25 @@ class HomeTableTr extends Component {
 
             for (let i = 0; i < length; i++) {
                 res.push(
-                    <td className={arrIndex.includes(i) ? 'active' : ''} onClick={this.handlePopup.bind(this)}
-                        key={i}
-                        onMouseOver={this.handleMouseOver.bind(this)}
-                        onMouseOut={this.handleMouseOut.bind(this)}>
-                        <div className="booked">
-                            <p className="book-name"></p>
-                        </div>
-                    </td>
+                    arrIndex.includes(i) ?
+                        <td className='active' data-date={dateLists[i]}
+                            onClick={this.handlePopup.bind(this, id, dateLists[i])}
+                            key={i}
+                            onMouseOver={this.handleMouseOver.bind(this, id)}
+                            onMouseOut={this.handleMouseOut.bind(this)}>
+                            <div className="booked"
+                                 style={{width: calendarObj[i] ? 94.5 * calendarObj[i].dates + 'px' : ''}}>
+                                <p className="book-name">{calendarObj[i].name}</p>
+                            </div>
+                        </td>
+                        :
+                        <td data-date={dateLists[i]}
+                            onClick={this.handlePopup.bind(this, id, dateLists[i].slice(0, -2))}
+                            key={i}>
+                            <div className="booked">
+                                <p className="book-name"></p>
+                            </div>
+                        </td>
                 )
             }
             return res
@@ -68,9 +85,9 @@ class HomeTableTr extends Component {
 
         return (
             <tbody>
-                <tr>
-                    {tds(50, arrIndex)}
-                </tr>
+            <tr>
+                {tds(50, arrIndex)}
+            </tr>
             </tbody>
         )
     }
@@ -78,6 +95,7 @@ class HomeTableTr extends Component {
 
 function mapStateToProps(state) {
     return {
+        dateLists: state.update_date.dateLists ? state.update_date.dateLists : '',
         start_date: state.update_date.dateLists ? state.update_date.dateLists[0].slice(0, -2) : '',
         calendars: state.calendar_data.calendar ? state.calendar_data.calendar.data : '',
         show_popup: state.show_popup.popup,
