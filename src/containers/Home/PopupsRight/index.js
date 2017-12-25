@@ -103,7 +103,6 @@ class PopupsRight extends Component {
 
     render() {
         const {show_popup, id, date, editInfo} = this.props
-        console.log(editInfo)
         const {sources} = this.state
         const className = this.props.show_popup ? 'active' : ''
         const {getFieldDecorator} = this.props.form;
@@ -122,7 +121,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('time', {
-                                        initialValue: [moment(moment(date), 'YYYY-MM-DD'), moment(moment(date).add(1, 'days'), 'YYYY-MM-DD')],
+                                        initialValue: date ? [moment(moment(date), 'YYYY-MM-DD'), moment(moment(date).add(1, 'days'), 'YYYY-MM-DD')] : '',
                                         rules: [{required: true, message: '请选择入住日期'}]
                                     })(
                                         <RangePicker
