@@ -15,9 +15,7 @@ class HoverBox extends Component {
                     <span>
                         {
                             hoverData ?
-                                hoverData[0].source_name !== null
-                                    ? hoverData[0].source_name
-                                    : ''
+                                hoverData.source_name
                                 : ''
                         }
                     </span>
@@ -25,16 +23,14 @@ class HoverBox extends Component {
                 <h4 className="user-name">
                     {
                         hoverData ?
-                            hoverData[0].name !== null ?
-                                hoverData[0].name
-                                : ''
+                            hoverData.name
                             : ''
                     }
                     &nbsp;&nbsp;
                     {
                         hoverData ?
-                            hoverData[0].phone !== null ?
-                                '(' + hoverData[0].phone + ')'
+                            hoverData.phone !== null ?
+                                '(' + hoverData.phone + ')'
                                 : ''
                             : ''
                     }
@@ -43,27 +39,29 @@ class HoverBox extends Component {
                     <span>
                         <em>
                             {
-                                moment.unix(hoverData ?
-                                    hoverData[0].sta_time
-                                    : '')
-                                    .format('MM-DD')
+                                moment.unix(
+                                    hoverData ?
+                                        hoverData.sta_time
+                                        : ''
+                                ).format('MM-DD')
                             }
                         </em>
                     </span>
                     &nbsp;入住&nbsp;
                     <em>
                         {
-                            moment.unix(hoverData ?
-                                hoverData[0].com_time
-                                : '')
-                                .format('MM-DD')
+                            moment.unix(
+                                hoverData ?
+                                    hoverData.com_time
+                                    : ''
+                            ).format('MM-DD')
                         }
                     </em>
                     &nbsp;退房&nbsp;
                     <strong>
                         {
                             hoverData ?
-                                hoverData[0].dates
+                                hoverData.dates
                                 : ''
                         }
                     </strong>
@@ -72,14 +70,16 @@ class HoverBox extends Component {
                     <div className="book-money">
                         <span>订单金额：<span className="c-red">￥{
                             hoverData ?
-                                hoverData[0].revenue
+                                hoverData.revenue !== null ?
+                                    hoverData.revenue
+                                    : ''
                                 : ''
                         }</span>
                         </span>
                     </div>
                     {
                         hoverData ?
-                            hoverData[0].remark !== null ?
+                            hoverData.remark !== null ?
                                 <div className="tip-line"></div>
                                 : ''
                             : ''
@@ -88,8 +88,8 @@ class HoverBox extends Component {
                         <span>
                             {
                                 hoverData ?
-                                    hoverData[0].remark !== null ?
-                                        '备注：' + hoverData[0].remark
+                                    hoverData.remark !== null ?
+                                        '备注：' + hoverData.remark
                                         : ''
                                     : ''
                             }

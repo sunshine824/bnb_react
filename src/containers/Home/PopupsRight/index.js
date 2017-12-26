@@ -40,8 +40,8 @@ class PopupsRight extends Component {
      * 提交编辑入住信息
      * @private
      */
-    _editCheckIn() {
-        const result = editCheckIn()
+    _editCheckIn(data) {
+        const result = editCheckIn(data)
         result.then(res => {
             return res.json()
         }).then(json => {
@@ -73,7 +73,7 @@ class PopupsRight extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const {id} = this.props
+        const {id, editInfo} = this.props
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
                 const rangeValue = fieldsValue['time'];
@@ -82,7 +82,7 @@ class PopupsRight extends Component {
                     'time': [rangeValue[0].format('X'), rangeValue[1].format('X')]
                 };
                 values.house_id = id
-                this._addCheckIn(values)
+                editInfo.status !== 1 ? this._editCheckIn(values) : this._addCheckIn(values)
             }
         });
     }
@@ -109,19 +109,31 @@ class PopupsRight extends Component {
         return (
             <Form onSubmit={this.handleSubmit.bind(this)}>
                 <div className={"content-slide " + className}>
-                    <p className="title">编辑订单</p>
+                    <p className="title">
+                        {editInfo.status === 1 ? '添加订单' : '编辑订单'}
+                    </p>
                     <div className="slide-body">
 
                         <p className="group-title">订单信息</p>
                         <div className="item">
                             <p className="item-title">
                                 入住日期
-                                <span>共2晚</span>
+                                <span>共
+                                    {
+                                        editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.dates
+                                                : ''
+                                            : ''
+                                    }
+                                    晚</span>
                             </p>
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('time', {
-                                        initialValue: date ? [moment(moment(date), 'YYYY-MM-DD'), moment(moment(date).add(1, 'days'), 'YYYY-MM-DD')] : '',
+                                        initialValue: editInfo.status !== 1 ?
+                                            [moment(moment.unix(editInfo.data ? editInfo.data.sta_time : '').format('YYYY-MM-DD')), moment(moment.unix(editInfo.data ? editInfo.data.com_time : '').format('YYYY-MM-DD'))]
+                                            : [moment(moment(date), 'YYYY-MM-DD'), moment(moment(date).add(1, 'days'), 'YYYY-MM-DD')],
                                         rules: [{required: true, message: '请选择入住日期'}]
                                     })(
                                         <RangePicker
@@ -139,7 +151,11 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('status', {
-                                        initialValue: 1,
+                                        initialValue: editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.status
+                                                : ''
+                                            : 1,
                                         rules: [{required: true, message: '请选择状态'}]
                                     })(
                                         <RadioGroup>
@@ -157,6 +173,11 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('source_id', {
+                                        initialValue: editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.source_id
+                                                : ''
+                                            : '',
                                         rules: [{required: true, message: '请选择渠道来源'}]
                                     })(
                                         <Select
@@ -191,7 +212,11 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('revenue', {
-                                        initialValue: '0',
+                                        initialValue: editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.revenue
+                                                : ''
+                                            : '0',
                                         rules: [{required: false, message: '请输入订单收入'}]
                                     })(
                                         <Input addonBefore="￥" placeholder="0"/>
@@ -209,7 +234,11 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('name', {
-                                        initialValue: '',
+                                        initialValue: editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.name
+                                                : ''
+                                            : '',
                                         rules: [{required: false, message: '请输入入住人姓名'}]
                                     })(
                                         <Input placeholder="入住人姓名"/>
@@ -224,7 +253,11 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('phone', {
-                                        initialValue: '',
+                                        initialValue: editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.phone
+                                                : ''
+                                            : '',
                                         rules: [
                                             {required: false, message: '请输入入住人手机号'},
                                             {pattern: '^1[0-9]{10}$', message: '请输入正确手机号'}
@@ -242,7 +275,11 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('wx', {
-                                        initialValue: '',
+                                        initialValue: editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.wx
+                                                : ''
+                                            : '',
                                         rules: [{required: false, message: '请输入入住人微信号'}]
                                     })(
                                         <Input placeholder="入住人微信号"/>
@@ -257,7 +294,11 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('remark', {
-                                        initialValue: '',
+                                        initialValue: editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.remark
+                                                : ''
+                                            : '',
                                         rules: [{required: false, message: '请填写备注信息'}]
                                     })(
                                         <TextArea placeholder="请填写备注信息" rows={4}/>
@@ -272,7 +313,11 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('color_id', {
-                                        initialValue: '2',
+                                        initialValue: editInfo.status !== 1 ?
+                                            editInfo.data ?
+                                                editInfo.data.color_id
+                                                : ''
+                                            : 1,
                                         rules: [{required: true, message: '请选择提示颜色'}]
                                     })(
                                         <RadioGroup>

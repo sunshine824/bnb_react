@@ -25,13 +25,13 @@ class TableList extends Component {
 
     }
 
-    handleOffset(left, top, isShow, id) {
+    handleOffset(left, top, isShow, hoverData) {
         const {calendars} = this.props
         this.setState({
             left: left,
             top: top,
             isShow: isShow,
-            hoverData:calendars[id]
+            hoverData:hoverData
         })
     }
 

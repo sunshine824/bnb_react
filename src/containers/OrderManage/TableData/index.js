@@ -145,8 +145,8 @@ class TableData extends Component {
                                         orderList.data.data.map((item, index) => {
                                             return (
                                                 <tr key={index}>
-                                                    <td>馆金泰</td>
-                                                    <td>58同城</td>
+                                                    <td>{item.num}</td>
+                                                    <td>{item.source_name}</td>
                                                     <td>{moment.unix(item.sta_time).format('YYYY-MM-DD')}</td>
                                                     <td>{moment.unix(item.com_time).format('YYYY-MM-DD')}</td>
                                                     <td>{item.name}</td>

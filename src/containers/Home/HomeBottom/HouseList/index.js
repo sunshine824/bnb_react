@@ -21,7 +21,6 @@ class HouseList extends Component {
 
     render() {
         const {roomList, scrollTop} = this.props
-        console.log(roomList)
         return (
             <div className="room-list" style={{top: -scrollTop + 'px'}}>
                 <ul>

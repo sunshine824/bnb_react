@@ -24,16 +24,18 @@ class HomeTableTr extends Component {
     componentDidMount() {
     }
 
-    handleMouseOver(id, e) {
-        this.props.handleOffset(e.pageX, e.pageY, true, id)
+    handleMouseOver(hoverData, e) {
+        e.persist()
+        this.props.handleOffset(e.pageX, e.pageY, true, hoverData)
     }
 
-    handleMouseOut() {
+    handleMouseOut(e) {
+        e.persist()
         this.props.handleOffset(0, -900, false)
     }
 
-    handlePopup(id, date) {
-        this._editCheckInfo(id,date)
+    handlePopup(id, order_id, date) {
+        this._editCheckInfo(id, order_id, date)
     }
 
     /**
@@ -41,15 +43,15 @@ class HomeTableTr extends Component {
      * @param id
      * @private
      */
-    _editCheckInfo(id,date) {
+    _editCheckInfo(id, order_id, date) {
         const {actions} = this.props
-        const result = editCheckInfo(id)
+        const result = editCheckInfo(order_id)
         result.then((res) => {
             return res.json()
         }).then(json => {
             this.setState({
                 editInfo: json
-            },()=>{
+            }, () => {
                 actions.show_popup([
                     !this.props.show_popup,
                     id,
@@ -85,18 +87,18 @@ class HomeTableTr extends Component {
                 res.push(
                     arrIndex.includes(i) ?
                         <td className='active' data-date={dateLists[i]}
-                            onClick={this.handlePopup.bind(this, id, dateLists[i])}
+                            onClick={this.handlePopup.bind(this, id, calendarObj[i].id)}
                             key={i}
-                            onMouseOver={this.handleMouseOver.bind(this, id)}
+                            onMouseOver={this.handleMouseOver.bind(this, calendarObj[i])}
                             onMouseOut={this.handleMouseOut.bind(this)}>
                             <div className="booked"
                                  style={{width: calendarObj[i] ? 94.5 * calendarObj[i].dates + 'px' : ''}}>
-                                <p className="book-name">{calendarObj[i].name}</p>
+                                <p className="book-name">{calendarObj[i].source_name} / {calendarObj[i].name}</p>
                             </div>
                         </td>
                         :
                         <td data-date={dateLists[i]}
-                            onClick={this.handlePopup.bind(this, id, dateLists[i].slice(0, -2))}
+                            onClick={this.handlePopup.bind(this, id, '', dateLists[i].slice(0, -2))}
                             key={i}>
                             <div className="booked">
                                 <p className="book-name"></p>
