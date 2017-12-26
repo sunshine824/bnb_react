@@ -25,16 +25,14 @@ class HomeTableTr extends Component {
     }
 
     handleMouseOver(hoverData, e) {
-        e.persist()
         this.props.handleOffset(e.pageX, e.pageY, true, hoverData)
     }
 
     handleMouseOut(e) {
-        e.persist()
         this.props.handleOffset(0, -900, false)
     }
 
-    handlePopup(id, order_id, date) {
+    handlePopup(id, order_id, date, event) {
         this._editCheckInfo(id, order_id, date)
     }
 
@@ -56,7 +54,8 @@ class HomeTableTr extends Component {
                     !this.props.show_popup,
                     id,
                     date,
-                    this.state.editInfo
+                    this.state.editInfo,
+                    order_id,
                 ])
             })
         }).catch(err => {
@@ -87,12 +86,16 @@ class HomeTableTr extends Component {
                 res.push(
                     arrIndex.includes(i) ?
                         <td className='active' data-date={dateLists[i]}
-                            onClick={this.handlePopup.bind(this, id, calendarObj[i].id)}
+                            onClick={this.handlePopup.bind(this, id, calendarObj[i].id, '')}
                             key={i}
                             onMouseOver={this.handleMouseOver.bind(this, calendarObj[i])}
                             onMouseOut={this.handleMouseOut.bind(this)}>
                             <div className="booked"
-                                 style={{width: calendarObj[i] ? 94.5 * calendarObj[i].dates + 'px' : ''}}>
+                                 style={{width: calendarObj[i] ?
+                                     calendarObj[i].dates > 1 ?
+                                         95 * calendarObj[i].dates + 'px'
+                                         : 93 * calendarObj[i].dates
+                                     : ''}}>
                                 <p className="book-name">{calendarObj[i].source_name} / {calendarObj[i].name}</p>
                             </div>
                         </td>

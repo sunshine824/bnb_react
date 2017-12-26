@@ -42,3 +42,18 @@ export function editCheckInfo(id, key = '123456') {
 
     return result
 }
+
+/**
+ * 删除订单
+ * @param id
+ * @param key
+ * @returns {*}
+ */
+export function deleteCheckIn(id,key='123456') {
+    const result=post('/api/deorder',{
+        id:id,
+        key:key
+    })
+
+    return result
+}

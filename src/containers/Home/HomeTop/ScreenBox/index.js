@@ -37,6 +37,7 @@ class ScreenBox extends Component {
         this.getHouseList()
         //获取房间数据
         this.getRoomListData()
+
     }
 
     onChange(date, dateString) {
@@ -202,4 +203,4 @@ function mapActionsToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(ScreenBox)
+export default connect(mapStateToProps, mapActionsToProps, null, {withRef: true})(ScreenBox)

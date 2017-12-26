@@ -9,7 +9,8 @@ export default function show_popup(state = initialState, action) {
                 popup: action[0],
                 id: action[1],
                 date: action[2],
-                editInfo: action[3]
+                editInfo: action[3],
+                order_id:action[4]
             }
         default:
             return state

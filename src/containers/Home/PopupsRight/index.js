@@ -3,7 +3,7 @@ import {DatePicker, Form, Radio, Select, Input, Button, message} from 'antd';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {show_popup} from '@/redux/actions'
-import {editCheckIn, addCheckIn} from '@/fetch/EditCheckin'
+import {editCheckIn, addCheckIn, deleteCheckIn} from '@/fetch/EditCheckin'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import moment from 'moment'
 import {getSourceList} from '@/fetch/SourceList'
@@ -42,10 +42,17 @@ class PopupsRight extends Component {
      */
     _editCheckIn(data) {
         const result = editCheckIn(data)
+        const {actions} = this.props
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
+            if (!json.status) {
+                message.success('添加成功')
+                this.props.HandleCalendar()
+                actions.show_popup([!this.props.show_popup])
+            } else {
+                message.error('添加失败')
+            }
         }).catch(err => {
             console.log(err)
         })
@@ -57,11 +64,14 @@ class PopupsRight extends Component {
      */
     _addCheckIn(data) {
         const result = addCheckIn(data)
+        const {actions} = this.props
         result.then(res => {
             return res.json()
         }).then(json => {
             if (!json.status) {
                 message.success('添加成功')
+                this.props.HandleCalendar()
+                actions.show_popup([!this.props.show_popup])
             } else {
                 message.error('添加失败')
             }
@@ -73,7 +83,7 @@ class PopupsRight extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const {id, editInfo} = this.props
+        const {id, editInfo, order_id} = this.props
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
                 const rangeValue = fieldsValue['time'];
@@ -81,8 +91,13 @@ class PopupsRight extends Component {
                     ...fieldsValue,
                     'time': [rangeValue[0].format('X'), rangeValue[1].format('X')]
                 };
-                values.house_id = id
-                editInfo.status !== 1 ? this._editCheckIn(values) : this._addCheckIn(values)
+                if (editInfo.status !== 1) {
+                    values.id = order_id
+                    this._editCheckIn(values)
+                } else {
+                    values.house_id = id
+                    this._addCheckIn(values)
+                }
             }
         });
     }
@@ -101,6 +116,26 @@ class PopupsRight extends Component {
         })
     }
 
+    //删除订单
+    deleteOrder() {
+        const {order_id, actions} = this.props
+        const result = deleteCheckIn(order_id)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            console.log(json)
+            if (!json.status) {
+                this.props.HandleCalendar()
+                actions.show_popup([!this.props.show_popup])
+                message.success('删除成功！')
+            } else {
+                message.warn('删除失败！')
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     render() {
         const {show_popup, id, date, editInfo} = this.props
         const {sources} = this.state
@@ -110,7 +145,11 @@ class PopupsRight extends Component {
             <Form onSubmit={this.handleSubmit.bind(this)}>
                 <div className={"content-slide " + className}>
                     <p className="title">
-                        {editInfo.status === 1 ? '添加订单' : '编辑订单'}
+                        {editInfo.status !== 1 ? '编辑订单' : '添加订单'}
+                        {editInfo.status !== 1 ?
+                            <Button onClick={this.deleteOrder.bind(this)}
+                                    style={{float: 'right', marginTop: '5px', marginRight: '15px'}}>删除订单</Button>
+                            : ''}
                     </p>
                     <div className="slide-body">
 
@@ -351,7 +390,8 @@ function mapStateToProps(state) {
         show_popup: state.show_popup.popup ? state.show_popup.popup : false,
         id: state.show_popup.id ? state.show_popup.id : 0,
         date: state.show_popup.date ? state.show_popup.date : '',
-        editInfo: state.show_popup.editInfo ? state.show_popup.editInfo : ''
+        editInfo: state.show_popup.editInfo ? state.show_popup.editInfo : '',
+        order_id: state.show_popup.order_id ? state.show_popup.order_id : '',
     }
 }
 

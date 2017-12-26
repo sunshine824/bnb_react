@@ -2,11 +2,12 @@
   position: absolute;
   right: -339px;
   bottom: 0;
+  top:0;
   width: 340px;
   background-color: #fff;
   border-left: 1px solid #abadb3;
   z-index: 990;
-  height: calc(100vh);
+  height: calc(~"100vh - 48px");
   transition: right 1s;
   -moz-transition: right 1s;
   -webkit-transition: right 1s;
@@ -19,12 +20,14 @@
     line-height: 40px;
     background-color: #e0e2e7;
     font-size: 16px;
+    position: absolute;
     border-bottom: 1px solid #c3c2c2;
+    width: 100%;
   }
   .slide-body{
     position: absolute;
     width: 100%;
-    top: 46px;
+    top: 40px;
     bottom: 74px;
     overflow-x: hidden;
     overflow-y: auto;

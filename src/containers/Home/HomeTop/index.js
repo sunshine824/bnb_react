@@ -4,15 +4,24 @@ import DateList from './DateList'
 
 import './style.less'
 
-class HomeLeft extends Component {
+class HomeTop extends Component {
+
+    componentDidMount() {
+        this.ChildHandleCalendar()
+    }
+
+    ChildHandleCalendar() {
+        this.refs['calendar'].wrappedInstance.getCalendarData()
+    }
+
     render() {
         return (
             <div className="home-top">
-                <ScreenBox/>
+                <ScreenBox ref={"calendar"}/>
                 <DateList/>
             </div>
         )
     }
 }
 
-export default HomeLeft
+export default HomeTop
