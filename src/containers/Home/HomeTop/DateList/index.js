@@ -11,6 +11,7 @@ class DateList extends Component {
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     }
 
+
     render() {
         const {dateLists, scrollLeft} = this.props
 

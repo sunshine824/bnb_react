@@ -123,7 +123,6 @@ class PopupsRight extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             if (!json.status) {
                 this.props.HandleCalendar()
                 actions.show_popup([!this.props.show_popup])
