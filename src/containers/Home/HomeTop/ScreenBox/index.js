@@ -4,7 +4,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {bindActionCreators} from 'redux'
 import {DatePicker, Select, message} from 'antd';
 import moment from 'moment';
-import {update_date, save_rooms, calendar_data} from '@/redux/actions'
+import {update_date, save_rooms, calendar_data, save_remain_house} from '@/redux/actions'
 import {getHouseListData} from '@/fetch/HouseList'
 import {getRoomListData} from '@/fetch/RoomList'
 import {getCalendarData} from '@/fetch/CalendarList'
@@ -25,7 +25,8 @@ class ScreenBox extends Component {
             house_list: [],
             house_id: '',
             sta_time: '',
-            calendar: {}
+            calendar: {},
+            dateLists: []
         }
     }
 
@@ -128,6 +129,10 @@ class ScreenBox extends Component {
             }
         }
 
+        this.setState({
+            dateLists: dateLists
+        })
+
         actions.update_date(dateLists)
     }
 
@@ -138,10 +143,15 @@ class ScreenBox extends Component {
     getRoomListData(value) {
         const {actions} = this.props
         const result = getRoomListData(value)
+        const remain_house = {}
         result.then((res) => {
             return res.json()
         }).then(json => {
             actions.save_rooms(json)
+            this.state.dateLists.map((item, index) => {
+                remain_house[item.slice(0, -2)] = json.data.length
+            })
+            actions.save_remain_house(remain_house)
         }).catch(err => {
             console.log(err)
         })
@@ -198,7 +208,8 @@ function mapActionsToProps(dispatch) {
         actions: bindActionCreators({
             update_date,
             save_rooms,
-            calendar_data
+            calendar_data,
+            save_remain_house
         }, dispatch)
     }
 }

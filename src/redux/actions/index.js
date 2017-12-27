@@ -13,6 +13,18 @@ export function update_date(dateLists) {
 }
 
 /**
+ * 剩余房间
+ * @param date
+ * @returns {{type, date: *}}
+ */
+export function save_remain_house(remain_houses) {
+    return {
+        type: actionTypes.Save_Remain_House,
+        remain_houses
+    }
+}
+
+/**
  * 获取日历数据
  * @param calendar
  * @returns {{type, calendar: *}}

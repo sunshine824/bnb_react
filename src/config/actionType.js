@@ -1,4 +1,5 @@
 export const UPDATE_DATE = 'UPDATE_DATE' //日期更新
+export const Save_Remain_House = 'Save_Remain_House' //存储剩余房间
 export const Calendar_DATA = 'Calendar_DATA' //日历数据
 export const Save_Rooms = 'Save_Rooms'  //储存房间列表
 export const Save_Path = 'Save_Path' //储存路由
