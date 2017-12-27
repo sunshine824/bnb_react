@@ -106,7 +106,7 @@ class HomeTableTr extends Component {
                         :
                         <td data-date={dateLists[i]}
                             onClick={this.handlePopup.bind(this, id, '', dateLists[i].slice(0, -2))}
-                            key={i}>
+                            key={i} className="seleted">
                             <div className="booked">
                                 <p className="book-name"></p>
                             </div>
