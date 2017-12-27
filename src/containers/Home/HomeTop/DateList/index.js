@@ -13,20 +13,19 @@ class DateList extends Component {
 
 
     render() {
-        const {dateLists, scrollLeft} = this.props
+        const {dateLists, scrollLeft, remain_house} = this.props
+
+        const Lis = () => {
+            const res = []
+            for (let key in remain_house) {
+                res.push(<DateLis key={key} date={key.slice(5)} room={remain_house[key]}/>)
+            }
+            return res
+        }
 
         return (
             <ul className="table-date-grid" style={{left: -scrollLeft + 'px'}}>
-                {
-                    dateLists ?
-                        dateLists.map((item, index) => {
-                            return (
-                                <DateLis key={index} item={item}/>
-                            )
-
-                        })
-                        : ''
-                }
+                {Lis()}
             </ul>
         )
     }
@@ -35,7 +34,8 @@ class DateList extends Component {
 function mapStateToProps(state) {
     return {
         dateLists: state.update_date.dateLists ? state.update_date.dateLists : '',
-        scrollLeft: state.save_scroll.scrollLeft ? state.save_scroll.scrollLeft : 0
+        scrollLeft: state.save_scroll.scrollLeft ? state.save_scroll.scrollLeft : 0,
+        remain_house: state.save_remain_house
     }
 }
 

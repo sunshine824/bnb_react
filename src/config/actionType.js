@@ -6,3 +6,5 @@ export const Save_Path = 'Save_Path' //储存路由
 export const Save_Status = 'Save_Status' //储存订单管理入住状态
 export const Save_Scroll = 'Save_Scroll' //日历管理滚动数据
 export const Show_Popup = 'Open_Popup'  //是否显示右侧侧边栏
+export const Add_Remain_House='Add_Remain_House' //递增剩余房间
+export const Red_Remain_House='Red_Remain_House' //递减剩余房间

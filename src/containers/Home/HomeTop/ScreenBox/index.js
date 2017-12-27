@@ -57,10 +57,39 @@ class ScreenBox extends Component {
     getCalendarData(id, date) {
         const {actions} = this.props
         const result = getCalendarData(id, date)
+        const calendarTime = []
+        const remain_house = {}
+        let house_num = 0
         result.then(res => {
             return res.json()
         }).then(json => {
             if (!json.status) {
+                for (let key in json.data) {
+                    json.data[key].map((item, index) => {
+                        house_num = item.house_num
+                        for (let i = 0; i < item.dates; i++) {
+                            const date = moment.unix(item.sta_time).add(i, 'days').format('YYYY-MM-DD')
+                            calendarTime.push(date)
+                        }
+                    })
+                }
+                calendarTime.shift()
+
+                //获取重复个数
+                const res = calendarTime.reduce((o, k) => {
+                    k in o ? o[k]++ : (o[k] = 1);
+                    return o;
+                }, {});
+
+                this.state.dateLists.map((item, index) => {
+                    if (res[item.slice(0, -2)]) {
+                        remain_house[item.slice(0, -2)] = house_num - res[item.slice(0, -2)]
+                    } else {
+                        remain_house[item.slice(0, -2)] = house_num
+                    }
+                })
+
+                actions.save_remain_house(remain_house)
                 actions.calendar_data(json)
             } else if (json.status === 2) {
                 message.warn('暂无入住数据')
@@ -143,15 +172,10 @@ class ScreenBox extends Component {
     getRoomListData(value) {
         const {actions} = this.props
         const result = getRoomListData(value)
-        const remain_house = {}
         result.then((res) => {
             return res.json()
         }).then(json => {
             actions.save_rooms(json)
-            this.state.dateLists.map((item, index) => {
-                remain_house[item.slice(0, -2)] = json.data.length
-            })
-            actions.save_remain_house(remain_house)
         }).catch(err => {
             console.log(err)
         })

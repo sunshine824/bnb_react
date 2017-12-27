@@ -7,11 +7,11 @@ class DateLis extends Component {
     render(){
         return(
             <li>
-                <dl className="date-cell" markdate={this.props.item.slice(0,-2)}>
+                <dl className="date-cell" markdate={this.props.date}>
                     <dt>
-                        <b>{this.props.item.slice(5)}</b>
+                        <b>{this.props.date}</b>
                     </dt>
-                    <dd>剩20间</dd>
+                    <dd>剩 {this.props.room} 间</dd>
                 </dl>
             </li>
         )

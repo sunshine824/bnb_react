@@ -14,7 +14,7 @@ export function update_date(dateLists) {
 
 /**
  * 剩余房间
- * @param date
+ * @param remain_houses
  * @returns {{type, date: *}}
  */
 export function save_remain_house(remain_houses) {
@@ -23,6 +23,31 @@ export function save_remain_house(remain_houses) {
         remain_houses
     }
 }
+
+/**
+ * 递增剩余房间
+ * @param date
+ * @returns {{type, date: *}}
+ */
+export function add_remain_house(date) {
+    return {
+        type: actionTypes.Add_Remain_House,
+        date
+    }
+}
+
+/**
+ * 递减剩余房间
+ * @param date
+ * @returns {{type, date: *}}
+ */
+export function red_remain_house(date) {
+    return {
+        type: actionTypes.Red_Remain_House,
+        date
+    }
+}
+
 
 /**
  * 获取日历数据
@@ -35,6 +60,7 @@ export function calendar_data(calendar) {
         calendar
     }
 }
+
 
 /**
  * 获取房间列表

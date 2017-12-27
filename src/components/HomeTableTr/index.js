@@ -22,6 +22,7 @@ class HomeTableTr extends Component {
     }
 
     componentDidMount() {
+
     }
 
     handleMouseOver(hoverData, e) {
@@ -66,6 +67,7 @@ class HomeTableTr extends Component {
     render() {
         const {start_date, calendars, roomList, id, dateLists} = this.props
 
+
         let arrIndex = []
         const calendarObj = {}
 
@@ -91,11 +93,13 @@ class HomeTableTr extends Component {
                             onMouseOver={this.handleMouseOver.bind(this, calendarObj[i])}
                             onMouseOut={this.handleMouseOut.bind(this)}>
                             <div className="booked"
-                                 style={{width: calendarObj[i] ?
-                                     calendarObj[i].dates > 1 ?
-                                         95 * calendarObj[i].dates + 'px'
-                                         : 93 * calendarObj[i].dates
-                                     : ''}}>
+                                 style={{
+                                     width: calendarObj[i] ?
+                                         calendarObj[i].dates > 1 ?
+                                             95 * calendarObj[i].dates + 'px'
+                                             : 93 * calendarObj[i].dates
+                                         : ''
+                                 }}>
                                 <p className="book-name">{calendarObj[i].source_name} / {calendarObj[i].name}</p>
                             </div>
                         </td>
@@ -130,6 +134,7 @@ function mapStateToProps(state) {
         calendars: state.calendar_data.calendar ? state.calendar_data.calendar.data : '',
         show_popup: state.show_popup.popup,
         roomList: state.save_Rooms.roomList ? state.save_Rooms.roomList : '',
+        remain_house: state.save_remain_house
     }
 }
 
