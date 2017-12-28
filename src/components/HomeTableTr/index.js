@@ -9,6 +9,7 @@ import moment from 'moment';
 import './style.less'
 
 let tranId = 0
+let arrDate = []
 
 class HomeTableTr extends Component {
     constructor(props) {
@@ -34,12 +35,44 @@ class HomeTableTr extends Component {
     }
 
     handlePopup(id, order_id, date, event) {
-        this._editCheckInfo(id, order_id, date)
+        const {calendars} = this.props
+        //this._editCheckInfo(id, order_id, date)
+
+        //判断是否点了三次
+        if (arrDate.length > 2) {
+            arrDate = []
+            arrDate.push(date)
+        }
+
+        if (order_id) { //编辑订单
+            return false
+        } else {  //添加订单
+            event.target.className = 'seleted'
+            arrDate.push(date)
+            if (arrDate.length > 1) { //当arrDate中有两个的时候
+                if (calendars[id]) {  //当前房间中有订单
+                    const arrOrderDate = []
+                    calendars[id].map((item, index) => {
+                        const sta_time = moment.unix(item.sta_time).format('YYYY-MM-DD')
+                        const end_time = moment.unix(item.com_time).format('YYYY-MM-DD')
+                        arrOrderDate.push({
+                            sta_time,
+                            end_time
+                        })
+                    })
+                    console.log(arrOrderDate)
+                } else {  //若当前房间没订单
+
+                }
+            }
+        }
     }
 
     /**
      * 获取编辑入住回显信息
-     * @param id
+     * @param id  房间id
+     * @param order_id  订单id
+     * @param date
      * @private
      */
     _editCheckInfo(id, order_id, date) {
@@ -106,7 +139,7 @@ class HomeTableTr extends Component {
                         :
                         <td data-date={dateLists[i]}
                             onClick={this.handlePopup.bind(this, id, '', dateLists[i].slice(0, -2))}
-                            key={i} className="seleted">
+                            key={i}>
                             <div className="booked">
                                 <p className="book-name"></p>
                             </div>
@@ -119,7 +152,7 @@ class HomeTableTr extends Component {
 
         return (
             <tbody>
-            <tr>
+            <tr id={'room_cell' + id}>
                 {tds(50, arrIndex)}
             </tr>
             </tbody>

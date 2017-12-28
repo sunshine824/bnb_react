@@ -137,6 +137,7 @@ class PopupsRight extends Component {
 
     render() {
         const {show_popup, id, date, editInfo} = this.props
+
         const {sources} = this.state
         const className = this.props.show_popup ? 'active' : ''
         const {getFieldDecorator} = this.props.form;
