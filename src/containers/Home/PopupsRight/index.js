@@ -31,9 +31,15 @@ class PopupsRight extends Component {
         this._getSourceList()
     }
 
-    slideOpen() {
-        const {actions} = this.props
+    slideOpen(mold) {
+        const {actions, id} = this.props
+        const tds = document.querySelectorAll('#room_cell' + id + ' td')
         actions.show_popup([!this.props.show_popup])
+        if (mold === 'cancel') {
+            for (let i = 0; i < tds.length; i++) {
+                this.removeClass(tds[i], 'seleted')
+            }
+        }
     }
 
     /**
@@ -64,12 +70,17 @@ class PopupsRight extends Component {
      */
     _addCheckIn(data) {
         const result = addCheckIn(data)
-        const {actions} = this.props
+        const {actions, id} = this.props
+        const tds = document.querySelectorAll('#room_cell' + id + ' td')
+
         result.then(res => {
             return res.json()
         }).then(json => {
             if (!json.status) {
                 message.success('添加成功')
+                for (let i = 0; i < tds.length; i++) {
+                    this.removeClass(tds[i], 'seleted')
+                }
                 this.props.HandleCalendar()
                 actions.show_popup([!this.props.show_popup])
             } else {
@@ -83,7 +94,7 @@ class PopupsRight extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const {id, editInfo, order_id} = this.props
+        const {id, order_id} = this.props
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
                 const rangeValue = fieldsValue['time'];
@@ -91,7 +102,7 @@ class PopupsRight extends Component {
                     ...fieldsValue,
                     'time': [rangeValue[0].format('X'), rangeValue[1].format('X')]
                 };
-                if (editInfo.status !== 1) {
+                if (order_id) {
                     values.id = order_id
                     this._editCheckIn(values)
                 } else {
@@ -135,8 +146,26 @@ class PopupsRight extends Component {
         })
     }
 
+    //原生js实现是否有class
+    hasClass(obj, cls) {
+        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    }
+
+    //实现添加class
+    addClass(obj, cls) {
+        if (!this.hasClass(obj, cls)) obj.className += " " + cls;
+    }
+
+    //实现移除class
+    removeClass(obj, cls) {
+        if (this.hasClass(obj, cls)) {
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+            obj.className = obj.className.replace(reg, ' ');
+        }
+    }
+
     render() {
-        const {show_popup, id, date, editInfo} = this.props
+        const {show_popup, id, date, editInfo, arrDate, order_id} = this.props
 
         const {sources} = this.state
         const className = this.props.show_popup ? 'active' : ''
@@ -145,8 +174,8 @@ class PopupsRight extends Component {
             <Form onSubmit={this.handleSubmit.bind(this)}>
                 <div className={"content-slide " + className}>
                     <p className="title">
-                        {editInfo.status !== 1 ? '编辑订单' : '添加订单'}
-                        {editInfo.status !== 1 ?
+                        {order_id ? '编辑订单' : '添加订单'}
+                        {order_id ?
                             <Button onClick={this.deleteOrder.bind(this)}
                                     style={{float: 'right', marginTop: '5px', marginRight: '15px'}}>删除订单</Button>
                             : ''}
@@ -159,20 +188,24 @@ class PopupsRight extends Component {
                                 入住日期
                                 <span>共
                                     {
-                                        editInfo.status !== 1 ?
+                                        order_id ?
                                             editInfo.data ?
                                                 editInfo.data.dates
                                                 : ''
-                                            : ''
+                                            : moment(moment(arrDate[1] ? arrDate[1] : arrDate[0])
+                                            .format('YYYY-MM-DD'))
+                                            .diff(arrDate[0], 'days') + 1
                                     }
                                     晚</span>
                             </p>
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('time', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             [moment(moment.unix(editInfo.data ? editInfo.data.sta_time : '').format('YYYY-MM-DD')), moment(moment.unix(editInfo.data ? editInfo.data.com_time : '').format('YYYY-MM-DD'))]
-                                            : [moment(moment(date), 'YYYY-MM-DD'), moment(moment(date).add(1, 'days'), 'YYYY-MM-DD')],
+                                            : !date && !arrDate ?
+                                                [moment(moment(), 'YYYY-MM-DD'), moment(moment().add(1, 'days'), 'YYYY-MM-DD')]
+                                                : [moment(moment(arrDate[0]), 'YYYY-MM-DD'), moment(moment(arrDate[1] ? arrDate[1] : arrDate[0]).add(1, 'days'), 'YYYY-MM-DD')],
                                         rules: [{required: true, message: '请选择入住日期'}]
                                     })(
                                         <RangePicker
@@ -190,7 +223,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('status', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             editInfo.data ?
                                                 editInfo.data.status
                                                 : ''
@@ -212,7 +245,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('source_id', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             editInfo.data ?
                                                 editInfo.data.source_id
                                                 : ''
@@ -251,7 +284,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('revenue', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             editInfo.data ?
                                                 editInfo.data.revenue
                                                 : ''
@@ -273,7 +306,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('name', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             editInfo.data ?
                                                 editInfo.data.name
                                                 : ''
@@ -292,7 +325,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('phone', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             editInfo.data ?
                                                 editInfo.data.phone
                                                 : ''
@@ -314,7 +347,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('wx', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             editInfo.data ?
                                                 editInfo.data.wx
                                                 : ''
@@ -333,7 +366,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('remark', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             editInfo.data ?
                                                 editInfo.data.remark
                                                 : ''
@@ -352,7 +385,7 @@ class PopupsRight extends Component {
                             <div className="check_input">
                                 <FormItem>
                                     {getFieldDecorator('color_id', {
-                                        initialValue: editInfo.status !== 1 ?
+                                        initialValue: order_id ?
                                             editInfo.data ?
                                                 editInfo.data.color_id
                                                 : ''
@@ -374,7 +407,7 @@ class PopupsRight extends Component {
                     <div className="btn-footer">
                         <Button type="primary" htmlType="submit"
                                 style={{float: 'left', width: '100px'}}>确定</Button>
-                        <Button onClick={this.slideOpen.bind(this)} style={{float: 'right', width: '100px'}}>取消</Button>
+                        <Button onClick={this.slideOpen.bind(this, 'cancel')} style={{float: 'right', width: '100px'}}>取消</Button>
                     </div>
                     <div className="slide-btn" onClick={this.slideOpen.bind(this)}>
 
@@ -392,6 +425,7 @@ function mapStateToProps(state) {
         date: state.show_popup.date ? state.show_popup.date : '',
         editInfo: state.show_popup.editInfo ? state.show_popup.editInfo : '',
         order_id: state.show_popup.order_id ? state.show_popup.order_id : '',
+        arrDate: state.show_popup.arrDate ? state.show_popup.arrDate : '',
     }
 }
 

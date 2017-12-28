@@ -10,6 +10,7 @@ import './style.less'
 
 let tranId = 0
 let arrDate = []
+let now_id, prev_id
 
 class HomeTableTr extends Component {
     constructor(props) {
@@ -35,36 +36,116 @@ class HomeTableTr extends Component {
     }
 
     handlePopup(id, order_id, date, event) {
-        const {calendars} = this.props
-        //this._editCheckInfo(id, order_id, date)
-
-        //判断是否点了三次
-        if (arrDate.length > 2) {
-            arrDate = []
-            arrDate.push(date)
-        }
+        const {calendars, start_date, actions} = this.props
+        now_id = id
 
         if (order_id) { //编辑订单
+            this._editCheckInfo(id, order_id, date)
             return false
         } else {  //添加订单
-            event.target.className = 'seleted'
+            const dom = event.target.nodeName === 'DIV' ? event.target.parentNode : event.target
+            dom.className = 'seleted'
             arrDate.push(date)
             if (arrDate.length > 1) { //当arrDate中有两个的时候
+                if (now_id !== prev_id) {  //两次点击是否是同一个id
+                    let index = arrDate.indexOf(date)
+                    arrDate = arrDate.splice(index, 1)
+                }
                 if (calendars[id]) {  //当前房间中有订单
                     const arrOrderDate = []
                     calendars[id].map((item, index) => {
                         const sta_time = moment.unix(item.sta_time).format('YYYY-MM-DD')
                         const end_time = moment.unix(item.com_time).format('YYYY-MM-DD')
-                        arrOrderDate.push({
+                        arrOrderDate.push([
                             sta_time,
                             end_time
-                        })
+                        ])
                     })
-                    console.log(arrOrderDate)
+                    for (let i = 0; i < arrOrderDate.length; i++) {
+                        arrDate.sort()
+                        const begin = [arrDate[0], arrOrderDate[i][0]].sort()
+                        const over = [arrDate[1], arrOrderDate[i][1]].sort()
+                        if (begin[1] < over[0]) {  //时间段有重叠
+                            let index = arrDate.indexOf(date)
+                            arrDate = arrDate.splice(index, 1)
+
+                        }
+                    }
                 } else {  //若当前房间没订单
 
                 }
             }
+
+            //判断是否点了三次
+            if (arrDate.length > 2) {
+                arrDate = []
+                arrDate.push(date)
+            }
+
+            //选中状态操作
+            if (prev_id) {
+                const dom = event.target.nodeName === 'DIV' ? event.target.parentNode : event.target
+                const now_tds = document.querySelectorAll('#room_cell' + now_id + ' td')
+                const prev_tds = document.querySelectorAll('#room_cell' + prev_id + ' td')
+                if (now_id === prev_id) {
+                    if (arrDate.length === 1) {
+                        for (let i = 0; i < now_tds.length; i++) {
+                            this.removeClass(now_tds[i], 'seleted')
+                        }
+                    }
+                    dom.className = 'seleted'
+                    arrDate.sort()
+                    const num1 = moment(moment(arrDate[0])
+                        .format('YYYY-MM-DD'))
+                        .diff(moment(start_date), 'days')
+                    const num2 = moment(moment(arrDate[1])
+                        .format('YYYY-MM-DD'))
+                        .diff(moment(start_date), 'days')
+                    for (let i = num1; i <= num2; i++) {
+                        this.addClass(now_tds[i], 'seleted')
+                    }
+                } else {
+                    for (let i = 0; i < prev_tds.length; i++) {
+                        this.removeClass(prev_tds[i], 'seleted')
+                    }
+                }
+            }
+            actions.show_popup([
+                true,
+                id,
+                date,
+                '',
+                order_id,
+                arrDate
+            ])
+
+            prev_id = id
+        }
+    }
+
+    //原生js实现是否有class
+    hasClass(obj, cls) {
+        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    }
+
+    //实现添加class
+    addClass(obj, cls) {
+        if (!this.hasClass(obj, cls)) obj.className += " " + cls;
+    }
+
+    //实现移除class
+    removeClass(obj, cls) {
+        if (this.hasClass(obj, cls)) {
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+            obj.className = obj.className.replace(reg, ' ');
+        }
+    }
+
+    toggleClass(obj, cls) {
+        if (this.hasClass(obj, cls)) {
+            this.removeClass(obj, cls);
+        } else {
+            this.addClass(obj, cls);
         }
     }
 
@@ -131,6 +212,9 @@ class HomeTableTr extends Component {
                                          calendarObj[i].dates > 1 ?
                                              95 * calendarObj[i].dates + 'px'
                                              : 93 * calendarObj[i].dates
+                                         : '',
+                                     backgroundColor: calendarObj[i] ?
+                                         calendarObj[i].state
                                          : ''
                                  }}>
                                 <p className="book-name">{calendarObj[i].source_name} / {calendarObj[i].name}</p>
@@ -151,11 +235,9 @@ class HomeTableTr extends Component {
 
 
         return (
-            <tbody>
             <tr id={'room_cell' + id}>
                 {tds(50, arrIndex)}
             </tr>
-            </tbody>
         )
     }
 }
