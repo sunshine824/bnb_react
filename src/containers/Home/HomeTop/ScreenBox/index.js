@@ -4,7 +4,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {bindActionCreators} from 'redux'
 import {DatePicker, Select, message} from 'antd';
 import moment from 'moment';
-import {update_date, save_rooms, calendar_data, save_remain_house} from '@/redux/actions'
+import {update_date, save_rooms, calendar_data, save_remain_house, save_type_id, show_popup} from '@/redux/actions'
 import {getHouseListData} from '@/fetch/HouseList'
 import {getRoomListData} from '@/fetch/RoomList'
 import {getCalendarData} from '@/fetch/CalendarList'
@@ -26,14 +26,14 @@ class ScreenBox extends Component {
             house_id: '',
             sta_time: '',
             calendar: {},
-            dateLists: []
+            dateLists: [],
         }
     }
 
     componentDidMount() {
         this.HandleDate(1)
         //获取日历数据
-        this.getCalendarData(this.state.house_id)
+        this.getCalendarData()
         //获取房型数据
         this.getHouseList()
         //获取房间数据
@@ -44,9 +44,10 @@ class ScreenBox extends Component {
     onChange(date, dateString) {
         this.setState({
             sta_time: moment(dateString).format("X")
+        }, () => {
+            this.getCalendarData()
         })
         this.HandleDate(0, dateString)
-        this.getCalendarData(this.state.house_id, moment(dateString).format("X"))
     }
 
     /**
@@ -56,7 +57,7 @@ class ScreenBox extends Component {
      */
     getCalendarData(id, date) {
         const {actions} = this.props
-        const result = getCalendarData(id, date)
+        const result = getCalendarData(this.state.house_id, this.state.sta_time)
         const calendarTime = []
         const remain_house = {}
         result.then(res => {
@@ -83,7 +84,7 @@ class ScreenBox extends Component {
                 if (res[item.slice(0, -2)]) {
                     remain_house[item.slice(0, -2)] = json.interpret - res[item.slice(0, -2)]
                 } else {
-                    remain_house[item.slice(0, -2)] =  json.interpret
+                    remain_house[item.slice(0, -2)] = json.interpret
                 }
             })
 
@@ -100,11 +101,14 @@ class ScreenBox extends Component {
      * @param value
      */
     handleChange(value) {
+        const {actions} = this.props
         this.setState({
             house_id: value
+        }, () => {
+            this.getCalendarData()
         })
+        actions.show_popup([false])
         this.getRoomListData(value)
-        this.getCalendarData(value, this.state.sta_time)
     }
 
     /**
@@ -229,7 +233,9 @@ function mapActionsToProps(dispatch) {
             update_date,
             save_rooms,
             calendar_data,
-            save_remain_house
+            save_remain_house,
+            save_type_id,
+            show_popup
         }, dispatch)
     }
 }

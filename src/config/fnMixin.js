@@ -24,3 +24,34 @@ export function asyncComponent(importComponent){
     }
     return AsyncComponent
 }
+
+
+/**
+ * 原生js实现hasClass
+ * @param obj  dom
+ * @param cls   class
+ * @returns {Array|{index: number, input: string}}
+ */
+export function hasClass (obj,cls) {
+    return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+}
+
+/**
+ * 原生js实现添加class
+ * @param obj
+ */
+export function addClass(obj,cls) {
+    if (!hasClass(obj, cls)) obj.className += " " + cls;
+}
+
+/**
+ * 原生js实现移除class
+ * @param obj
+ * @param cls
+ */
+export function removeClass(obj,cls) {
+    if (hasClass(obj, cls)) {
+        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+        obj.className = obj.className.replace(reg, ' ');
+    }
+}

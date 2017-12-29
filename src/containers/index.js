@@ -17,13 +17,11 @@ export default class PrimaryLayout extends Component {
             <div>
                 <Header/>
                 <div className="main">
-                    <Switch>
-                        <Route path="/" exact component={Home}/>
-                        <Route path="/home" exact component={Home}/>
-                        <Route path="/room-manage" exact component={RoomManage}/>
-                        <Route path="/order-manage" exact component={OrderManage}/>
-                        <Route path="/income" exact component={Income}/>
-                    </Switch>
+                    <Route path="/" exact component={Home}/>
+                    <Route path="/home" exact component={Home}/>
+                    <Route path="/room-manage" exact component={RoomManage}/>
+                    <Route path="/order-manage" exact component={OrderManage}/>
+                    <Route path="/income" exact component={Income}/>
                 </div>
             </div>
         )

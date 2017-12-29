@@ -13,6 +13,18 @@ export function update_date(dateLists) {
 }
 
 /**
+ * 保存房型id
+ * @param id
+ * @returns {{type, id: *}}
+ */
+export function save_type_id(id) {
+    return {
+        type: actionTypes.Save_Type_id,
+        id
+    }
+}
+
+/**
  * 剩余房间
  * @param remain_houses
  * @returns {{type, date: *}}

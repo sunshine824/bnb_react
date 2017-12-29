@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux'
 import {show_popup} from '@/redux/actions'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {editCheckInfo} from '@/fetch/EditCheckin'
+import {hasClass, addClass, removeClass} from '@/config/fnMixin'
 import moment from 'moment';
 
 import './style.less'
@@ -36,8 +37,11 @@ class HomeTableTr extends Component {
     }
 
     handlePopup(id, order_id, date, event) {
-        const {calendars, start_date, actions} = this.props
+        const {calendars, start_date, actions, popup} = this.props
         now_id = id
+
+        if (!popup) arrDate = []
+
 
         if (order_id) { //编辑订单
             this._editCheckInfo(id, order_id, date)
@@ -68,7 +72,6 @@ class HomeTableTr extends Component {
                         if (begin[1] < over[0]) {  //时间段有重叠
                             let index = arrDate.indexOf(date)
                             arrDate = arrDate.splice(index, 1)
-
                         }
                     }
                 } else {  //若当前房间没订单
@@ -82,6 +85,7 @@ class HomeTableTr extends Component {
                 arrDate.push(date)
             }
 
+
             //选中状态操作
             if (prev_id) {
                 const dom = event.target.nodeName === 'DIV' ? event.target.parentNode : event.target
@@ -90,7 +94,7 @@ class HomeTableTr extends Component {
                 if (now_id === prev_id) {
                     if (arrDate.length === 1) {
                         for (let i = 0; i < now_tds.length; i++) {
-                            this.removeClass(now_tds[i], 'seleted')
+                            removeClass(now_tds[i], 'seleted')
                         }
                     }
                     dom.className = 'seleted'
@@ -102,11 +106,11 @@ class HomeTableTr extends Component {
                         .format('YYYY-MM-DD'))
                         .diff(moment(start_date), 'days')
                     for (let i = num1; i <= num2; i++) {
-                        this.addClass(now_tds[i], 'seleted')
+                        addClass(now_tds[i], 'seleted')
                     }
                 } else {
                     for (let i = 0; i < prev_tds.length; i++) {
-                        this.removeClass(prev_tds[i], 'seleted')
+                        removeClass(prev_tds[i], 'seleted')
                     }
                 }
             }
@@ -120,32 +124,6 @@ class HomeTableTr extends Component {
             ])
 
             prev_id = id
-        }
-    }
-
-    //原生js实现是否有class
-    hasClass(obj, cls) {
-        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-    }
-
-    //实现添加class
-    addClass(obj, cls) {
-        if (!this.hasClass(obj, cls)) obj.className += " " + cls;
-    }
-
-    //实现移除class
-    removeClass(obj, cls) {
-        if (this.hasClass(obj, cls)) {
-            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-            obj.className = obj.className.replace(reg, ' ');
-        }
-    }
-
-    toggleClass(obj, cls) {
-        if (this.hasClass(obj, cls)) {
-            this.removeClass(obj, cls);
-        } else {
-            this.addClass(obj, cls);
         }
     }
 
@@ -166,7 +144,7 @@ class HomeTableTr extends Component {
                 editInfo: json
             }, () => {
                 actions.show_popup([
-                    !this.props.show_popup,
+                    true,
                     id,
                     date,
                     this.state.editInfo,
@@ -210,7 +188,7 @@ class HomeTableTr extends Component {
                                  style={{
                                      width: calendarObj[i] ?
                                          calendarObj[i].dates > 1 ?
-                                             95 * calendarObj[i].dates + 'px'
+                                             93 * calendarObj[i].dates + (calendarObj[i].dates) * 2 + 'px'
                                              : 93 * calendarObj[i].dates
                                          : '',
                                      backgroundColor: calendarObj[i] ?
@@ -249,7 +227,9 @@ function mapStateToProps(state) {
         calendars: state.calendar_data.calendar ? state.calendar_data.calendar.data : '',
         show_popup: state.show_popup.popup,
         roomList: state.save_Rooms.roomList ? state.save_Rooms.roomList : '',
-        remain_house: state.save_remain_house
+        remain_house: state.save_remain_house,
+        type_id: state.save_type_id.type_id,
+        popup: state.show_popup.popup
     }
 }
 

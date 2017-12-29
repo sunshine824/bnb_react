@@ -4,9 +4,11 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {show_popup} from '@/redux/actions'
 import {editCheckIn, addCheckIn, deleteCheckIn} from '@/fetch/EditCheckin'
+import {getSourceList} from '@/fetch/SourceList'
+import {getColorList} from '@/fetch/GetColorList'
+import {hasClass, addClass, removeClass} from '@/config/fnMixin'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import moment from 'moment'
-import {getSourceList} from '@/fetch/SourceList'
 
 import './style.less'
 
@@ -23,22 +25,22 @@ class PopupsRight extends Component {
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
             slide_open: false,
-            sources: ''
+            sources: '',
+            colorList: ''
         }
     }
 
     componentDidMount() {
         this._getSourceList()
+        this._getColorList()
     }
 
-    slideOpen(mold) {
+    slideOpen() {
         const {actions, id} = this.props
         const tds = document.querySelectorAll('#room_cell' + id + ' td')
         actions.show_popup([!this.props.show_popup])
-        if (mold === 'cancel') {
-            for (let i = 0; i < tds.length; i++) {
-                this.removeClass(tds[i], 'seleted')
-            }
+        for (let i = 0; i < tds.length; i++) {
+            removeClass(tds[i], 'seleted')
         }
     }
 
@@ -79,7 +81,7 @@ class PopupsRight extends Component {
             if (!json.status) {
                 message.success('添加成功')
                 for (let i = 0; i < tds.length; i++) {
-                    this.removeClass(tds[i], 'seleted')
+                    removeClass(tds[i], 'seleted')
                 }
                 this.props.HandleCalendar()
                 actions.show_popup([!this.props.show_popup])
@@ -91,7 +93,10 @@ class PopupsRight extends Component {
         })
     }
 
-
+    /**
+     * form提交
+     * @param e
+     */
     handleSubmit(e) {
         e.preventDefault();
         const {id, order_id} = this.props
@@ -146,30 +151,52 @@ class PopupsRight extends Component {
         })
     }
 
-    //原生js实现是否有class
-    hasClass(obj, cls) {
-        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-    }
-
-    //实现添加class
-    addClass(obj, cls) {
-        if (!this.hasClass(obj, cls)) obj.className += " " + cls;
-    }
-
-    //实现移除class
-    removeClass(obj, cls) {
-        if (this.hasClass(obj, cls)) {
-            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-            obj.className = obj.className.replace(reg, ' ');
-        }
+    /**
+     * 获取颜色列表
+     * @private
+     */
+    _getColorList() {
+        const result = getColorList()
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            console.log(json)
+            this.setState({
+                colorList: json
+            })
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     render() {
         const {show_popup, id, date, editInfo, arrDate, order_id} = this.props
 
-        const {sources} = this.state
+        const {sources, colorList} = this.state
         const className = this.props.show_popup ? 'active' : ''
         const {getFieldDecorator} = this.props.form;
+
+        const color = (id) => {
+            switch (id) {
+                case 1 :
+                    return 'blue'
+                    break
+                case 2:
+                    return 'green'
+                    break;
+                case 3:
+                    return 'yellow'
+                    break;
+                case 4:
+                    return 'purple'
+                    break;
+                case 5:
+                    return 'red'
+                    break;
+            }
+        }
+
+
         return (
             <Form onSubmit={this.handleSubmit.bind(this)}>
                 <div className={"content-slide " + className}>
@@ -393,10 +420,17 @@ class PopupsRight extends Component {
                                         rules: [{required: true, message: '请选择提示颜色'}]
                                     })(
                                         <RadioGroup>
-                                            <Radio value={1}/>
-                                            <Radio value={2}/>
-                                            <Radio value={3}/>
-                                            <Radio value={4}/>
+                                            {
+                                                colorList ?
+                                                    !colorList.status ?
+                                                        colorList.data.map((item, index) => {
+                                                            return (
+                                                                <Radio className={color(item.id)} value={item.id} key={item.id}/>
+                                                            )
+                                                        })
+                                                        : ''
+                                                    : ''
+                                            }
                                         </RadioGroup>
                                     )}
                                 </FormItem>
