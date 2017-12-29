@@ -78,7 +78,10 @@ class SignUp extends Component {
                         <Form onSubmit={this.handleSubmit}>
                             <FormItem>
                                 {getFieldDecorator('phone', {
-                                    rules: [{required: true, message: '请输入您的手机号！'}],
+                                    rules: [
+                                        {required: true, message: '请输入您的手机号！'},
+                                        {pattern: '^1[0-9]{10}$', message: '请输入正确手机号'}
+                                    ],
                                 })(
                                     <Input size="large" prefix={<Icon type="user" style={{
                                         color: 'rgba(0,0,0,.4)',
