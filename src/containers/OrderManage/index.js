@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
@@ -65,4 +66,4 @@ function mapActionsToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(OrderManage)
+export default withRouter(connect(mapStateToProps, mapActionsToProps)(OrderManage))

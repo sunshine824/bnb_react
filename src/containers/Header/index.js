@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import HeadLogo from '@/components/HeadLogo'
 import HeadNav from '@/components/HeadNav'
-//import HeadHandle from '@/components/HeadHandle'
+import PersonalCenter from '@/components/PersonalCenter'
 
 import './style.less'
 
@@ -12,7 +12,7 @@ class Header extends Component {
             <header className="header">
                 <HeadLogo/>
                 <HeadNav {...this.props.state}/>
-                {/*<HeadHandle/>*/}
+                <PersonalCenter/>
             </header>
         )
     }

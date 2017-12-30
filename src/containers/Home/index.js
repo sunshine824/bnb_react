@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import HomeTop from './HomeTop'
+import {withRouter} from 'react-router-dom'
 import HomeBottom from './HomeBottom'
 import PopupsRight from './PopupsRight'
 import {connect} from 'react-redux'
@@ -43,4 +44,4 @@ function mapActionsToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(Home)
+export default withRouter(connect(mapStateToProps, mapActionsToProps)(Home))

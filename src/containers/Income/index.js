@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
-import {Button, Radio, DatePicker, Input, Pagination} from 'antd'
+import {DatePicker, Input, Pagination} from 'antd'
 import Loading from '@/components/Loading'
 import moment from 'moment'
 import 'moment/locale/zh-cn';
@@ -122,4 +123,4 @@ function mapActionsToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(Income)
+export default withRouter(connect(mapStateToProps, mapActionsToProps)(Income))

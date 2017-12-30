@@ -10,6 +10,8 @@ const Home=asyncComponent(()=>import('@/containers/Home'))
 const RoomManage=asyncComponent(()=>import('@/containers/RoomManage'))
 const OrderManage=asyncComponent(()=>import('@/containers/OrderManage'))
 const Income=asyncComponent(()=>import('@/containers/Income'))
+const Personal=asyncComponent(()=>import('@/containers/Personal'))
+
 
 export default class PrimaryLayout extends Component {
     render(){
@@ -17,11 +19,14 @@ export default class PrimaryLayout extends Component {
             <div>
                 <Header/>
                 <div className="main">
-                    <Route path="/" exact component={Home}/>
-                    <Route path="/home" exact component={Home}/>
-                    <Route path="/room-manage" exact component={RoomManage}/>
-                    <Route path="/order-manage" exact component={OrderManage}/>
-                    <Route path="/income" exact component={Income}/>
+                    <Switch>
+                        <Route path="/" exact component={Home}/>
+                        <Route path="/home" exact component={Home}/>
+                        <Route path="/room-manage" exact component={RoomManage}/>
+                        <Route path="/order-manage" exact component={OrderManage}/>
+                        <Route path="/income" exact component={Income}/>
+                        <Route path="/personal" exact component={Personal}/>
+                    </Switch>
                 </div>
             </div>
         )

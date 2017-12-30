@@ -9,7 +9,6 @@ import {asyncComponent} from '@/config/fnMixin'
 const PrimaryLayout = asyncComponent(() => import('@/containers'))
 const SignUp = asyncComponent(() => import('@/containers/SignUp'))
 const SignIn = asyncComponent(() => import('@/containers/SignIn'))
-
 //const Test=asyncComponent(()=>import('@/containers/Test'))
 
 class RouteMap extends Component {
