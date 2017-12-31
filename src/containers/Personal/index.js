@@ -1,7 +1,4 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
-import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
 import LeftMenu from './LeftMenu'
 import {
@@ -14,12 +11,13 @@ import './style.less'
 
 const PersonalInfo = asyncComponent(() => import('@/containers/Personal/PersonalInfo'))
 const ChannelSet = asyncComponent(() => import('@/containers/Personal/ChannelSet'))
+const ColorRemark = asyncComponent(() => import('@/containers/Personal/ColorRemark'))
+const RePassword = asyncComponent(() => import('@/containers/Personal/RePassword'))
 
 class personal extends Component {
 
     componentDidMount() {
-        const {match, actions} = this.props
-        actions.save_path(match.path)
+
     }
 
     render() {
@@ -29,24 +27,13 @@ class personal extends Component {
                 <div className='personal-right'>
                     <Route path='/personal-info' exact component={PersonalInfo}/>
                     <Route path='/channel-set' exact component={ChannelSet}/>
+                    <Route path='/color-remark' exact component={ColorRemark}/>
+                    <Route path='/re-password' exact component={RePassword}/>
                 </div>
             </div>
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        states: state
-    }
-}
 
-function mapActionsToProps(dispatch) {
-    return {
-        actions: bindActionCreators({
-            save_path
-        }, dispatch)
-    }
-}
-
-export default withRouter(connect(mapStateToProps, mapActionsToProps)(personal))
+export default personal

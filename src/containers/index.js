@@ -25,7 +25,10 @@ export default class PrimaryLayout extends Component {
                         <Route path="/room-manage" exact component={RoomManage}/>
                         <Route path="/order-manage" exact component={OrderManage}/>
                         <Route path="/income" exact component={Income}/>
-                        <Route path="/personal" exact component={Personal}/>
+                        <Route path="/personal-info" exact component={Personal}/>
+                        <Route path="/channel-set" exact component={Personal}/>
+                        <Route path="/color-remark" exact component={Personal}/>
+                        <Route path="/re-password" exact component={Personal}/>
                     </Switch>
                 </div>
             </div>

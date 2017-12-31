@@ -24,6 +24,7 @@ body {
 }
 a {color:#666; text-decoration:none; }
 a:hover{color:#C81623;}
+a:focus{text-decoration: none}
 h1,h2,h3,h4,h5,h6 {text-decoration:none;font-weight:normal;font-size:100%;}  /*设置h标签的大小，设置跟父亲一样大的字体font-size:100%;*/
 s,i,em{font-style:normal;text-decoration:none;}
 .col-red{color: #C81623!important;}

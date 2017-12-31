@@ -5,7 +5,7 @@ import {save_path} from '@/redux/actions'
 
 import './style.less'
 
-class PersonalInfo extends Component {
+class RePassword extends Component {
 
     componentDidMount() {
         const {match, actions} = this.props
@@ -14,7 +14,7 @@ class PersonalInfo extends Component {
 
     render() {
         return (
-            <div>账户信息</div>
+            <div>密码修改</div>
         )
     }
 }
@@ -34,4 +34,4 @@ function mapActionsToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapActionsToProps)(PersonalInfo)
+export default connect(mapStateToProps, mapActionsToProps)(RePassword)

@@ -13,8 +13,16 @@
     a{
       color: #666;
       display: block;
-      &:active{
-        background: #1890ff;
+    }
+    &.active{
+      background: rgba(24, 144, 255, 1);
+      a{
+        color: #fff;
+      }
+    }
+    &:hover{
+      background: rgba(24, 144, 255, .8);
+      a{
         color: #fff;
       }
     }
