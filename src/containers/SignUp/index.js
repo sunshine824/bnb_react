@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {signUp, getCode, verifyCode} from '@/fetch/SignUp'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {save_user_info} from '@/redux/actions'
+import {save_user_name} from '@/redux/actions'
 
 import './style.less'
 
@@ -172,8 +172,8 @@ class SignUp extends Component {
     }
 
     doCheck() {
-        const {userinfo} = this.props
-        if (userinfo) {
+        const {username} = this.props
+        if (username) {
             this.goHomePage()
         }
     }
@@ -233,7 +233,7 @@ class SignUp extends Component {
                                     }, {
                                         validator: this.checkConfirm,
                                     }, {
-                                        len: 6, message: '密码为至少6位'
+                                        min: 6, message: '密码为至少6位'
                                     }],
                                 })(
                                     <Input size="large" prefix={<Icon type="lock" style={{
@@ -295,14 +295,14 @@ class SignUp extends Component {
 
 function mapStateToProps(state) {
     return {
-        userinfo: state.save_user_info.userinfo
+        username: state.save_user_name.username
     }
 }
 
 function mapActionsToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            save_user_info
+            save_user_name
         }, dispatch)
     }
 }

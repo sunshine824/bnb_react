@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Button, Modal, Form, Input} from 'antd'
+import {Button, Modal, Form, Input, message} from 'antd'
 import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
+import {getColorList, editColor} from '@/fetch/GetColorList'
+import Loading from '@/components/Loading'
 
 import './style.less'
 
@@ -12,13 +14,18 @@ class ColorRemark extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            visible: false
+            visible: false,
+            colorList: '',
+            id: '',
+            colorInfo: ''
         }
     }
 
     componentDidMount() {
         const {match, actions} = this.props
         actions.save_path(match.path)
+
+        this._getColorList()
     }
 
 
@@ -32,25 +39,71 @@ class ColorRemark extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                values.id = this.state.id
+                this._editColor(values)
             }
         });
     }
 
-    addChannel() {
+    editColor(id) {
         this.setState({
-            visible: true
+            visible: true,
+            id: id
+        })
+        this.state.colorList.data.map((item, index) => {
+            if (item.id === id) {
+                this.setState({
+                    colorInfo: item
+                })
+            }
+        })
+    }
+
+    _getColorList() {
+        const result = getColorList()
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.status === 0) {
+                this.setState({
+                    colorList: json
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    /**
+     * 编辑颜色备注
+     * @param data
+     * @private
+     */
+    _editColor(data) {
+        const result = editColor(data)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.status === 0) {
+                message.success('编辑成功！')
+                this.setState({
+                    visible: false
+                })
+                this._getColorList()
+            }
+        }).catch(err => {
+            console.log(err)
         })
     }
 
     render() {
         const {getFieldDecorator} = this.props.form;
+        const {colorList, colorInfo} = this.state
 
         return (
             <div className="color-remark">
                 <div className="color-head">
                     <h2 className="color-title">颜色备注</h2>
-                    <Button type="primary" className='add-channel' onClick={this.addChannel.bind(this)}>新增渠道</Button>
                 </div>
                 <table>
                     <thead>
@@ -61,15 +114,36 @@ class ColorRemark extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            <p className="color"></p>
-                        </td>
-                        <td>默认渠道</td>
-                        <td>
-                            <Button type="primary" size="small">编辑</Button>
-                        </td>
-                    </tr>
+                    {
+                        colorList ?
+                            (
+                                !colorList.status ?
+                                    colorList.data.map((item, index) => {
+                                        return (
+                                            <tr key={item.id}>
+                                                <td>
+                                                    <p className="color" style={{backgroundColor: item.state}}></p>
+                                                </td>
+                                                <td>{item.remark}</td>
+                                                <td>
+                                                    <Button type="primary" size="small"
+                                                            onClick={this.editColor.bind(this, item.id)}>编辑</Button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                    : <tr>
+                                        <td colSpan="3">
+                                            暂无数据
+                                        </td>
+                                    </tr>
+                            )
+                            : <tr>
+                                <td colSpan="3">
+                                    <Loading/>
+                                </td>
+                            </tr>
+                    }
                     </tbody>
                 </table>
 
@@ -82,17 +156,19 @@ class ColorRemark extends Component {
                     width='350px'
                     className="color-modal"
                 >
-                    <div className="channel-form">
+                    <div className="color-form">
                         <Form onSubmit={this.handleSubmit.bind(this)}>
+                            <p className="color" style={{backgroundColor: colorInfo.state}}></p>
                             <FormItem>
-                                {getFieldDecorator('name', {
-                                    rules: [{required: true, message: '请输入渠道名称！'}],
-                                })(
-                                    <div className="item">
-                                        <label>渠道名称</label>
-                                        <Input placeholder="请输入渠道名称！" className='info-name'/>
-                                    </div>
-                                )}
+                                <div className="item">
+                                    <label>备注名称</label>
+                                    {getFieldDecorator('remark', {
+                                        initialValue: colorInfo.remark,
+                                        rules: [{required: true, message: '请输入备注名称！'}],
+                                    })(
+                                        <Input placeholder="请输入备注名称！" className='info-name'/>
+                                    )}
+                                </div>
                             </FormItem>
 
                             <div className="sure-btn">

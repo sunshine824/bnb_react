@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {save_path} from '@/redux/actions'
-import {Cascader, Form, Input, Button} from 'antd';
-import {getUserInfo, editUserInfo} from '@/fetch/UserInfo'
+import {save_path, save_user_info} from '@/redux/actions'
+import {Cascader, Form, Input, Button, Select, message} from 'antd';
+import {getUserInfo, editUserInfo, getProvinceList, getCityList, getCountyList} from '@/fetch/UserInfo'
 
 import './style.less'
 
 const FormItem = Form.Item;
+const Option = Select.Option
 const {TextArea} = Input;
 
 class PersonalInfo extends Component {
@@ -4343,7 +4344,10 @@ class PersonalInfo extends Component {
                     "children": []
                 }, {"label": "澳门特别行政区", "value": "澳门特别行政区", "children": []}
             ],
-            userInfo: ''
+            userInfo: '',
+            provinces: '',
+            cities: '',
+            counties: ''
         }
     }
 
@@ -4352,17 +4356,14 @@ class PersonalInfo extends Component {
         actions.save_path(match.path)
 
         this._getUserInfo()
-    }
 
-    onChange(value) {
-        console.log(value)
+        this._getProvinceList()
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 this._editUserInfo(values)
             }
         });
@@ -4373,6 +4374,7 @@ class PersonalInfo extends Component {
      * @private
      */
     _getUserInfo() {
+        const {actions} = this.props
         const result = getUserInfo()
         result.then(res => {
             return res.json()
@@ -4381,6 +4383,7 @@ class PersonalInfo extends Component {
                 this.setState({
                     userInfo: json
                 })
+                actions.save_user_info(json)
             }
         }).catch(err => {
             console.log(err)
@@ -4398,63 +4401,192 @@ class PersonalInfo extends Component {
             return res.json()
         }).then(json => {
             console.log(json)
+            if(json.status===0){
+                message.success('保存成功！')
+            }
         }).catch(err => {
             console.log(err)
         })
     }
 
+    //获取省份列表
+    _getProvinceList() {
+        const result = getProvinceList()
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            console.log(json)
+            if (!json.status) {
+                this.setState({
+                    provinces: json
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    //获取城市列表
+    _getCityList(id) {
+        const result = getCityList(id)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (!json.status) {
+                this.setState({
+                    cities: json
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    //获取县区列表
+    _getCountyList(id) {
+        const result = getCountyList(id)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (!json.status) {
+                this.setState({
+                    counties: json
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    handleProvinceChange(value) {
+        this._getCityList(value)
+    }
+
+    handleCityChange(value) {
+        this._getCountyList(value)
+    }
+
     render() {
         const {getFieldDecorator} = this.props.form;
-        const {userInfo} = this.state
+        const {userInfo, provinces, cities, counties} = this.state
 
         return (
             <div className='personal-info'>
                 <Form onSubmit={this.handleSubmit.bind(this)}>
                     <FormItem>
-                        {getFieldDecorator('name', {
-                            initialValue: userInfo.data ? userInfo.data.name : '',
-                            rules: [{required: true, message: '请输入名宿/酒店名称！'}],
-                        })(
-                            <div className="item">
-                                <label>名宿/酒店名称</label>
+                        <div className="item">
+                            <label>名宿/酒店名称</label>
+                            {getFieldDecorator('name', {
+                                initialValue: userInfo.data ? userInfo.data.name : '',
+                                rules: [{required: true, message: '请输入名宿/酒店名称！'}],
+                            })(
                                 <Input placeholder="请输入名宿/酒店名称！" className='info-name'/>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </FormItem>
                     <label>总部地址</label>
-                    <FormItem>
-                        {getFieldDecorator('city', {
+                    <div className="link">
+                        <FormItem>
+                            {/*{getFieldDecorator('city', {
                             rules: [{required: true, message: '请选择省/市/区详细信息！'}],
                         })(
                             <div className="item">
                                 <Cascader options={this.state.options}
                                           placeholder="请选择地址"/>
                             </div>
-                        )}
-                    </FormItem>
-                    <FormItem>
-                        {getFieldDecorator('address', {
-                            initialValue: userInfo.data ? userInfo.data.address : '',
-                            rules: [{required: true, message: '请填上详细地址！'}],
-                        })(
+                        )}*/}
                             <div className="item">
+                                {getFieldDecorator('province_id', {
+                                    initialValue: userInfo.data ? !userInfo.data.province_id ? '请选择省信息！' : userInfo.data.province_id : '',
+                                    rules: [{required: true, message: '请选择省信息！'}],
+                                })(
+                                    <Select placeholder="请选择省信息！" style={{width: 120}}
+                                            onChange={this.handleProvinceChange.bind(this)}>
+                                        {
+                                            provinces ?
+                                                provinces.data.map((item, index) => {
+                                                    return (
+                                                        <Option key={index} value={item.id}>
+                                                            {item.cityname}
+                                                        </Option>
+                                                    )
+                                                })
+                                                : ''
+                                        }
+                                    </Select>
+                                )}
+                            </div>
+                        </FormItem>
+                        <FormItem>
+                            <div className="item">
+                                {getFieldDecorator('city_id', {
+                                    initialValue: userInfo.data ? !userInfo.data.city_id ? '请选择市信息!' : userInfo.data.city_id : '',
+                                    rules: [{required: true, message: '请选择市信息！'}],
+                                })(
+                                    <Select placeholder="请选择市信息！" style={{width: 120}}
+                                            onChange={this.handleCityChange.bind(this)}>
+                                        {
+                                            cities ?
+                                                cities.data.map((item, index) => {
+                                                    return (
+                                                        <Option key={index} value={item.id}>
+                                                            {item.cityname}
+                                                        </Option>
+                                                    )
+                                                })
+                                                : ''
+                                        }
+                                    </Select>
+                                )}
+                            </div>
+                        </FormItem>
+                        <FormItem>
+                            <div className="item">
+                                {getFieldDecorator('county_id', {
+                                    initialValue: userInfo.data ? !userInfo.data.county_id ? '请选择县区信息!' : userInfo.data.county_id : '',
+                                    rules: [{required: true, message: '请选择县区信息！'}],
+                                })(
+                                    <Select placeholder="请选择县区信息！" style={{width: 120}}
+                                            onChange={this.handleProvinceChange.bind(this)}>
+                                        {
+                                            counties ?
+                                                counties.data.map((item, index) => {
+                                                    return (
+                                                        <Option key={index} value={item.id}>
+                                                            {item.cityname}
+                                                        </Option>
+                                                    )
+                                                })
+                                                : ''
+                                        }
+                                    </Select>
+                                )}
+                            </div>
+                        </FormItem>
+                    </div>
+                    <FormItem>
+                        <div className="item">
+                            {getFieldDecorator('address', {
+                                initialValue: userInfo.data ? userInfo.data.address : '',
+                                rules: [{required: true, message: '请填上详细地址！'}],
+                            })(
                                 <TextArea placeholder="详细地址" rows={4}/>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </FormItem>
                     <FormItem>
-                        {getFieldDecorator('phone', {
-                            initialValue: userInfo.data ? userInfo.data.phone : '',
-                            rules: [
-                                {required: true, message: '请输入联系电话！'},
-                                {pattern: '^1[0-9]{10}$', message: '请输入正确手机号'}
-                            ],
-                        })(
-                            <div className="item">
-                                <label>联系电话</label>
+                        <div className="item">
+                            <label>联系电话</label>
+                            {getFieldDecorator('contact_phone', {
+                                initialValue: userInfo.data ? userInfo.data.phone : '',
+                                rules: [
+                                    {required: true, message: '请输入联系电话！'},
+                                    {pattern: '^1[0-9]{10}$', message: '请输入正确手机号'}
+                                ],
+                            })(
                                 <Input placeholder="联系电话" className='info-name'/>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </FormItem>
                     <Button type="primary" htmlType="submit"
                             style={{float: 'left', width: '100%'}}>保存</Button>
@@ -4466,14 +4598,16 @@ class PersonalInfo extends Component {
 
 function mapStateToProps(state) {
     return {
-        state: state
+        state: state,
+        userInfo: state.save_user_info.userinfo
     }
 }
 
 function mapActionsToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            save_path
+            save_path,
+            save_user_info
         }, dispatch)
     }
 }

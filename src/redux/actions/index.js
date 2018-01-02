@@ -1,6 +1,18 @@
 import * as actionTypes from '../../config/actionType'
 
 /**
+ * 保存用户名称
+ * @param data
+ * @returns {{type, data: *}}
+ */
+export function save_user_name(data) {
+    return {
+        type: actionTypes.Save_User_Name,
+        data
+    }
+}
+
+/**
  * 保存用户信息
  * @param data
  * @returns {{type, data: *}}

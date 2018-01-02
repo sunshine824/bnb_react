@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {SignIn} from '@/fetch/SignIn'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {save_user_info} from '@/redux/actions'
+import {save_user_name} from '@/redux/actions'
 
 import './style.less'
 
@@ -53,8 +53,8 @@ class signIn extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (!json.status) {
-                actions.save_user_info(data.phone)
+            if (json.status===0) {
+                actions.save_user_name(data.phone)
                 localStorage.setItem('token', json.data)
                 this.props.history.push('/')
             }
@@ -64,8 +64,8 @@ class signIn extends Component {
     }
 
     doCheck() {
-        const {userinfo} = this.props
-        if (userinfo) {
+        const {username} = this.props
+        if (username) {
             this.goHomePage()
         }
     }
@@ -102,7 +102,7 @@ class signIn extends Component {
                                     }, {
                                         validator: this.checkConfirm,
                                     }, {
-                                        len: 6, message: '密码为至少6位'
+                                        min: 6, message: '密码为至少6位'
                                     }],
                                 })(
                                     <Input size="large" prefix={<Icon type="lock" style={{
@@ -127,14 +127,14 @@ class signIn extends Component {
 
 function mapStateToProps(state) {
     return {
-        userinfo: state.save_user_info.userinfo
+        username: state.save_user_name.username
     }
 }
 
 function mapActionsToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            save_user_info
+            save_user_name
         }, dispatch)
     }
 }
