@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Form, Icon, Input, Button, Modal} from 'antd';
 import {Link} from 'react-router-dom'
+import {signUp, getCode, verifyCode} from '@/fetch/SignUp'
 
 import './style.less'
 
@@ -12,8 +13,14 @@ class SignUp extends Component {
         this.state = {
             confirmDirty: false,
             autoCompleteResult: [],
-            visible: false
+            visible: false,
+            phone: '',
+            getImgCode: '',
+            codeMsg: ''
         }
+    }
+
+    componentDidMount() {
     }
 
     handleSubmit = (e) => {
@@ -48,10 +55,27 @@ class SignUp extends Component {
     }
 
     handleOk = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
+        this._verifyCode()
+    }
+
+    _verifyCode() {
+        const value = this.refs.imgCodeInput.value
+        const result = verifyCode(value, this.state.phone)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.status) {
+                this.setState({
+                    codeMsg: json.interpret
+                })
+            } else {
+                this.setState({
+                    visible: false
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     handleCancel = (e) => {
@@ -61,14 +85,45 @@ class SignUp extends Component {
     }
 
     showModalCode() {
+        const reg = /^1[0-9]{10}$/
+        if (reg.test(this.state.phone)) {
+            this.setState({
+                visible: true
+            }, () => {
+                this._getCode()
+            })
+        }
+    }
+
+    onChangePhone(e) {
         this.setState({
-            visible: true
+            phone: e.target.value
+        })
+    }
+
+    onChangeCode() {
+        this.setState({
+            codeMsg: ''
+        })
+    }
+
+    _getCode() {
+        const result = getCode(this.state.phone, Date.parse(new Date()))
+        this.setState({
+            getImgCode: result
         })
     }
 
     render() {
         const {getFieldDecorator} = this.props.form;
+        const {getImgCode, codeMsg} = this.state
+        var className = ''
 
+        if (codeMsg) {
+            className = 'code-input has-error'
+        } else {
+            className = 'code-input'
+        }
 
         return (
             <div className="sign-container">
@@ -87,7 +142,8 @@ class SignUp extends Component {
                                         color: 'rgba(0,0,0,.4)',
                                         fontSize: '16px'
                                     }}/>}
-                                           style={{width: '100%'}} placeholder="手机号"/>
+                                           style={{width: '100%'}} placeholder="手机号"
+                                           onBlur={this.onChangePhone.bind(this)}/>
                                 )}
                             </FormItem>
                             <FormItem>
@@ -149,9 +205,14 @@ class SignUp extends Component {
                     className="pic-modal"
                 >
                     <div className="pic-code">
-                        <input type="text" className="ant-input pic-input" placeholder="请输入右侧图形验证码"/>
-                        <div className="attach">
-                            <img src="https://www.yunpian.com/captcha?ts=1514541797321"/>
+                        <div className={className}>
+                            <input onChange={this.onChangeCode.bind(this)} type="text" ref="imgCodeInput"
+                                   className="ant-input pic-input"
+                                   placeholder="请输入右侧图形验证码"/>
+                            <p className="errmsg">{codeMsg}</p>
+                        </div>
+                        <div className="attach" onClick={this._getCode.bind(this)}>
+                            <img src={getImgCode}/>
                         </div>
                     </div>
                 </Modal>

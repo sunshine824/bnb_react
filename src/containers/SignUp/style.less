@@ -1,20 +1,21 @@
 #components-form-demo-normal-login .login-form-forgot {
   float: right;
 }
+
 #components-form-demo-normal-login .login-form-button {
   width: 100%;
 }
 
-.sign-container{
+.sign-container {
   height: calc(100vh);
   display: table;
   width: 100%;
   background: #f9f9fa;
-  .sign{
+  .sign {
     display: table-cell;
     vertical-align: middle;
   }
-  .signUp{
+  .signUp {
     width: 400px;
     margin: auto;
     padding: 0 37px;
@@ -24,59 +25,84 @@
     overflow: hidden;
     background: #fff;
     padding-bottom: 70px;
-    .sign-title{
+    .sign-title {
       padding: 20px 0 30px 0;
       font-size: 18px;
       text-align: center;
     }
-    .notice{
+    .notice {
       margin-top: 15px;
       padding-top: 15px;
       border-top: 1px solid lightgrey;
       text-align: center;
       font-size: 14px;
-      a{
+      a {
         color: #03a9f4;
         cursor: pointer;
       }
     }
-    .ant-input{
+    .ant-input {
       padding-left: 35px;
     }
-    .ant-input-affix-wrapper .ant-input-prefix{
-      top:17px;
+    .ant-input-affix-wrapper .ant-input-prefix {
+      top: 17px;
     }
-    .code{
+    .code {
       position: relative;
-      .code-input{
+      .code-input {
         padding: 6px 11px;
         height: 40px;
       }
-      .code-start{
+      .code-start {
         position: absolute;
         right: 10px;
         font-size: 14px;
         color: #03a9f4;
         cursor: pointer;
-        top:4px;
+        top: 4px;
       }
     }
   }
 }
-.pic-modal{
+
+.pic-modal {
   padding-bottom: 0;
-  top:50%;
+  top: 50%;
   margin-top: -98px;
-  .pic-code{
+  .pic-code {
     position: relative;
-    .pic-input{
-      padding: 6px 11px;
-      height: 40px;
-      width: 180px;
+    .code-input {
+      position: relative;
+      .pic-input {
+        padding: 6px 11px;
+        height: 40px;
+        width: 175px;
+      }
+      .errmsg {
+        position: absolute;
+        left: 0;
+        top: 38px;
+        color: rgba(0, 0, 0, 0.45);
+        line-height: 1.5;
+        -webkit-transition: color 0.15s cubic-bezier(0.215, 0.61, 0.355, 1);
+        -o-transition: color 0.15s cubic-bezier(0.215, 0.61, 0.355, 1);
+        transition: color 0.15s cubic-bezier(0.215, 0.61, 0.355, 1);
+        margin-top: 2px;
+        display: none;
+      }
+      &.has-error {
+        .pic-input {
+          border: 1px solid #f5222d;
+        }
+        .errmsg {
+          color: #f5222d;
+          display: block;
+        }
+      }
     }
-    .attach{
+    .attach {
       position: absolute;
-      padding: 0 10px;
+      overflow: hidden;
       top: 0;
       line-height: 35px;
       cursor: pointer;
@@ -88,7 +114,7 @@
       -webkit-border-radius: 4px;
       -moz-border-radius: 4px;
       border-radius: 4px;
-      img{
+      img {
         height: 38px;
       }
     }
