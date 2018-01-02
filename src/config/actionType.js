@@ -9,3 +9,4 @@ export const Show_Popup = 'Open_Popup'  //是否显示右侧侧边栏
 export const Add_Remain_House = 'Add_Remain_House' //递增剩余房间
 export const Red_Remain_House = 'Red_Remain_House' //递减剩余房间
 export const Save_Type_id = 'Save_Type_id'  //保存房型id
+export const Save_User_Info = 'Save_User_Info'  //登录后保存用户信息

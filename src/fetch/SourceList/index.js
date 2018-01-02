@@ -5,9 +5,8 @@ import {post} from '../post'
  * @param key  登录获取密钥
  * @returns {*}
  */
-export function getSourceList(key='123456') {
+export function getSourceList() {
     const result=post('/api/sourcess',{
-        key:key
     })
 
     return result

@@ -1,8 +1,8 @@
 import {post} from '../post'
 
-export function getColorList(key = '123456') {
+export function getColorList() {
     const result = post('/api/colorlists', {
-        key: key
+
     })
 
     return result

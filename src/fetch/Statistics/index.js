@@ -5,9 +5,8 @@ import {post} from '../post'
  * @param key  登录获取密钥
  * @returns {*}
  */
-export function getStatistics(key='123456') {
+export function getStatistics() {
     const result=post('/api/statistics',{
-        key:key,
     })
 
     return result

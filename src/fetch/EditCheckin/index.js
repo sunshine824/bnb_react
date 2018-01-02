@@ -5,10 +5,9 @@ import {post} from '../post'
  * @param key
  * @returns {*}
  */
-export function addCheckIn(data, key = '123456') {
+export function addCheckIn(data) {
     const result = post('/api/adorder', {
-        ...data,
-        key: key
+        ...data
     })
 
     return result
@@ -19,10 +18,9 @@ export function addCheckIn(data, key = '123456') {
  * @param key
  * @returns {*}
  */
-export function editCheckIn(data, key = '123456') {
+export function editCheckIn(data) {
     const result = post('/api/edorder', {
-        ...data,
-        key: key
+        ...data
     })
 
     return result
@@ -34,10 +32,9 @@ export function editCheckIn(data, key = '123456') {
  * @param key
  * @returns {*}
  */
-export function editCheckInfo(id, key = '123456') {
+export function editCheckInfo(id) {
     const result = post('/api/order', {
-        id: id,
-        key: key
+        id: id
     })
 
     return result
@@ -49,10 +46,9 @@ export function editCheckInfo(id, key = '123456') {
  * @param key
  * @returns {*}
  */
-export function deleteCheckIn(id,key='123456') {
+export function deleteCheckIn(id) {
     const result=post('/api/deorder',{
-        id:id,
-        key:key
+        id:id
     })
 
     return result

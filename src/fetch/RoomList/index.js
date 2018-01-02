@@ -6,9 +6,8 @@ import {post} from '../post'
  * @param id   房型筛选id
  * @returns {*}
  */
-export function getRoomListData(id='',key='123456') {
+export function getRoomListData(id='') {
     const result=post('/api/housess',{
-        key:key,
         id:id
     })
 
@@ -21,9 +20,8 @@ export function getRoomListData(id='',key='123456') {
  * @param key
  * @returns {*}
  */
-export function editRoomInfo(id='',key='123456') {
+export function editRoomInfo(id='') {
     const result=post('/api/houses',{
-        key:key,
         id:id
     })
 
@@ -36,9 +34,8 @@ export function editRoomInfo(id='',key='123456') {
  * @param key
  * @returns {*}
  */
-export function editRoom(data,key='123456') {
+export function editRoom(data) {
     const result=post('/api/edhouses',{
-        key:key,
         ...data
     })
 

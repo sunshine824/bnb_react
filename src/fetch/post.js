@@ -28,12 +28,14 @@ function obj2params(obj) {
  * @param param  请求参数
  * @returns {*}
  */
-export function post(url,param) {
+export function post(url, param) {
     var result = fetch(url, {
         method: 'POST',
         mode: "cors",
         credentials: 'include',
         headers: {
+            "Accept": 'application/json',
+            "Authorization": 'Bearer ' + localStorage.getItem('token'),
             "Content-Type": "application/x-www-form-urlencoded"
         },
         body: obj2params(param)

@@ -14,10 +14,8 @@ export function getOrderList(status = '5',
                              start_time='',
                              end_time='',
                              content = '',
-                             page = 1,
-                             key = '123456') {
+                             page = 1) {
     const result = post('/api/ordsta', {
-        key: key,
         status: status,
         start_time: start_time,
         end_time: end_time,

@@ -5,10 +5,8 @@ import {post} from '../post'
  * @param key
  * @returns {*}
  */
-export function getHouseListData(key = '123456') {
-    const result = post('/api/types', {
-        key: key
-    })
+export function getHouseListData() {
+    const result = post('/api/types',{})
 
     return result
 }
@@ -19,10 +17,9 @@ export function getHouseListData(key = '123456') {
  * @param key
  * @returns {*}
  */
-export function deleteHouse(id, key = '123456') {
+export function deleteHouse(id) {
     const result = post('/api/detype', {
-        id: id,
-        key: key
+        id: id
     })
 
     return result
@@ -34,10 +31,9 @@ export function deleteHouse(id, key = '123456') {
  * @param key
  * @returns {*}
  */
-export function addHouse(data, key = '123456') {
+export function addHouse(data) {
     const result = post('/api/adtype', {
-        ...data,
-        key: key
+        ...data
     })
 
     return result
@@ -49,10 +45,9 @@ export function addHouse(data, key = '123456') {
  * @param key
  * @returns {*}
  */
-export function editHouse(data, key = '123456') {
+export function editHouse(data) {
     const result = post('/api/edtype', {
-        ...data,
-        key: key
+        ...data
     })
 
     return result
@@ -64,10 +59,9 @@ export function editHouse(data, key = '123456') {
  * @param key
  * @returns {*}
  */
-export function editHouseInfo(id,key='123456') {
+export function editHouseInfo(id) {
     const result = post('/api/type', {
-        id:id,
-        key: key
+        id:id
     })
 
     return result
@@ -79,10 +73,9 @@ export function editHouseInfo(id,key='123456') {
  * @param key
  * @returns {*}
  */
-export function deteleRoom(id,key='123456') {
+export function deteleRoom(id) {
     const result = post('/api/dehouses', {
-        id:id,
-        key: key
+        id:id
     })
 
     return result

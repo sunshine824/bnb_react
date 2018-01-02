@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {save_path} from '@/redux/actions'
 import {Cascader, Form, Input, Button} from 'antd';
+import {getUserInfo, editUserInfo} from '@/fetch/UserInfo'
 
 import './style.less'
 
@@ -4341,13 +4342,16 @@ class PersonalInfo extends Component {
                     "value": "香港特别行政区",
                     "children": []
                 }, {"label": "澳门特别行政区", "value": "澳门特别行政区", "children": []}
-            ]
+            ],
+            userInfo: ''
         }
     }
 
     componentDidMount() {
         const {match, actions} = this.props
         actions.save_path(match.path)
+
+        this._getUserInfo()
     }
 
     onChange(value) {
@@ -4359,19 +4363,56 @@ class PersonalInfo extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this._editUserInfo(values)
             }
         });
     }
 
+    /**
+     * 获取用户信息
+     * @private
+     */
+    _getUserInfo() {
+        const result = getUserInfo()
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (!json.status) {
+                this.setState({
+                    userInfo: json
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    /**
+     * 编辑用户信息
+     * @param data
+     * @private
+     */
+    _editUserInfo(data) {
+        const result = editUserInfo(data)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            console.log(json)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
     render() {
         const {getFieldDecorator} = this.props.form;
+        const {userInfo} = this.state
 
         return (
             <div className='personal-info'>
                 <Form onSubmit={this.handleSubmit.bind(this)}>
                     <FormItem>
                         {getFieldDecorator('name', {
+                            initialValue: userInfo.data ? userInfo.data.name : '',
                             rules: [{required: true, message: '请输入名宿/酒店名称！'}],
                         })(
                             <div className="item">
@@ -4393,6 +4434,7 @@ class PersonalInfo extends Component {
                     </FormItem>
                     <FormItem>
                         {getFieldDecorator('address', {
+                            initialValue: userInfo.data ? userInfo.data.address : '',
                             rules: [{required: true, message: '请填上详细地址！'}],
                         })(
                             <div className="item">
@@ -4402,6 +4444,7 @@ class PersonalInfo extends Component {
                     </FormItem>
                     <FormItem>
                         {getFieldDecorator('phone', {
+                            initialValue: userInfo.data ? userInfo.data.phone : '',
                             rules: [
                                 {required: true, message: '请输入联系电话！'},
                                 {pattern: '^1[0-9]{10}$', message: '请输入正确手机号'}

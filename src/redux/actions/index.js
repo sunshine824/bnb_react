@@ -1,6 +1,18 @@
 import * as actionTypes from '../../config/actionType'
 
 /**
+ * 保存用户信息
+ * @param data
+ * @returns {{type, data: *}}
+ */
+export function save_user_info(data) {
+    return {
+        type: actionTypes.Save_User_Info,
+        data
+    }
+}
+
+/**
  * 触发日期更新action
  * @param date
  * @returns {{type, date: *}}

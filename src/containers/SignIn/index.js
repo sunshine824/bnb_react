@@ -1,12 +1,17 @@
 import React, {Component} from 'react'
 import {Form, Icon, Input, Button} from 'antd';
 import {Link} from 'react-router-dom'
+import {SignIn} from '@/fetch/SignIn'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {save_user_info} from '@/redux/actions'
 
 import './style.less'
 
 const FormItem = Form.Item;
 
-class SignUp extends Component {
+class signIn extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -15,11 +20,16 @@ class SignUp extends Component {
         }
     }
 
+    componentDidMount() {
+        this.doCheck()
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this._signIn(values)
             }
         });
     }
@@ -30,6 +40,38 @@ class SignUp extends Component {
             form.validateFields(['confirm'], {force: true});
         }
         callback();
+    }
+
+    /**
+     * 登录提交数据
+     * @param data
+     * @private
+     */
+    _signIn(data) {
+        const {actions} = this.props
+        const result = SignIn(data)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (!json.status) {
+                actions.save_user_info(data.phone)
+                localStorage.setItem('token', json.data)
+                this.props.history.push('/')
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    doCheck() {
+        const {userinfo} = this.props
+        if (userinfo) {
+            this.goHomePage()
+        }
+    }
+
+    goHomePage() {
+        this.props.history.push('/')
     }
 
     render() {
@@ -59,13 +101,15 @@ class SignUp extends Component {
                                         required: true, message: '请输入密码',
                                     }, {
                                         validator: this.checkConfirm,
+                                    }, {
+                                        len: 6, message: '密码为至少6位'
                                     }],
                                 })(
                                     <Input size="large" prefix={<Icon type="lock" style={{
                                         color: 'rgba(0,0,0,.4)',
                                         fontSize: '16px'
                                     }}/>}
-                                           type="text" placeholder="密码为至少6位"/>
+                                           type="password" placeholder="密码为至少6位"/>
                                 )}
                             </FormItem>
                             <FormItem>
@@ -81,5 +125,20 @@ class SignUp extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        userinfo: state.save_user_info.userinfo
+    }
+}
 
-export default Form.create()(SignUp);
+function mapActionsToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            save_user_info
+        }, dispatch)
+    }
+}
+
+const SignFormIn = Form.create()(signIn)
+
+export default connect(mapStateToProps, mapActionsToProps)(SignFormIn);

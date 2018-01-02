@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 import {Form, Icon, Input, Button, Modal} from 'antd';
 import {Link} from 'react-router-dom'
 import {signUp, getCode, verifyCode} from '@/fetch/SignUp'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {save_user_info} from '@/redux/actions'
 
 import './style.less'
 
@@ -16,18 +19,22 @@ class SignUp extends Component {
             visible: false,
             phone: '',
             getImgCode: '',
-            codeMsg: ''
+            codeMsg: '',
+            countNum: 60,
+            isCount: false,
+            isShowPhoneErr: false
         }
     }
 
     componentDidMount() {
+        this.doCheck()
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                this._signUp(values)
             }
         });
     }
@@ -58,6 +65,25 @@ class SignUp extends Component {
         this._verifyCode()
     }
 
+    _signUp(data) {
+        const {actions} = this.props
+        const result = signUp(data)
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            if (!json.status) {
+                actions.save_user_info(data.phone)
+                this.props.history.push('/')
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    /**
+     * 验证图片验证码
+     * @private
+     */
     _verifyCode() {
         const value = this.refs.imgCodeInput.value
         const result = verifyCode(value, this.state.phone)
@@ -70,7 +96,10 @@ class SignUp extends Component {
                 })
             } else {
                 this.setState({
-                    visible: false
+                    visible: false,
+                    isCount: true
+                }, () => {
+                    this.countDown()
                 })
             }
         }).catch(err => {
@@ -84,7 +113,11 @@ class SignUp extends Component {
         });
     }
 
+    /**
+     * 显示modal
+     */
     showModalCode() {
+        if (this.state.isCount) return
         const reg = /^1[0-9]{10}$/
         if (reg.test(this.state.phone)) {
             this.setState({
@@ -107,6 +140,10 @@ class SignUp extends Component {
         })
     }
 
+    /**
+     * 获取图片验证码
+     * @private
+     */
     _getCode() {
         const result = getCode(this.state.phone, Date.parse(new Date()))
         this.setState({
@@ -114,9 +151,40 @@ class SignUp extends Component {
         })
     }
 
+    //倒计时60秒
+    countDown() {
+        if (this.state.isCount) {
+            this.timer = setInterval(() => {
+                var count = this.state.countNum
+                count -= 1;
+                if (count < 1) {
+                    this.setState({
+                        isCount: false
+                    });
+                    count = 60
+                    clearInterval(this.timer)
+                }
+                this.setState({
+                    countNum: count
+                })
+            }, 1000)
+        }
+    }
+
+    doCheck() {
+        const {userinfo} = this.props
+        if (userinfo) {
+            this.goHomePage()
+        }
+    }
+
+    goHomePage() {
+        this.props.history.push('/')
+    }
+
     render() {
         const {getFieldDecorator} = this.props.form;
-        const {getImgCode, codeMsg} = this.state
+        const {getImgCode, codeMsg, isCount, countNum, isShowPhoneErr} = this.state
         var className = ''
 
         if (codeMsg) {
@@ -152,7 +220,9 @@ class SignUp extends Component {
                                 })(
                                     <div className="code">
                                         <input className="code-input ant-input" placeholder="请输入短信验证码"/>
-                                        <p className="code-start" onClick={this.showModalCode.bind(this)}>获取短信验证码</p>
+                                        <p className={isCount ? 'code-count' : 'code-start'}
+                                           onClick={this.showModalCode.bind(this)}>
+                                            获取短信验证码{isCount ? '(' + countNum + ')' : ''}</p>
                                     </div>
                                 )}
                             </FormItem>
@@ -162,6 +232,8 @@ class SignUp extends Component {
                                         required: true, message: '请输入密码',
                                     }, {
                                         validator: this.checkConfirm,
+                                    }, {
+                                        len: 6, message: '密码为至少6位'
                                     }],
                                 })(
                                     <Input size="large" prefix={<Icon type="lock" style={{
@@ -221,5 +293,20 @@ class SignUp extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        userinfo: state.save_user_info.userinfo
+    }
+}
 
-export default Form.create()(SignUp);
+function mapActionsToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            save_user_info
+        }, dispatch)
+    }
+}
+
+const SignFormUp = Form.create()(SignUp)
+
+export default connect(mapStateToProps, mapActionsToProps)(SignFormUp);
