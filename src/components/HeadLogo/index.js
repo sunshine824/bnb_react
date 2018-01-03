@@ -1,12 +1,15 @@
 import React, {Component} from 'react'
+import logo from '../../static/images/logo.png'
 
 import './style.less'
 
-class HeadLogo extends Component{
-    render(){
-        return(
+class HeadLogo extends Component {
+    render() {
+        return (
             <div className="bnb-logo">
-                <a href="javascript:;"></a>
+                <a href="javascript:;">
+                    <img src={logo}/>
+                </a>
             </div>
         )
     }

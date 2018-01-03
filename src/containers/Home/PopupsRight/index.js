@@ -54,7 +54,7 @@ class PopupsRight extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (!json.status) {
+            if (json.status === 0) {
                 message.success('添加成功')
                 this.props.HandleCalendar()
                 actions.show_popup([!this.props.show_popup])
@@ -78,7 +78,7 @@ class PopupsRight extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (!json.status) {
+            if (json.status === 0) {
                 message.success('添加成功')
                 for (let i = 0; i < tds.length; i++) {
                     removeClass(tds[i], 'seleted')
@@ -116,6 +116,7 @@ class PopupsRight extends Component {
                 }
             }
         });
+        this.props.form.resetFields()
     }
 
     //获取渠道来源
@@ -160,7 +161,6 @@ class PopupsRight extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             this.setState({
                 colorList: json
             })
@@ -171,7 +171,6 @@ class PopupsRight extends Component {
 
     render() {
         const {show_popup, id, date, editInfo, arrDate, order_id} = this.props
-        console.log(arrDate)
 
         const {sources, colorList} = this.state
         const className = this.props.show_popup ? 'active' : ''
@@ -233,7 +232,7 @@ class PopupsRight extends Component {
                                             [moment(moment.unix(editInfo.data ? editInfo.data.sta_time : '').format('YYYY-MM-DD')), moment(moment.unix(editInfo.data ? editInfo.data.com_time : '').format('YYYY-MM-DD'))]
                                             : !date && !arrDate ?
                                                 [moment(moment(), 'YYYY-MM-DD'), moment(moment().add(1, 'days'), 'YYYY-MM-DD')]
-                                                :[moment(moment(arrDate[0]), 'YYYY-MM-DD'), moment(moment(arrDate[1] ? arrDate[1] : arrDate[0]).add(1, 'days'), 'YYYY-MM-DD')],
+                                                : [moment(moment(arrDate[0]), 'YYYY-MM-DD'), moment(moment(arrDate[1] ? arrDate[1] : arrDate[0]).add(1, 'days'), 'YYYY-MM-DD')],
                                         rules: [{required: true, message: '请选择入住日期'}]
                                     })(
                                         <RangePicker
@@ -426,7 +425,8 @@ class PopupsRight extends Component {
                                                     !colorList.status ?
                                                         colorList.data.map((item, index) => {
                                                             return (
-                                                                <Radio className={color(item.id)} value={item.id} key={item.id}/>
+                                                                <Radio className={color(item.id)} value={item.id}
+                                                                       key={item.id}/>
                                                             )
                                                         })
                                                         : ''

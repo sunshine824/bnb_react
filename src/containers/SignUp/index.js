@@ -117,6 +117,13 @@ class SignUp extends Component {
      * 显示modal
      */
     showModalCode() {
+        if (this.state.phone === '') {
+            this.props.form.setFields({
+                phone:{
+                    errors:[new Error('请输入您的手机号！')]
+                }
+            })
+        }
         if (this.state.isCount) return
         const reg = /^1[0-9]{10}$/
         if (reg.test(this.state.phone)) {
@@ -172,10 +179,8 @@ class SignUp extends Component {
     }
 
     doCheck() {
-        const {username} = this.props
-        if (username) {
-            this.goHomePage()
-        }
+        const token = localStorage.getItem('token')
+        if (token) this.goHomePage()
     }
 
     goHomePage() {
@@ -228,6 +233,7 @@ class SignUp extends Component {
                             </FormItem>
                             <FormItem>
                                 {getFieldDecorator('password', {
+                                    initialValue: '',
                                     rules: [{
                                         required: true, message: '请输入密码',
                                     }, {
@@ -245,6 +251,7 @@ class SignUp extends Component {
                             </FormItem>
                             <FormItem>
                                 {getFieldDecorator('confirm', {
+                                    initialValue: '',
                                     rules: [{
                                         required: true, message: '请再次输入密码',
                                     }, {

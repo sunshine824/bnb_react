@@ -188,11 +188,11 @@ class HomeTableTr extends Component {
                                  style={{
                                      width: calendarObj[i] ?
                                          calendarObj[i].dates > 1 ?
-                                             93 * calendarObj[i].dates + (calendarObj[i].dates) * 2 + 'px'
+                                             93 + 96 * calendarObj[i].dates + 'px'
                                              : 93 * calendarObj[i].dates
                                          : '',
                                      backgroundColor: calendarObj[i] ?
-                                         calendarObj[i].status===2 ?
+                                         calendarObj[i].status === 2 ?
                                              '#a9a7a7'
                                              : calendarObj[i].state
                                          : '',

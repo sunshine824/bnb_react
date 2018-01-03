@@ -53,8 +53,7 @@ class signIn extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
-            if (json.status===0) {
+            if (json.status === 0) {
                 actions.save_user_name(data.phone)
                 localStorage.setItem('token', json.data)
                 this.props.history.push('/')
@@ -65,10 +64,8 @@ class signIn extends Component {
     }
 
     doCheck() {
-        const {username} = this.props
-        if (username) {
-            this.goHomePage()
-        }
+        const token = localStorage.getItem('token')
+        if (token) this.goHomePage()
     }
 
     goHomePage() {
