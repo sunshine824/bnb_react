@@ -11,7 +11,7 @@ class DateLis extends Component {
                     <dt>
                         <b>{this.props.date}</b>
                     </dt>
-                    <dd>剩 {this.props.room} 间</dd>
+                    <dd>剩 {this.props.room.has_count} 间</dd>
                 </dl>
             </li>
         )

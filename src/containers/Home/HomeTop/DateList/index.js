@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import DateLis from '@/components/DateLis'
+import moment from 'moment'
 
 import './style.less'
 
@@ -13,12 +14,12 @@ class DateList extends Component {
 
 
     render() {
-        const {dateLists, scrollLeft, remain_house} = this.props
+        const {house_calendar, scrollLeft,} = this.props
 
         const Lis = () => {
             const res = []
-            for (let key in remain_house) {
-                res.push(<DateLis key={key} date={key.slice(5)} room={remain_house[key]}/>)
+            for (let key in house_calendar) {
+                res.push(<DateLis key={key} date={moment.unix(key).format('MM-DD')} room={house_calendar[key]}/>)
             }
             return res
         }
@@ -33,9 +34,9 @@ class DateList extends Component {
 
 function mapStateToProps(state) {
     return {
-        dateLists: state.update_date.dateLists ? state.update_date.dateLists : '',
+        house_calendar: state.calendar_data.calendar ? state.calendar_data.calendar.data ? state.calendar_data.calendar.data.house_calendar : '' : '',
         scrollLeft: state.save_scroll.scrollLeft ? state.save_scroll.scrollLeft : 0,
-        remain_house: state.save_remain_house
+        //remain_house: state.save_remain_house
     }
 }
 

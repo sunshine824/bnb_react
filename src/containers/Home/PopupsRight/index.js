@@ -59,7 +59,7 @@ class PopupsRight extends Component {
                 this.props.HandleCalendar()
                 actions.show_popup([!this.props.show_popup])
             } else {
-                message.error('添加失败')
+                message.error(json.interpret)
             }
         }).catch(err => {
             console.log(err)
@@ -86,7 +86,7 @@ class PopupsRight extends Component {
                 this.props.HandleCalendar()
                 actions.show_popup([!this.props.show_popup])
             } else {
-                message.error('添加失败')
+                message.error(json.interpret)
             }
         }).catch(err => {
             console.log(err)
@@ -109,6 +109,7 @@ class PopupsRight extends Component {
                 };
                 if (order_id) {
                     values.id = order_id
+                    values.house_id = id
                     this._editCheckIn(values)
                 } else {
                     values.house_id = id

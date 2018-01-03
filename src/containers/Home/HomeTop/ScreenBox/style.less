@@ -19,16 +19,23 @@
   }
 }
 .choose-type{
+  height: 32px;
+  overflow: hidden;
   .ant-select{
     width: 100%;
   }
-  .ant-select-selection--single{
+  .ant-select-selection--multiple{
     background: #f6f6f6;
     border-radius: 0;
     border:0;
+    .ant-select-selection__rendered ul{
+      opacity:0;
+    }
   }
   .ant-select-selection__placeholder, .ant-select-search__field__placeholder{
     color: #625b5b;
+    text-align: center;
+    display: block !important;
   }
   .ant-select-arrow{
     color: #625b5b;

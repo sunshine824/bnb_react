@@ -101,10 +101,10 @@ class HomeTableTr extends Component {
                     arrDate.sort()
                     const num1 = moment(moment(arrDate[0])
                         .format('YYYY-MM-DD'))
-                        .diff(moment(start_date), 'days')
+                        .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
                     const num2 = moment(moment(arrDate[1])
                         .format('YYYY-MM-DD'))
-                        .diff(moment(start_date), 'days')
+                        .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
                     for (let i = num1; i <= num2; i++) {
                         addClass(now_tds[i], 'seleted')
                     }
@@ -157,17 +157,17 @@ class HomeTableTr extends Component {
     }
 
     render() {
-        const {start_date, calendars, roomList, id, dateLists} = this.props
-
+        const {start_date, calendars, roomList, id, dateLists, end_date} = this.props
 
         let arrIndex = []
         const calendarObj = {}
 
         if (calendars[id]) {
             for (let key in calendars[id]) {
-                const index = moment(moment.unix(calendars[id][key].sta_time)
+                const sta_time = calendars[id][key].sta_time < start_date ? start_date : calendars[id][key].sta_time
+                let index = moment(moment.unix(sta_time)
                     .format('YYYY-MM-DD'))
-                    .diff(moment(start_date), 'days')
+                    .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
                 calendarObj[index] = calendars[id][key]
                 arrIndex.push(index)
             }
@@ -179,8 +179,9 @@ class HomeTableTr extends Component {
             for (let i = 0; i < length; i++) {
                 res.push(
                     arrIndex.includes(i) ?
-                        <td className='active' data-date={dateLists[i]}
-                            onClick={this.handlePopup.bind(this, id, calendarObj[i].id, '')}
+                        <td className='active'
+                            data-date={moment.unix(Object.keys(dateLists)[i]).format('YYYY-MM-DD')}
+                            onClick={this.handlePopup.bind(this, id, calendarObj[i].id, '', calendarObj[i].house_id)}
                             key={i}
                             onMouseOver={this.handleMouseOver.bind(this, calendarObj[i])}
                             onMouseOut={this.handleMouseOut.bind(this)}>
@@ -188,13 +189,21 @@ class HomeTableTr extends Component {
                                  style={{
                                      width: calendarObj[i] ?
                                          calendarObj[i].dates > 1 ?
-                                             93 + 96 * calendarObj[i].dates + 'px'
+                                             calendarObj[i].sta_time < start_date ?
+                                                 93 + 96 * (parseInt(calendarObj[i].dates - 1) + parseInt(moment(moment.unix(calendarObj[i].sta_time)
+                                                     .format('YYYY-MM-DD'))
+                                                     .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days'))) :
+                                                 calendarObj[i].com_time > end_date ?
+                                                     93 + 96 * (parseInt(calendarObj[i].dates - 1) - (parseInt(moment(moment.unix(calendarObj[i].com_time)
+                                                         .format('YYYY-MM-DD'))
+                                                         .diff(moment.unix(end_date).format('YYYY-MM-DD'), 'days')) - 1))
+                                                     : 93 + 96 * (calendarObj[i].dates - 1) + 'px'
                                              : 93 * calendarObj[i].dates
                                          : '',
                                      backgroundColor: calendarObj[i] ?
                                          calendarObj[i].status === 2 ?
                                              '#a9a7a7'
-                                             : calendarObj[i].state
+                                             : calendarObj[i].color
                                          : '',
                                      cursor: calendarObj[i] ?
                                          calendarObj[i].status === 2 ?
@@ -206,8 +215,8 @@ class HomeTableTr extends Component {
                             </div>
                         </td>
                         :
-                        <td data-date={dateLists[i]}
-                            onClick={this.handlePopup.bind(this, id, '', dateLists[i].slice(0, -2))}
+                        <td data-date={moment.unix(Object.keys(dateLists)[i]).format('YYYY-MM-DD')}
+                            onClick={this.handlePopup.bind(this, id, '', moment.unix(Object.keys(dateLists)[i]).format('YYYY-MM-DD'))}
                             key={i}>
                             <div className="booked">
                                 <p className="book-name"></p>
@@ -229,9 +238,10 @@ class HomeTableTr extends Component {
 
 function mapStateToProps(state) {
     return {
-        dateLists: state.update_date.dateLists ? state.update_date.dateLists : '',
-        start_date: state.update_date.dateLists ? state.update_date.dateLists[0].slice(0, -2) : '',
-        calendars: state.calendar_data.calendar ? state.calendar_data.calendar.data : '',
+        dateLists: state.calendar_data.calendar ? state.calendar_data.calendar.data ? state.calendar_data.calendar.data.house_calendar : '' : '',
+        start_date: state.update_date.dateLists ? state.update_date.dateLists : '',
+        end_date: state.update_date.endDate ? state.update_date.endDate : '',
+        calendars: state.calendar_data.calendar ? state.calendar_data.calendar.data ? state.calendar_data.calendar.data.orders : '' : '',
         show_popup: state.show_popup.popup,
         roomList: state.save_Rooms.roomList ? state.save_Rooms.roomList : '',
         remain_house: state.save_remain_house,

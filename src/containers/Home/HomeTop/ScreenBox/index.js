@@ -65,7 +65,7 @@ class ScreenBox extends Component {
         }).then(json => {
             if (json.status === 2) message.warn('暂无入住数据')
 
-            for (let key in json.data) {
+            /*for (let key in json.data) {
                 json.data[key].map((item, index) => {
                     for (let i = 0; i < item.dates; i++) {
                         const date = moment.unix(item.sta_time).add(i, 'days').format('YYYY-MM-DD')
@@ -86,10 +86,14 @@ class ScreenBox extends Component {
                 } else {
                     remain_house[item.slice(0, -2)] = json.interpret
                 }
-            })
+            })*/
 
-            actions.save_remain_house(remain_house)
+            //actions.save_remain_house(remain_house)
+            const firstDate = Object.keys(json.data.house_calendar)[0]
+            const endDate = Object.keys(json.data.house_calendar)[49]
+
             actions.calendar_data(json)
+            actions.update_date([firstDate, endDate])
 
         }).catch(err => {
             console.log(err)
@@ -107,6 +111,7 @@ class ScreenBox extends Component {
         }, () => {
             this.getCalendarData()
         })
+
         actions.show_popup([false])
         this.getRoomListData(value)
     }
@@ -134,7 +139,7 @@ class ScreenBox extends Component {
      * @constructor
      */
     HandleDate(isDefault, date) {
-        const dateLists = []
+        /*const dateLists = []
         const {actions} = this.props
 
         if (isDefault) {
@@ -160,9 +165,9 @@ class ScreenBox extends Component {
 
         this.setState({
             dateLists: dateLists
-        })
+        })*/
 
-        actions.update_date(dateLists)
+        //actions.update_date(dateLists)
     }
 
     /**
@@ -195,14 +200,10 @@ class ScreenBox extends Component {
                 </div>
                 <div className="choose-type">
                     <Select
-                        showSearch
                         placeholder="筛选"
-                        optionFilterProp="children"
+                        mode="multiple"
                         onChange={this.handleChange.bind(this)}
-                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                        defaultValue=""
                     >
-                        <Option value="">全选</Option>
                         {
                             house_list ?
                                 house_list.map((item, index) => {
@@ -215,6 +216,7 @@ class ScreenBox extends Component {
                                 : ''
                         }
                     </Select>
+
                 </div>
             </div>
         )
