@@ -277,7 +277,7 @@ class PopupsRight extends Component {
                                             editInfo.data ?
                                                 editInfo.data.source_id
                                                 : ''
-                                            : '',
+                                            : 1,
                                         rules: [{required: true, message: '请选择渠道来源'}]
                                     })(
                                         <Select
