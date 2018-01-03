@@ -4357,7 +4357,7 @@ class PersonalInfo extends Component {
 
         this._getUserInfo()
 
-        this._getProvinceList()
+        /*this._getProvinceList()*/
     }
 
     handleSubmit = (e) => {
@@ -4401,7 +4401,7 @@ class PersonalInfo extends Component {
             return res.json()
         }).then(json => {
             console.log(json)
-            if(json.status===0){
+            if (json.status === 0) {
                 message.success('保存成功！')
             }
         }).catch(err => {
@@ -4487,15 +4487,16 @@ class PersonalInfo extends Component {
                     <label>总部地址</label>
                     <div className="link">
                         <FormItem>
-                            {/*{getFieldDecorator('city', {
-                            rules: [{required: true, message: '请选择省/市/区详细信息！'}],
-                        })(
                             <div className="item">
-                                <Cascader options={this.state.options}
-                                          placeholder="请选择地址"/>
+                                {getFieldDecorator('ress', {
+                                    rules: [{required: true, message: '请选择省/市/区详细信息！'}],
+                                    initialValue: userInfo.data ? [userInfo.data.province, userInfo.data.city, userInfo.data.county] : ''
+                                })(
+                                    <Cascader style={{width:'250px'}} options={this.state.options}
+                                              placeholder="请选择地址"/>
+                                )}
                             </div>
-                        )}*/}
-                            <div className="item">
+                            {/*<div className="item">
                                 {getFieldDecorator('province_id', {
                                     initialValue: userInfo.data ? !userInfo.data.province_id ? '请选择省信息！' : userInfo.data.province_id : '',
                                     rules: [{required: true, message: '请选择省信息！'}],
@@ -4514,10 +4515,9 @@ class PersonalInfo extends Component {
                                                 : ''
                                         }
                                     </Select>
-                                )}
-                            </div>
+                                )}*/}
                         </FormItem>
-                        <FormItem>
+                        {/* <FormItem>
                             <div className="item">
                                 {getFieldDecorator('city_id', {
                                     initialValue: userInfo.data ? !userInfo.data.city_id ? '请选择市信息!' : userInfo.data.city_id : '',
@@ -4562,7 +4562,7 @@ class PersonalInfo extends Component {
                                     </Select>
                                 )}
                             </div>
-                        </FormItem>
+                        </FormItem>*/}
                     </div>
                     <FormItem>
                         <div className="item">
@@ -4591,26 +4591,27 @@ class PersonalInfo extends Component {
                     <Button type="primary" htmlType="submit"
                             style={{float: 'left', width: '100%'}}>保存</Button>
                 </Form>
-            </div>
-        )
-    }
-}
+                <
+                /div>
+                )
+                }
+                }
 
-function mapStateToProps(state) {
-    return {
-        state: state,
-        userInfo: state.save_user_info.userinfo
-    }
-}
+                function mapStateToProps(state) {
+                return {
+                state: state,
+                userInfo: state.save_user_info.userinfo
+            }
+            }
 
-function mapActionsToProps(dispatch) {
-    return {
-        actions: bindActionCreators({
-            save_path,
-            save_user_info
-        }, dispatch)
-    }
-}
+                function mapActionsToProps(dispatch) {
+                return {
+                actions: bindActionCreators({
+                save_path,
+                save_user_info
+            }, dispatch)
+            }
+            }
 
-const PersonalFromInfo = Form.create()(PersonalInfo)
-export default connect(mapStateToProps, mapActionsToProps)(PersonalFromInfo)
+                const PersonalFromInfo = Form.create()(PersonalInfo)
+                export default connect(mapStateToProps, mapActionsToProps)(PersonalFromInfo)

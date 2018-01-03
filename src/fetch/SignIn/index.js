@@ -13,3 +13,15 @@ export function SignIn(data) {
 
     return result
 }
+
+
+/**
+ * 退出
+ * @returns {*}
+ * @constructor
+ */
+export function Layout() {
+    const result=post('/api/out',{})
+
+    return result
+}

@@ -53,6 +53,7 @@ class signIn extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
+            console.log(json)
             if (json.status===0) {
                 actions.save_user_name(data.phone)
                 localStorage.setItem('token', json.data)

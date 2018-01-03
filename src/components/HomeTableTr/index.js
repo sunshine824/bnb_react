@@ -192,7 +192,14 @@ class HomeTableTr extends Component {
                                              : 93 * calendarObj[i].dates
                                          : '',
                                      backgroundColor: calendarObj[i] ?
-                                         calendarObj[i].state
+                                         calendarObj[i].status===2 ?
+                                             '#a9a7a7'
+                                             : calendarObj[i].state
+                                         : '',
+                                     cursor: calendarObj[i] ?
+                                         calendarObj[i].status === 2 ?
+                                             'not-allowed'
+                                             : ''
                                          : ''
                                  }}>
                                 <p className="book-name">{calendarObj[i].source_name} / {calendarObj[i].name}</p>
