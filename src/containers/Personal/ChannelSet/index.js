@@ -72,11 +72,9 @@ class ChannelSet extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (json.status === 0) {
-                this.setState({
-                    sourceList: json
-                })
-            }
+            this.setState({
+                sourceList: json
+            })
         }).catch(err => {
             console.log(err)
         })

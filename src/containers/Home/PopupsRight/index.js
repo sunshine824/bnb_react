@@ -58,6 +58,7 @@ class PopupsRight extends Component {
                 message.success('添加成功')
                 this.props.HandleCalendar()
                 actions.show_popup([!this.props.show_popup])
+                this.props.form.resetFields()
             } else {
                 message.error(json.interpret)
             }
@@ -85,6 +86,7 @@ class PopupsRight extends Component {
                 }
                 this.props.HandleCalendar()
                 actions.show_popup([!this.props.show_popup])
+                this.props.form.resetFields()
             } else {
                 message.error(json.interpret)
             }
@@ -117,7 +119,6 @@ class PopupsRight extends Component {
                 }
             }
         });
-        this.props.form.resetFields()
     }
 
     //获取渠道来源
@@ -177,8 +178,8 @@ class PopupsRight extends Component {
         const className = this.props.show_popup ? 'active' : ''
         const {getFieldDecorator} = this.props.form;
 
-        const color = (id) => {
-            switch (id) {
+        const color = (color) => {
+            switch (color) {
                 case 1 :
                     return 'blue'
                     break
@@ -277,7 +278,7 @@ class PopupsRight extends Component {
                                             editInfo.data ?
                                                 editInfo.data.source_id
                                                 : ''
-                                            : 1,
+                                            : '',
                                         rules: [{required: true, message: '请选择渠道来源'}]
                                     })(
                                         <Select
@@ -426,7 +427,7 @@ class PopupsRight extends Component {
                                                     !colorList.status ?
                                                         colorList.data.map((item, index) => {
                                                             return (
-                                                                <Radio className={color(item.id)} value={item.id}
+                                                                <Radio className={color(item.color)} value={item.id}
                                                                        key={item.id}/>
                                                             )
                                                         })

@@ -57,6 +57,16 @@ class signIn extends Component {
                 actions.save_user_name(data.phone)
                 localStorage.setItem('token', json.data)
                 this.props.history.push('/')
+            }else {
+                const error = {}
+                json.data.map((item, index) => {
+                    const key = Object.keys(item)[0]
+                    error[key] = {
+                        value: data[key],
+                        errors: [new Error(item[key])]
+                    }
+                    this.props.form.setFields(error)
+                })
             }
         }).catch(err => {
             console.log(err)

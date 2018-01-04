@@ -122,7 +122,7 @@ class ColorRemark extends Component {
                                         return (
                                             <tr key={item.id}>
                                                 <td>
-                                                    <p className="color" style={{backgroundColor: item.state}}></p>
+                                                    <p className="color" style={{backgroundColor: item.color}}></p>
                                                 </td>
                                                 <td>{item.remark}</td>
                                                 <td>
@@ -158,7 +158,7 @@ class ColorRemark extends Component {
                 >
                     <div className="color-form">
                         <Form onSubmit={this.handleSubmit.bind(this)}>
-                            <p className="color" style={{backgroundColor: colorInfo.state}}></p>
+                            <p className="color" style={{backgroundColor: colorInfo.color}}></p>
                             <FormItem>
                                 <div className="item">
                                     <label>备注名称</label>

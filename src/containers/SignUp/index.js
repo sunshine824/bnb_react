@@ -71,9 +71,19 @@ class SignUp extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (!json.status) {
+            if (json.status === 0) {
                 actions.save_user_info(data.phone)
                 this.props.history.push('/')
+            } else {
+                const error = {}
+                json.data.map((item, index) => {
+                    const key = Object.keys(item)[0]
+                    error[key] = {
+                        value: data[key],
+                        errors: [new Error(item[key])]
+                    }
+                    this.props.form.setFields(error)
+                })
             }
         }).catch(err => {
             console.log(err)
@@ -119,8 +129,8 @@ class SignUp extends Component {
     showModalCode() {
         if (this.state.phone === '') {
             this.props.form.setFields({
-                phone:{
-                    errors:[new Error('请输入您的手机号！')]
+                phone: {
+                    errors: [new Error('请输入您的手机号！')]
                 }
             })
         }

@@ -85,7 +85,7 @@ class HomeTableTr extends Component {
                 arrDate.push(date)
             }
 
-
+            console.log(arrDate)
             //选中状态操作
             if (prev_id) {
                 const dom = event.target.nodeName === 'DIV' ? event.target.parentNode : event.target
@@ -102,7 +102,7 @@ class HomeTableTr extends Component {
                     const num1 = moment(moment(arrDate[0])
                         .format('YYYY-MM-DD'))
                         .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
-                    const num2 = moment(moment(arrDate[1])
+                    const num2 = moment(moment(arrDate[1] ? arrDate[1] : arrDate[0])
                         .format('YYYY-MM-DD'))
                         .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
                     for (let i = num1; i <= num2; i++) {
@@ -114,6 +114,7 @@ class HomeTableTr extends Component {
                     }
                 }
             }
+
             actions.show_popup([
                 true,
                 id,
