@@ -4400,7 +4400,6 @@ class PersonalInfo extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             if (json.status === 0) {
                 message.success('保存成功！')
             }
@@ -4415,7 +4414,6 @@ class PersonalInfo extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             if (!json.status) {
                 this.setState({
                     provinces: json

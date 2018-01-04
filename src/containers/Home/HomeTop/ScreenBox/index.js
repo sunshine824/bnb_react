@@ -31,7 +31,7 @@ class ScreenBox extends Component {
     }
 
     componentDidMount() {
-        this.HandleDate(1)
+        //this.HandleDate(1)
         //获取日历数据
         this.getCalendarData()
         //获取房型数据
@@ -47,7 +47,7 @@ class ScreenBox extends Component {
         }, () => {
             this.getCalendarData()
         })
-        this.HandleDate(0, dateString)
+        //this.HandleDate(0, dateString)
     }
 
     /**

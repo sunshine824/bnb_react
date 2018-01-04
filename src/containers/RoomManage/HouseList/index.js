@@ -66,7 +66,6 @@ class HouseManage extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             this.setState({
                 houseInfo: json
             })

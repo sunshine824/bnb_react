@@ -40,7 +40,6 @@ class ChannelSet extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 if (this.state.mold === 'add') {
                     this._addSource(values)
                 } else {
@@ -128,7 +127,6 @@ class ChannelSet extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             if (json.status === 0) {
                 this.setState({
                     sourceInfo: json
@@ -144,7 +142,6 @@ class ChannelSet extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            console.log(json)
             if (json.status === 0) {
                 message.success('编辑成功！')
                 this.setState({

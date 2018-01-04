@@ -85,7 +85,6 @@ class HomeTableTr extends Component {
                 arrDate.push(date)
             }
 
-            console.log(arrDate)
             //选中状态操作
             if (prev_id) {
                 const dom = event.target.nodeName === 'DIV' ? event.target.parentNode : event.target

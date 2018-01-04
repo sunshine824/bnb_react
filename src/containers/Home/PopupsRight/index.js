@@ -427,7 +427,7 @@ class PopupsRight extends Component {
                                                     !colorList.status ?
                                                         colorList.data.map((item, index) => {
                                                             return (
-                                                                <Radio className={color(item.color)} value={item.id}
+                                                                <Radio className={color(item.color_v)} value={item.id}
                                                                        key={item.id}/>
                                                             )
                                                         })
