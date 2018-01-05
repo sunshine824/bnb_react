@@ -95,11 +95,11 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage": ".",
+  "homepage": "./",
   "devDependencies": {
     "babel-plugin-import": "^1.6.2",
     "less": "^2.7.3",
     "less-loader": "^4.0.5"
   },
-  "proxy": "https://bnb-api.pthola.cn"
+  "proxy": "http://10.0.1.222:8080"
 }

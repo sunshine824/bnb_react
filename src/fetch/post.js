@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
 import 'es6-promise'
+import {serveUrl} from './config'
 
 
 /**
@@ -41,6 +42,7 @@ export function post(url, param) {
         body: obj2params(param)
     }).then(response => {
         if (response.status === 401) {
+            localStorage.removeItem('token')
             window.location.href = '/signIn'
         }
         if (response.status >= 200 && response.status < 300) {

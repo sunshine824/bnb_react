@@ -6,9 +6,9 @@ import './style.less'
 
 class HomeTop extends Component {
 
-    componentDidMount() {
+    /*componentDidMount() {
         this.ChildHandleCalendar()
-    }
+    }*/
 
     ChildHandleCalendar() {
         this.refs['calendar'].wrappedInstance.getCalendarData()

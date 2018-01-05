@@ -72,7 +72,8 @@ class SignUp extends Component {
             return res.json()
         }).then(json => {
             if (json.status === 0) {
-                actions.save_user_info(data.phone)
+                actions.save_user_name(data.phone)
+                localStorage.setItem('token',json.data)
                 this.props.history.push('/')
             } else {
                 const error = {}
