@@ -1,1 +1,1 @@
-export const serveUrl = 'http://10.0.1.86:8080'
+export const serveUrl = 'http://10.0.1.222:8080'

@@ -112,7 +112,7 @@ class signIn extends Component {
                                         min: 6, message: '密码为至少6位'
                                     }],
                                 })(
-                                    <Input size="large" prefix={<Icon type="lock" style={{
+                                    <Input autoComplete="new-password" size="large" prefix={<Icon type="lock" style={{
                                         color: 'rgba(0,0,0,.4)',
                                         fontSize: '16px'
                                     }}/>}
