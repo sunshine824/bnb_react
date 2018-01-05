@@ -101,5 +101,5 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5"
   },
-  "proxy": "http://10.0.1.222:8080"
+  "proxy": "https://bnb-api.pthola.cn"
 }

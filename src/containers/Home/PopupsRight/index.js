@@ -6,7 +6,7 @@ import {show_popup} from '@/redux/actions'
 import {editCheckIn, addCheckIn, deleteCheckIn} from '@/fetch/EditCheckin'
 import {getSourceList} from '@/fetch/SourceList'
 import {getColorList} from '@/fetch/GetColorList'
-import {hasClass, addClass, removeClass} from '@/config/fnMixin'
+import {removeClass} from '@/config/fnMixin'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import moment from 'moment'
 
