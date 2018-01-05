@@ -9,7 +9,7 @@ const Header=asyncComponent(()=>import('@/containers/Header'))
 const Home=asyncComponent(()=>import('@/containers/Home'))
 const RoomManage=asyncComponent(()=>import('@/containers/RoomManage'))
 const OrderManage=asyncComponent(()=>import('@/containers/OrderManage'))
-const Income=asyncComponent(()=>import('@/containers/Income'))
+//const Income=asyncComponent(()=>import('@/containers/Income'))
 const Personal=asyncComponent(()=>import('@/containers/Personal'))
 
 

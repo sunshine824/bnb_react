@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import {save_path} from '@/redux/actions'
+//import {save_path} from '@/redux/actions'
 import LeftMenu from './LeftMenu'
 import {
-    Switch,
+    //Switch,
     Route
 } from 'react-router-dom'
 import {asyncComponent} from '@/config/fnMixin'

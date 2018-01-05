@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 //import {Button} from 'antd'
 //import {connect} from 'react-redux'
-import {save_status} from '@/redux/actions'
+//import {save_status} from '@/redux/actions'
 //import {bindActionCreators} from 'redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {getStatistics} from '@/fetch/Statistics'

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {Modal, Form, Input, Icon, Button, message} from 'antd';
-import {addHouse, editHouse, deteleRoom} from '@/fetch/HouseList'
+import {editHouse, deteleRoom} from '@/fetch/HouseList'
 
 import './style.less'
 

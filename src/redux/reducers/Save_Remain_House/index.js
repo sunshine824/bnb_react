@@ -1,5 +1,5 @@
 import * as actionTypes from '../../../config/actionType'
-import moment from 'moment'
+//import moment from 'moment'
 
 const initialState = []
 let remain_house = ''

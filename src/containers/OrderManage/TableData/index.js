@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button, Radio, DatePicker, Input, Pagination} from 'antd'
+import {Radio, DatePicker, Input, Pagination} from 'antd'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {getOrderList} from '@/fetch/OrderList'
 import moment from 'moment'

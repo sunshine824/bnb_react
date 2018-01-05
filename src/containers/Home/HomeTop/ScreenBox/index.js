@@ -15,7 +15,7 @@ import './style.less'
 moment.locale('zh-cn');
 
 const Option = Select.Option;
-const calendar = {}
+//const calendar = {}
 
 class ScreenBox extends Component {
     constructor(props) {
@@ -58,8 +58,8 @@ class ScreenBox extends Component {
     getCalendarData(id, date) {
         const {actions} = this.props
         const result = getCalendarData(this.state.house_id, this.state.sta_time)
-        const calendarTime = []
-        const remain_house = {}
+        //const calendarTime = []
+        //const remain_house = {}
         result.then(res => {
             return res.json()
         }).then(json => {

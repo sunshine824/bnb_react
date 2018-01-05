@@ -8,7 +8,7 @@ import {getUserInfo, editUserInfo, getProvinceList, getCityList, getCountyList} 
 import './style.less'
 
 const FormItem = Form.Item;
-const Option = Select.Option
+//const Option = Select.Option
 const {TextArea} = Input;
 
 class PersonalInfo extends Component {

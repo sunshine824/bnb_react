@@ -172,7 +172,7 @@ class PopupsRight extends Component {
     }
 
     render() {
-        const {show_popup, id, date, editInfo, arrDate, order_id} = this.props
+        const {date, editInfo, arrDate, order_id} = this.props
 
         const {sources, colorList} = this.state
         const className = this.props.show_popup ? 'active' : ''
