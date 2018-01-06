@@ -5,12 +5,18 @@ import {
 } from 'react-router-dom'
 import {asyncComponent} from '@/config/fnMixin'
 
-const Header=asyncComponent(()=>import('@/containers/Header'))
+/*const Header=asyncComponent(()=>import('@/containers/Header'))
 const Home=asyncComponent(()=>import('@/containers/Home'))
 const RoomManage=asyncComponent(()=>import('@/containers/RoomManage'))
 const OrderManage=asyncComponent(()=>import('@/containers/OrderManage'))
 //const Income=asyncComponent(()=>import('@/containers/Income'))
-const Personal=asyncComponent(()=>import('@/containers/Personal'))
+const Personal=asyncComponent(()=>import('@/containers/Personal'))*/
+
+import Header from '@/containers/Header'
+import Home from '@/containers/Home'
+import RoomManage from '@/containers/RoomManage'
+import OrderManage from '@/containers/OrderManage'
+import Personal from '@/containers/Personal'
 
 
 export default class PrimaryLayout extends Component {

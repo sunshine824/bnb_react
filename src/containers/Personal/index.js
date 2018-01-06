@@ -9,10 +9,15 @@ import {asyncComponent} from '@/config/fnMixin'
 
 import './style.less'
 
-const PersonalInfo = asyncComponent(() => import('@/containers/Personal/PersonalInfo'))
+/*const PersonalInfo = asyncComponent(() => import('@/containers/Personal/PersonalInfo'))
 const ChannelSet = asyncComponent(() => import('@/containers/Personal/ChannelSet'))
 const ColorRemark = asyncComponent(() => import('@/containers/Personal/ColorRemark'))
-const RePassword = asyncComponent(() => import('@/containers/Personal/RePassword'))
+const RePassword = asyncComponent(() => import('@/containers/Personal/RePassword'))*/
+
+import PersonalInfo from '@/containers/Personal/PersonalInfo'
+import ChannelSet from '@/containers/Personal/ChannelSet'
+import ColorRemark from '@/containers/Personal/ColorRemark'
+import RePassword from '@/containers/Personal/RePassword'
 
 class personal extends Component {
 

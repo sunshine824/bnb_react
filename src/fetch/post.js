@@ -41,7 +41,6 @@ export function post(url, param) {
         },
         body: obj2params(param)
     }).then(response => {
-        console.log(response)
         if (response.status === 401) {
             localStorage.removeItem('token')
             window.location.href = '/signIn'
