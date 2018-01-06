@@ -33,12 +33,12 @@ class HouseManage extends Component {
      */
     _deleteHouse(id) {
         const result = deleteHouse(id)
-        const {houseList} = this.state
+        //const {houseList} = this.props
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (!json.status) {
-                houseList.data.map((item, index) => {
+            if (json.status===0) {
+                /*houseList.data.map((item, index) => {
                     if (item.id === id) {
                         houseList.data.splice(index, 1)
                         this.setState({
@@ -49,7 +49,8 @@ class HouseManage extends Component {
                             }
                         })
                     }
-                })
+                })*/
+                this.props._getHouseList()
             } else {
                 message.warning(json.interpret);
             }

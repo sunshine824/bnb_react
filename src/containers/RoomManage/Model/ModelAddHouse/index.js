@@ -38,11 +38,14 @@ class ModelHouse extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (!json.status) {
+            if (json.status===0) {
                 this.props.onChangeHouse(false)
                 this.props._getHouseList()
                 this.props._getRoomList()
+                this.props.form.resetFields()
                 message.success('添加成功！');
+            }else {
+                message.error(json.interpret)
             }
         }).catch(err => {
             console.log(err)
