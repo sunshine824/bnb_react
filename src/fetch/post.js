@@ -30,10 +30,10 @@ function obj2params(obj) {
  * @returns {*}
  */
 export function post(url, param) {
-    var result = fetch(url, {
+    var result = fetch(serveUrl + url, {
         method: 'POST',
         mode: "cors",
-        credentials: 'include',
+        //credentials: 'include',
         headers: {
             "Accept": 'application/json',
             "Authorization": 'Bearer ' + localStorage.getItem('token'),
@@ -41,6 +41,7 @@ export function post(url, param) {
         },
         body: obj2params(param)
     }).then(response => {
+        console.log(response)
         if (response.status === 401) {
             localStorage.removeItem('token')
             window.location.href = '/signIn'
