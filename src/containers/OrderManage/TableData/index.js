@@ -134,7 +134,7 @@ class TableData extends Component {
                             <th>手机号</th>
                             <th>金额</th>
                             <th>订单备注</th>
-                            <th>备注颜色</th>
+                            <th>颜色备注</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -153,7 +153,7 @@ class TableData extends Component {
                                                     <td>{item.phone}</td>
                                                     <td>￥{item.revenue}</td>
                                                     <td>{item.remark}</td>
-                                                    <td>#0000</td>
+                                                    <td>{item.colors_remark}</td>
                                                 </tr>
                                             )
                                         })
