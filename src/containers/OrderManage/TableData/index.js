@@ -17,7 +17,7 @@ class TableData extends Component {
         super(props)
         this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
         this.state = {
-            status: '5',  //type类型
+            status: '1',  //type类型
             page: 1,  //页码
             content: '',  //搜索内容
             disabled: true,  //是否禁用时期选择

@@ -171,6 +171,7 @@ class PopupsRight extends Component {
         })
     }
 
+
     render() {
         const {date, editInfo, arrDate, order_id} = this.props
 

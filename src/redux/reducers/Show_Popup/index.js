@@ -11,7 +11,7 @@ export default function show_popup(state = initialState, action) {
                 date: action[2],
                 editInfo: action[3],
                 order_id:action[4],
-                arrDate:action[5] ? action[5] : ''
+                arrDate:action[5] ? action[5] : []
             }
         default:
             return state

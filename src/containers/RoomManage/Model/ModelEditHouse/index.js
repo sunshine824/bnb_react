@@ -115,6 +115,7 @@ class ModelHouse extends Component {
 
         getFieldDecorator('keys', {initialValue: arr});
         let keys = getFieldValue('keys');
+        console.log(keys)
 
         const decorator = (k, index) => {
             return `houses[${k}].${houseInfo.data.houses[index] ? houseInfo.data.houses[index].id : 0}`

@@ -198,11 +198,12 @@ class ScreenBox extends Component {
                                 allowClear={allowClear}
                                 format={dateFormat}/>
                 </div>
-                <div className="choose-type">
+                <div className="choose-type" id="area">
                     <Select
                         placeholder="筛选"
                         mode="multiple"
                         onChange={this.handleChange.bind(this)}
+                        getPopupContainer={() => document.getElementById('area')}
                     >
                         {
                             house_list ?

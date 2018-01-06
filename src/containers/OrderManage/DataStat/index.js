@@ -49,7 +49,7 @@ class DataStat extends Component {
                     <li key={k}>
                         <div className="box">
                             <p className="data-title">{stat_data.data[k].title}</p>
-                            <strong>{stat_data.data[k].content}人</strong>
+                            <strong>{stat_data.data[k].content}{stat_data.data[k].unit}</strong>
                             {/*<Button value={parseInt(k) + 1} type="primary"
                                     className={stat_data.data[k].status === 1 ? '' : 'hide'}
                                     onClick={this.onChangeStatus.bind(this)}>查看/办理</Button>*/}

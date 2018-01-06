@@ -37,7 +37,7 @@ class HomeTableTr extends Component {
     }
 
     handlePopup(id, order_id, date, event) {
-        const {calendars, start_date, actions, popup} = this.props
+        const {calendars, actions, popup} = this.props
         now_id = id
 
         if (!popup) arrDate = []
@@ -85,6 +85,16 @@ class HomeTableTr extends Component {
                 arrDate.push(date)
             }
 
+            actions.show_popup([
+                true,
+                id,
+                date,
+                '',
+                order_id,
+                arrDate
+            ])
+
+
             //选中状态操作
             if (prev_id) {
                 const dom = event.target.nodeName === 'DIV' ? event.target.parentNode : event.target
@@ -98,15 +108,10 @@ class HomeTableTr extends Component {
                     }
                     dom.className = 'seleted'
                     arrDate.sort()
-                    const num1 = moment(moment(arrDate[0])
-                        .format('YYYY-MM-DD'))
-                        .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
-                    const num2 = moment(moment(arrDate[1] ? arrDate[1] : arrDate[0])
-                        .format('YYYY-MM-DD'))
-                        .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
-                    for (let i = num1; i <= num2; i++) {
-                        addClass(now_tds[i], 'seleted')
-                    }
+
+                    //连接操作
+                    this.connectTd()
+
                 } else {
                     for (let i = 0; i < prev_tds.length; i++) {
                         removeClass(prev_tds[i], 'seleted')
@@ -114,16 +119,25 @@ class HomeTableTr extends Component {
                 }
             }
 
-            actions.show_popup([
-                true,
-                id,
-                date,
-                '',
-                order_id,
-                arrDate
-            ])
-
             prev_id = id
+        }
+    }
+
+    /**
+     * 连接显示
+     * @param id 房间id
+     */
+    connectTd() {
+        const {start_date} = this.props
+        const el = document.querySelectorAll('#room_cell' + now_id + ' td')
+        const num1 = moment(moment(arrDate[0])
+            .format('YYYY-MM-DD'))
+            .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
+        const num2 = moment(moment(arrDate[1] ? arrDate[1] : arrDate[0])
+            .format('YYYY-MM-DD'))
+            .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
+        for (let i = num1; i <= num2; i++) {
+            addClass(el[i], 'seleted')
         }
     }
 
@@ -246,7 +260,8 @@ function mapStateToProps(state) {
         roomList: state.save_Rooms.roomList ? state.save_Rooms.roomList : '',
         remain_house: state.save_remain_house,
         type_id: state.save_type_id.type_id,
-        popup: state.show_popup.popup
+        popup: state.show_popup.popup,
+        arr_date: state.show_popup.arrDate
     }
 }
 
