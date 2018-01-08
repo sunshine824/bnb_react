@@ -6,7 +6,7 @@ import {show_popup} from '@/redux/actions'
 import {editCheckIn, addCheckIn, deleteCheckIn} from '@/fetch/EditCheckin'
 import {getSourceList} from '@/fetch/SourceList'
 import {getColorList} from '@/fetch/GetColorList'
-import {removeClass} from '@/config/fnMixin'
+import {removeClass, addClass, checkClash} from '@/config/fnMixin'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import moment from 'moment'
 
@@ -109,6 +109,7 @@ class PopupsRight extends Component {
                     ...fieldsValue,
                     'time': [rangeValue[0].format('X'), rangeValue[1].format('X')]
                 };
+                console.log([rangeValue[0].format('X'), rangeValue[1].format('X')])
                 if (order_id) {
                     values.id = order_id
                     values.house_id = id
@@ -169,6 +170,30 @@ class PopupsRight extends Component {
         }).catch(err => {
             console.log(err)
         })
+    }
+
+    rangePicker(date, dateString) {
+        const {start_date, id, calendars, arrDate} = this.props
+        if(!arrDate.length) return
+
+        const el = document.querySelectorAll('#room_cell' + id + ' td')
+
+        for (let i = 0; i < el.length; i++) removeClass(el[i], 'seleted')
+
+        const num1 = moment(moment(dateString[0])
+            .format('YYYY-MM-DD'))
+            .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
+        const num2 = moment(moment(dateString[1]).subtract(1, 'days')
+            .format('YYYY-MM-DD'))
+            .diff(moment.unix(start_date).format('YYYY-MM-DD'), 'days')
+
+        if (checkClash(moment, calendars, dateString, id)) {
+            message.warn('当前选择时间中有入住订单，暂不能添加！')
+        } else {
+            for (let i = num1; i <= num2; i++) {
+                addClass(el[i], 'seleted')
+            }
+        }
     }
 
 
@@ -241,6 +266,7 @@ class PopupsRight extends Component {
                                         <RangePicker
                                             format="YYYY-MM-DD"
                                             placeholder={['入住日期', '退房日期']}
+                                            onChange={this.rangePicker.bind(this)}
                                         />
                                     )}
                                 </FormItem>
@@ -464,6 +490,8 @@ function mapStateToProps(state) {
         editInfo: state.show_popup.editInfo ? state.show_popup.editInfo : '',
         order_id: state.show_popup.order_id ? state.show_popup.order_id : '',
         arrDate: state.show_popup.arrDate ? state.show_popup.arrDate : '',
+        start_date: state.update_date.dateLists ? state.update_date.dateLists : '',
+        calendars: state.calendar_data.calendar ? state.calendar_data.calendar.data ? state.calendar_data.calendar.data.orders : '' : '',
     }
 }
 

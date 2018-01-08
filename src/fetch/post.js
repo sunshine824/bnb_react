@@ -33,7 +33,7 @@ export function post(url, param) {
     var result = fetch(serveUrl + url, {
         method: 'POST',
         mode: "cors",
-        //credentials: 'include',
+       //credentials: 'include',
         headers: {
             "Accept": 'application/json',
             "Authorization": 'Bearer ' + localStorage.getItem('token'),

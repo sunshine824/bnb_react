@@ -145,15 +145,15 @@ class TableData extends Component {
                                         orderList.data.data.map((item, index) => {
                                             return (
                                                 <tr key={index}>
-                                                    <td>{item.num}</td>
-                                                    <td>{item.source_name}</td>
+                                                    <td>{item.num === 'null' ? '' : item.num}</td>
+                                                    <td>{item.source_name === 'null' ? '' : item.source_name}</td>
                                                     <td>{moment.unix(item.sta_time).format('YYYY-MM-DD')}</td>
                                                     <td>{moment.unix(item.com_time).format('YYYY-MM-DD')}</td>
-                                                    <td>{item.name}</td>
-                                                    <td>{item.phone}</td>
-                                                    <td>￥{item.revenue}</td>
-                                                    <td>{item.remark}</td>
-                                                    <td>{item.colors_remark}</td>
+                                                    <td>{item.name === 'null' ? '' : item.name}</td>
+                                                    <td>{item.phone === 'null' ? '' : item.phone}</td>
+                                                    <td>￥{item.revenue === 'null' ? '' : item.revenue}</td>
+                                                    <td>{item.remark === 'null' ? '' : item.remark}</td>
+                                                    <td>{item.colors_remark === 'null' ? '' : item.colors_remark}</td>
                                                 </tr>
                                             )
                                         })

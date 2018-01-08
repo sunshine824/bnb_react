@@ -94,6 +94,7 @@ class ChannelSet extends Component {
                     visible: false
                 })
                 this._getSourcesList()
+                this.props.form.resetFields()
             }
         }).catch(err => {
             console.log(err)
@@ -123,6 +124,7 @@ class ChannelSet extends Component {
      * @private
      */
     _sourceInfo(id) {
+        console.log(id)
         const result = sourceInfo(id)
         result.then(res => {
             return res.json()
@@ -131,6 +133,7 @@ class ChannelSet extends Component {
                 this.setState({
                     sourceInfo: json
                 })
+                this.props.form.resetFields()
             }
         }).catch(err => {
             console.log(err)
@@ -182,11 +185,17 @@ class ChannelSet extends Component {
                                             <tr key={item.id}>
                                                 <td>{item.source}</td>
                                                 <td>
-                                                    <Button type="primary" size="small"
-                                                            style={{marginRight: '10px'}}
-                                                            onClick={this.editChannel.bind(this, 'edit', item.id)}>编辑</Button>
-                                                    <Button size="small"
-                                                            onClick={this._deleteSource.bind(this, item.id)}>删除</Button>
+                                                    {
+                                                        !item.is_edit ?
+                                                            <div>
+                                                                <Button type="primary" size="small"
+                                                                        style={{marginRight: '10px'}}
+                                                                        onClick={this.editChannel.bind(this, 'edit', item.id)}>编辑</Button>
+                                                                <Button size="small"
+                                                                        onClick={this._deleteSource.bind(this, item.id)}>删除</Button>
+                                                            </div>
+                                                            : ''
+                                                    }
                                                 </td>
                                             </tr>
                                         )
@@ -221,7 +230,7 @@ class ChannelSet extends Component {
                                 <div className="item">
                                     <label>渠道名称</label>
                                     {getFieldDecorator('source', {
-                                        initialValue: sourceInfo.data ? sourceInfo.data.source : '',
+                                        initialValue: mold !== 'add' ? sourceInfo.data ? sourceInfo.data.source : '' : '',
                                         rules: [{required: true, message: '请输入渠道名称！'}],
                                     })(
                                         <Input placeholder="请输入渠道名称！" className='info-name'/>

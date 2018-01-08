@@ -10,7 +10,7 @@ import {post} from '../post'
  * @param page  页码
  * @returns {*}
  */
-export function getOrderList(status = '5',
+export function getOrderList(status = '1',
                              start_time='',
                              end_time='',
                              content = '',

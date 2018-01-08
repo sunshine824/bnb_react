@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux'
 import {show_popup} from '@/redux/actions'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {editCheckInfo} from '@/fetch/EditCheckin'
-import {hasClass, addClass, removeClass} from '@/config/fnMixin'
+import {hasClass, addClass, removeClass, checkClash} from '@/config/fnMixin'
 import moment from 'moment';
 
 import './style.less'
@@ -55,27 +55,10 @@ class HomeTableTr extends Component {
                     let index = arrDate.indexOf(date)
                     arrDate = arrDate.splice(index, 1)
                 }
-                if (calendars[id]) {  //当前房间中有订单
-                    const arrOrderDate = []
-                    calendars[id].map((item, index) => {
-                        const sta_time = moment.unix(item.sta_time).format('YYYY-MM-DD')
-                        const end_time = moment.unix(item.com_time).format('YYYY-MM-DD')
-                        arrOrderDate.push([
-                            sta_time,
-                            end_time
-                        ])
-                    })
-                    for (let i = 0; i < arrOrderDate.length; i++) {
-                        arrDate.sort()
-                        const begin = [arrDate[0], arrOrderDate[i][0]].sort()
-                        const over = [arrDate[1], arrOrderDate[i][1]].sort()
-                        if (begin[1] < over[0]) {  //时间段有重叠
-                            let index = arrDate.indexOf(date)
-                            arrDate = arrDate.splice(index, 1)
-                        }
-                    }
-                } else {  //若当前房间没订单
-
+                //是否时间冲突
+                if (checkClash(moment, calendars, arrDate, id)) {
+                    let index = arrDate.indexOf(date)
+                    arrDate = arrDate.splice(index, 1)
                 }
             }
 
