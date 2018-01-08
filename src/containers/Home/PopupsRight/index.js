@@ -42,6 +42,7 @@ class PopupsRight extends Component {
         for (let i = 0; i < tds.length; i++) {
             removeClass(tds[i], 'seleted')
         }
+        this.props.form.resetFields()
     }
 
     /**
@@ -109,7 +110,6 @@ class PopupsRight extends Component {
                     ...fieldsValue,
                     'time': [rangeValue[0].format('X'), rangeValue[1].format('X')]
                 };
-                console.log([rangeValue[0].format('X'), rangeValue[1].format('X')])
                 if (order_id) {
                     values.id = order_id
                     values.house_id = id
@@ -174,7 +174,7 @@ class PopupsRight extends Component {
 
     rangePicker(date, dateString) {
         const {start_date, id, calendars, arrDate} = this.props
-        if(!arrDate.length) return
+        if (!arrDate.length) return
 
         const el = document.querySelectorAll('#room_cell' + id + ' td')
 
@@ -259,7 +259,7 @@ class PopupsRight extends Component {
                                         initialValue: order_id ?
                                             [moment(moment.unix(editInfo.data ? editInfo.data.sta_time : '').format('YYYY-MM-DD')), moment(moment.unix(editInfo.data ? editInfo.data.com_time : '').format('YYYY-MM-DD'))]
                                             : !date && !arrDate ?
-                                                [moment(moment(), 'YYYY-MM-DD'), moment(moment().add(1, 'days'), 'YYYY-MM-DD')]
+                                                /*[moment(moment(), 'YYYY-MM-DD'), moment(moment().add(1, 'days'), 'YYYY-MM-DD')]*/ null
                                                 : [moment(moment(arrDate[0]), 'YYYY-MM-DD'), moment(moment(arrDate[1] ? arrDate[1] : arrDate[0]).add(1, 'days'), 'YYYY-MM-DD')],
                                         rules: [{required: true, message: '请选择入住日期'}]
                                     })(
@@ -506,4 +506,4 @@ function mapActionsToProps(dispatch) {
 
 const WrappedPopupsRight = Form.create()(PopupsRight);
 
-export default connect(mapStateToProps, mapActionsToProps)(WrappedPopupsRight)
+export default connect(mapStateToProps, mapActionsToProps, null, {withRef: true})(WrappedPopupsRight)

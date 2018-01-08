@@ -20,7 +20,7 @@ class SignUp extends Component {
             phone: '',
             getImgCode: '',
             codeMsg: '',
-            countNum: 60,
+            countNum: 120,
             isCount: false,
             isShowPhoneErr: false
         }
@@ -179,7 +179,7 @@ class SignUp extends Component {
                     this.setState({
                         isCount: false
                     });
-                    count = 60
+                    count = 120
                     clearInterval(this.timer)
                 }
                 this.setState({
@@ -257,7 +257,7 @@ class SignUp extends Component {
                                         color: 'rgba(0,0,0,.4)',
                                         fontSize: '16px'
                                     }}/>}
-                                           type="text" placeholder="密码为至少6位"/>
+                                           type="password" placeholder="密码为至少6位"/>
                                 )}
                             </FormItem>
                             <FormItem>

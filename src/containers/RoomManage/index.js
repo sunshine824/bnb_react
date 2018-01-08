@@ -62,8 +62,10 @@ class RoomManage extends Component {
     render() {
         return (
             <div className="manage">
-                <HouseList {...this.state} _getRoomList={this._getRoomList.bind(this)} _getHouseList={this._getHouseList.bind(this)}/>
-                <RoomList {...this.state} _getRoomList={this._getRoomList.bind(this)} _getHouseList={this._getHouseList.bind(this)}/>
+                <HouseList {...this.state} _getRoomList={this._getRoomList.bind(this)}
+                           _getHouseList={this._getHouseList.bind(this)}/>
+                <RoomList {...this.state} _getRoomList={this._getRoomList.bind(this)}
+                          _getHouseList={this._getHouseList.bind(this)}/>
             </div>
         )
     }
@@ -83,4 +85,4 @@ function mapActionsToProps(dispatch) {
     }
 }
 
-    export default withRouter(connect(mapStateToProps, mapActionsToProps)(RoomManage))
+export default withRouter(connect(mapStateToProps, mapActionsToProps)(RoomManage))
