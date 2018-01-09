@@ -7,7 +7,7 @@ class HeadLogo extends Component {
     render() {
         return (
             <div className="bnb-logo">
-                <a href="javascript:;">
+                <a href="/">
                     <img src={logo}/>
                 </a>
             </div>
