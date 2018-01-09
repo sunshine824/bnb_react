@@ -172,6 +172,10 @@ class PopupsRight extends Component {
         })
     }
 
+    resetForm(){
+        console.log(1)
+    }
+
     rangePicker(date, dateString) {
         const {start_date, id, calendars, arrDate} = this.props
         if (!arrDate.length) return
@@ -191,7 +195,9 @@ class PopupsRight extends Component {
             message.warn('当前选择时间中有入住订单，暂不能添加！')
         } else {
             for (let i = num1; i <= num2; i++) {
-                addClass(el[i], 'seleted')
+                if(el[i]){
+                    addClass(el[i], 'seleted')
+                }
             }
         }
     }
@@ -226,7 +232,7 @@ class PopupsRight extends Component {
 
 
         return (
-            <Form onSubmit={this.handleSubmit.bind(this)}>
+            <Form ref="popupForm" onSubmit={this.handleSubmit.bind(this)}>
                 <div className={"content-slide " + className}>
                     <p className="title">
                         {order_id ? '编辑订单' : '添加订单'}

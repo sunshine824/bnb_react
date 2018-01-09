@@ -40,7 +40,6 @@ class HomeTableTr extends Component {
         const {calendars, actions, popup} = this.props
         now_id = id
 
-
         if (!popup) arrDate = []
 
 

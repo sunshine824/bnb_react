@@ -23,7 +23,7 @@ class Home extends Component {
         return (
             <div className="home-content">
                 <HomeTop ref="home_top"/>
-                <HomeBottom/>
+                <HomeBottom />
                 <PopupsRight HandleCalendar={this.HandleCalendar.bind(this)}/>
             </div>
         )

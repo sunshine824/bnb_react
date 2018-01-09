@@ -6,8 +6,8 @@ import './style.less'
 
 class HomeRight extends Component {
 
-    render(){
-        return(
+    render() {
+        return (
             <div className="home-bottom">
                 <HouseList/>
                 <TableList/>

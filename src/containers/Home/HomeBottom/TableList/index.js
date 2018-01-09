@@ -57,7 +57,7 @@ class TableList extends Component {
                                             <HomeTableTr {...this.state}
                                                          key={index}
                                                          id={item.id}
-                                                         //resetForm={this.props.resetForm}
+
                                                          handleOffset={this.handleOffset.bind(this)}/>
                                         )
                                     })
