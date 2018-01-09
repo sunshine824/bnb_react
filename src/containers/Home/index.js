@@ -15,6 +15,7 @@ class Home extends Component {
         actions.save_path(match.path)
     }
 
+
     HandleCalendar(){
         this.refs.home_top.ChildHandleCalendar()
     }
@@ -23,7 +24,7 @@ class Home extends Component {
         return (
             <div className="home-content">
                 <HomeTop ref="home_top"/>
-                <HomeBottom />
+                <HomeBottom/>
                 <PopupsRight HandleCalendar={this.HandleCalendar.bind(this)}/>
             </div>
         )

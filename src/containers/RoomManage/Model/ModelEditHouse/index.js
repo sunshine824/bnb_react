@@ -52,13 +52,13 @@ class ModelHouse extends Component {
         result.then(res => {
             return res.json()
         }).then(json => {
-            if (json.status===0) {
+            if (json.status === 0) {
                 this.props.onChangeHouse(false)
                 this.props._getHouseList()
                 this.props._getRoomList()
                 this.props.form.resetFields()
                 message.success('修改成功！');
-            }else {
+            } else {
                 message.error(json.interpret)
             }
         }).catch(err => {
@@ -80,12 +80,12 @@ class ModelHouse extends Component {
      * @param id
      * @private
      */
-    _deteleRoom(id,index) {
+    _deteleRoom(id, index) {
         const result = deteleRoom(id)
         result.then(res => {
             return res.json()
         }).then(json => {
-            if(!json.status){
+            if (!json.status) {
                 this.props.deleteHouseInfo(index)
             }
         }).catch(err => {

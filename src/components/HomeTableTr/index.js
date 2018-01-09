@@ -25,7 +25,6 @@ class HomeTableTr extends Component {
     }
 
     componentDidMount() {
-
     }
 
     handleMouseOver(hoverData, e) {
@@ -37,6 +36,7 @@ class HomeTableTr extends Component {
     }
 
     handlePopup(id, order_id, date, event) {
+
         const {calendars, actions, popup} = this.props
         now_id = id
 
