@@ -33,6 +33,7 @@ class PopupsRight extends Component {
     componentDidMount() {
         this._getSourceList()
         this._getColorList()
+        this.documentClickHangler()
     }
 
     slideOpen() {
@@ -205,6 +206,17 @@ class PopupsRight extends Component {
         }
     }
 
+    /**
+     * 全局绑定click
+     * @param e
+     */
+    documentClickHangler(e) {
+        const _this = this
+        document.querySelector('.table-roomcell-grid')
+            .addEventListener('click', () => {
+                _this.resetForm()
+            })
+    }
 
     render() {
         const {date, editInfo, arrDate, order_id} = this.props
