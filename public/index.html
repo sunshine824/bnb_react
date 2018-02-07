@@ -21,15 +21,6 @@
             background: #bbb;
         }
     </style>
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
     <title>房咚咚</title>
 </head>
 <body>
@@ -37,15 +28,21 @@
     You need to enable JavaScript to run this app.
 </noscript>
 <div id="root"></div>
-<!--
-  This HTML file is a template.
-  If you open it directly in the browser, you will see an empty page.
 
-  You can add webfonts, meta tags, or analytics to this file.
-  The build step will place the bundled scripts into the <body> tag.
-
-  To begin the development, run `npm start` or `yarn start`.
-  To create a production bundle, use `npm run build` or `yarn build`.
--->
 </body>
 </html>
+<script>
+    window.onload = function () {
+        var b_name = navigator.appName;
+        var b_version = navigator.appVersion;
+        var version = b_version.split(";");
+        var trim_version = version[1].replace(/[ ]/g, "");
+        if (b_name == "Microsoft Internet Explorer") {
+            /*如果是IE6或者IE7*/
+            if (trim_version == "MSIE9.0" || trim_version == "MSIE8.0" || trim_version == "MSIE7.0" || trim_version == "MSIE6.0") {
+                //然后跳到需要连接的下载网站
+                window.location.href = "http://bnb.pthola.cn/ie.html";
+            }
+        }
+    }
+</script>

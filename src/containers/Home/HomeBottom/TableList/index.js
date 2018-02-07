@@ -6,6 +6,7 @@ import {save_scroll} from '@/redux/actions'
 import Loading from '@/components/Loading'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import HoverBox from '@/components/HoverBox'
+import {isIE} from '@/config/fnMixin'
 
 import './style.less'
 
@@ -31,7 +32,7 @@ class TableList extends Component {
             left: left,
             top: top,
             isShow: isShow,
-            hoverData:hoverData
+            hoverData: hoverData
         })
     }
 
@@ -46,7 +47,7 @@ class TableList extends Component {
         const {roomList} = this.props
         return (
             <div className="content-box-grid" onScroll={this.handleScroll.bind(this)} ref="tableCon">
-                <table className="table-roomcell-grid">
+                <table className="table-roomcell-grid" style={{width: isIE ? '4800px' : ''}}>
                     <tbody>
                     {
                         roomList ?

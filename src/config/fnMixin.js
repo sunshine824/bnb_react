@@ -90,3 +90,19 @@ export function checkClash(moment, calendarObj, obj, id) {
 
     }
 }
+
+/**
+ * 判断浏览器是否是ie
+ * @returns {boolean}
+ */
+export function isIE() {
+    var userAgent = navigator.userAgent;
+    if (!!window.ActiveXObject || "ActiveXObject" in window)
+        return true;
+    else if (userAgent.indexOf("Edge") > -1) {
+        return true
+    }
+    else {
+        return false;
+    }
+}

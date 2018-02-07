@@ -14,7 +14,7 @@ const SignIn = asyncComponent(() => import('@/containers/SignIn'))
 class RouteMap extends Component {
     render() {
         return (
-            <BrowserRouter history={this.props.history}>
+            <BrowserRouter>
                 <Switch>
                     <Route path="/signup" component={SignUp}/>
                     <Route path="/signin" component={SignIn}/>
